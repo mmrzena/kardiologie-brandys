@@ -1,186 +1,131 @@
+import Link from 'next/link'
+import InsuranceLogos from '@/components/InsuranceLogos'
+
+const pricingSections = [
+  {
+    title: 'Základní služby',
+    description: 'První kontakt, konzultace a kontrolní návštěvy.',
+    items: [
+      { name: 'Specializované vyšetření kardiologem (60 minut)', price: '1 000 Kč' },
+      { name: 'Konzultace s kardiologem (30 minut)', price: '600 Kč' },
+      { name: 'EKG + popis kardiologem', price: '200 Kč' },
+    ],
+  },
+  {
+    title: 'Vyšetření a diagnostika',
+    description: 'Moderní zobrazovací a ultrazvukové metody.',
+    items: [
+      { name: 'Echokardiografie včetně velkých tepen', price: '1 800 Kč' },
+      { name: 'Zátěžová echokardiografie', price: '2 000 Kč' },
+      { name: 'Vyšetření kardiologem s echokardiografií', price: '2 000 Kč' },
+      { name: 'Sonografie karotid', price: '1 000 Kč' },
+      { name: 'DUS cév dolních končetin', price: '1 000 Kč' },
+      { name: 'Ergometrie (bicyklová, zátěžové EKG)', price: '900 Kč' },
+    ],
+  },
+  {
+    title: 'Monitorace',
+    description: 'Dlouhodobé sledování srdeční aktivity a tlaku.',
+    items: [
+      { name: 'Ambulantní monitorace krevního tlaku (24 hod.)', price: '600 Kč' },
+      { name: 'Holter EKG monitorace (24 hod.)', price: '1 000 Kč' },
+      { name: 'Holter EKG monitorace (>24 hod.)', price: '1 500 Kč' },
+      { name: 'Screening spánkové apnoe', price: '800 Kč' },
+    ],
+  },
+  {
+    title: 'POCT laboratorní testy',
+    description: 'Výsledky během několika minut.',
+    items: [
+      { name: 'INR z kapilární krve', price: '200 Kč' },
+      { name: 'Troponin I', price: '150 Kč' },
+      { name: 'D-Dimer', price: '150 Kč' },
+      { name: 'NT-proBNP', price: '300 Kč' },
+    ],
+  },
+  {
+    title: 'Vyšetření sportovců',
+    description: 'Program prevence náhlé smrti a sledování výkonu.',
+    items: [
+      { name: 'Dotazník + echokardiografie + EKG', price: '1 200 Kč' },
+      { name: 'Komplet (dotazník + ECHO + EKG + ergometrie)', price: '2 000 Kč' },
+      { name: 'EKG + popis + dotazník', price: '300 Kč' },
+    ],
+  },
+  {
+    title: 'Dokumentace a potvrzení',
+    description: 'Oficiální dokumenty pro instituce a pojišťovny.',
+    items: [
+      { name: 'Výpis ze zdravotní dokumentace', price: '300 Kč' },
+      { name: 'Vyjádření k řidičskému / zbrojnímu průkazu', price: '200 Kč' },
+      { name: 'Výpis pro pojišťovnu', price: '300 Kč' },
+      { name: 'Potvrzení o zdravotním stavu', price: '200 Kč' },
+      { name: 'Vyjádření k lázeňskému pobytu', price: '200 Kč' },
+    ],
+  },
+]
+
 export default function PricingPage() {
   return (
-    <main className="min-h-screen py-16">
+    <main className="py-16">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl font-bold mb-4 text-center">Ceník</h1>
-          <p className="text-center text-gray-600 mb-8">
-            Platný od 1. 1. 2025
-          </p>
+        <div className="mx-auto max-w-5xl space-y-12">
+          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
+            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Ceník</p>
+            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Transparentní ceny vyšetření</h1>
+            <p className="mt-3 text-base text-brand-slate">Platnost od 1. 1. 2025</p>
+            <div className="mt-6 rounded-3xl border border-dashed border-brand-gray/70 bg-brand-gray/60 p-6 text-sm text-brand-navy">
+              <p className="font-semibold">Pojišťovny</p>
+              <p className="text-brand-slate">
+                Některá vyšetření jsou hrazena pro pacienty pojišťoven VZP, VOZP, ČPZP, OZP, ZPŠ a ZPMV.
+              </p>
+            </div>
+            <InsuranceLogos className="mt-6" compact showLink />
+          </section>
 
-          {/* Note about insurance */}
-          <div className="bg-brand-gray p-6 rounded-lg mb-8">
-            <p className="text-gray-700">
-              <strong>Pojišťovny:</strong> Některá vyšetření jsou hrazena pro pacienty následujících pojišťoven:
-              VZP, VOZP, ČPZP, OZP, ZPŠ, ZPMV.
-            </p>
-          </div>
+          <div className="space-y-6">
+            {pricingSections.map((section) => (
+              <section key={section.title} className="rounded-3xl border border-brand-gray bg-white/95 p-6 shadow-lg">
+                <div className="flex flex-col gap-2 border-b border-brand-gray/60 pb-4 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-brand-navy">{section.title}</h2>
+                    <p className="text-sm text-brand-slate">{section.description}</p>
+                  </div>
+                  <span className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">Ceník</span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {section.items.map((item) => (
+                    <div key={item.name} className="flex flex-col gap-2 rounded-2xl border border-brand-gray/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-sm font-medium text-brand-navy">{item.name}</p>
+                      <p className="text-lg font-semibold text-brand-red">{item.price}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            ))}
 
-          <div className="space-y-8">
-            {/* Basic services */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Základní služby</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Specializované vyšetření kardiologem (60 minut)</span>
-                  <span className="font-semibold">1 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Konzultace s kardiologem (30 minut)</span>
-                  <span className="font-semibold">600 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">EKG + popis kardiologem</span>
-                  <span className="font-semibold">200 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Diagnostic services */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Vyšetření a diagnostika</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Echokardiografické vyšetření včetně velkých tepen</span>
-                  <span className="font-semibold">1 800 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Zátěžová echokardiografie</span>
-                  <span className="font-semibold">2 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Vyšetření kardiologem s echokardiografií</span>
-                  <span className="font-semibold">2 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Sonografie karotid</span>
-                  <span className="font-semibold">1 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">DUS cév dolních končetin</span>
-                  <span className="font-semibold">1 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">Ergometrie (bicyklová, zátěžové EKG)</span>
-                  <span className="font-semibold">900 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Monitoring */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Monitorace</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Ambulantní monitorace krevního tlaku (24 hod.)</span>
-                  <span className="font-semibold">600 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Holter EKG monitorace (24 hod.)</span>
-                  <span className="font-semibold">1 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Holter EKG monitorace (&gt;24 hod.)</span>
-                  <span className="font-semibold">1 500 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">Screening spánkové apnoe</span>
-                  <span className="font-semibold">800 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Biochemical tests */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Biochemická vyšetření (POCT)</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">INR z kapilární krve</span>
-                  <span className="font-semibold">200 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Troponin I</span>
-                  <span className="font-semibold">150 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">D-Dimer</span>
-                  <span className="font-semibold">150 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">NT-proBNP</span>
-                  <span className="font-semibold">300 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Sports medicine */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Vyšetření sportovců</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Dotazník + echokardiografie + EKG</span>
-                  <span className="font-semibold">1 200 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Komplet (dotazník + ECHO + EKG + ergometrie)</span>
-                  <span className="font-semibold">2 000 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">EKG + popis + dotazník</span>
-                  <span className="font-semibold">300 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Documentation */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">Potvrzení a dokumentace</h2>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Výpis ze zdravotní dokumentace</span>
-                  <span className="font-semibold">300 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Vyjádření k řidičskému/zbrojnímu průkazu</span>
-                  <span className="font-semibold">200 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Výpis pro pojišťovnu</span>
-                  <span className="font-semibold">300 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2 border-b">
-                  <span className="text-gray-700">Potvrzení o zdravotním stavu</span>
-                  <span className="font-semibold">200 Kč</span>
-                </div>
-                <div className="flex justify-between items-center pb-2">
-                  <span className="text-gray-700">Vyjádření k lázeňskému pobytu</span>
-                  <span className="font-semibold">200 Kč</span>
-                </div>
-              </div>
-            </section>
-
-            {/* Online consultation */}
-            <section className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4 text-brand-red">On-line poradna</h2>
-              <p className="text-gray-700">
-                Obecné odpovědi jsou bezplatné; konzultace: <strong>500 Kč</strong> za každou započatou hodinu.
+            <section className="rounded-3xl border border-brand-gray bg-white/95 p-6 shadow-lg">
+              <h2 className="text-2xl font-semibold text-brand-navy">On-line poradna</h2>
+              <p className="mt-3 text-sm text-brand-slate">
+                Obecné odpovědi jsou bezplatné. Podrobná konzultace: <span className="font-semibold text-brand-navy">500 Kč</span> za každou započatou hodinu.
               </p>
             </section>
           </div>
 
-          {/* CTA */}
-          <div className="mt-12 bg-brand-gray rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4 text-brand-red">Máte zájem o vyšetření?</h2>
-            <p className="text-gray-700 mb-6">
-              Kontaktujte nás pro objednání termínu na telefonu +420 326 396 790
+          <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-red to-brand-red-dark p-10 text-white shadow-2xl">
+            <h2 className="text-3xl font-semibold">Máte dotaz k ceníku?</h2>
+            <p className="mt-3 text-white/80">
+              Zavolejte +420 326 396 790 nebo nám napište. Připravíme kombinaci vyšetření přesně pro vás.
             </p>
-            <a
-              href="/kontakt"
-              className="inline-block bg-brand-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-blue-dark transition"
-            >
-              Kontaktujte nás
-            </a>
-          </div>
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link href="/kontakt" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg">
+                Kontaktujte nás
+              </Link>
+              <a href="tel:+420326396790" className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white">
+                +420 326 396 790
+              </a>
+            </div>
+          </section>
         </div>
       </div>
     </main>

@@ -1,11 +1,11 @@
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
-      <div className="h-48 bg-gray-200" />
-      <div className="p-4">
-        <div className="h-5 bg-gray-200 rounded w-3/4 mb-1" />
-        <div className="h-4 bg-gray-200 rounded w-1/2 mb-1" />
-        <div className="h-3 bg-gray-200 rounded w-full" />
+    <div className="animate-pulse overflow-hidden rounded-2xl border border-brand-gray/70 bg-white/80 shadow-lg shadow-slate-200/60">
+      <div className="h-48 bg-slate-200" />
+      <div className="p-5 space-y-2">
+        <div className="h-5 w-3/4 rounded bg-slate-200" />
+        <div className="h-4 w-1/2 rounded bg-slate-200" />
+        <div className="h-3 w-full rounded bg-slate-200" />
       </div>
     </div>
   )
@@ -13,28 +13,26 @@ export function SkeletonCard() {
 
 export function SkeletonDetail() {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse">
+    <div className="animate-pulse overflow-hidden rounded-3xl border border-brand-gray/70 bg-white/80 shadow-xl shadow-slate-200/60">
       <div className="md:flex">
-        <div className="md:w-1/3 h-80 bg-gray-200" />
-        <div className="md:w-2/3 p-8">
-          <div className="h-8 bg-gray-200 rounded w-3/4 mb-2" />
-          <div className="h-6 bg-gray-200 rounded w-1/2 mb-4" />
+        <div className="h-80 bg-slate-200 md:w-1/3" />
+        <div className="space-y-4 p-8 md:w-2/3">
+          <div className="h-8 w-3/4 rounded bg-slate-200" />
+          <div className="h-6 w-1/2 rounded bg-slate-200" />
 
-          <div className="mb-4">
-            <div className="h-5 bg-gray-200 rounded w-1/4 mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-full" />
+          <div className="space-y-2 border-t border-dashed border-slate-200 pt-4">
+            <div className="h-5 w-1/4 rounded bg-slate-200" />
+            <div className="h-4 w-full rounded bg-slate-200" />
           </div>
-
-          <div className="mb-4">
-            <div className="h-5 bg-gray-200 rounded w-1/4 mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-full mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-full mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-3/4" />
+          <div className="space-y-2">
+            <div className="h-5 w-1/4 rounded bg-slate-200" />
+            <div className="h-4 w-full rounded bg-slate-200" />
+            <div className="h-4 w-full rounded bg-slate-200" />
+            <div className="h-4 w-3/4 rounded bg-slate-200" />
           </div>
-
-          <div className="border-t pt-4 mt-6">
-            <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
-            <div className="h-4 bg-gray-200 rounded w-1/2" />
+          <div className="border-t border-dashed border-slate-200 pt-4">
+            <div className="h-4 w-2/3 rounded bg-slate-200" />
+            <div className="mt-2 h-4 w-1/2 rounded bg-slate-200" />
           </div>
         </div>
       </div>

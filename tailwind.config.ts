@@ -10,11 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          red: '#ed1c23',
-          'red-dark': '#d01820',
-          blue: '#3e7ec2',
-          'blue-dark': '#2d5f9d',
-          gray: '#eff2f5',
+          red: '#f43f5e',
+          'red-dark': '#be123c',
+          blue: '#0f4c81',
+          'blue-dark': '#0a2f4f',
+          gray: '#f4f6fb',
+          navy: '#071125',
+          'navy-soft': '#0f1f3d',
+          aqua: '#22d3ee',
+          teal: '#14b8a6',
+          sand: '#f9fafb',
+          slate: '#4c5f7a',
         },
       },
       fontSize: {

@@ -1,139 +1,137 @@
+import Link from 'next/link'
+
 export default function ServicesPage() {
   const services = [
     {
       title: 'Kardiologické vyšetření',
       description:
-        'Komplexní kardiologické vyšetření včetně EKG a echokardiografického vyšetření. Posouzení kardiovaskulárního rizika a konzultační činnost.',
+        'Komplexní vyšetření včetně EKG a echokardiografie, posouzení rizik a jasný plán terapie.',
       icon: '🩺',
     },
     {
       title: 'EKG',
       description:
-        'Registrace elektrických potenciálů srdce pro diagnostiku patologií. Používáme moderní digitální přístroje.',
+        'Digitální záznam elektrické aktivity srdce s rychlým popisem lékaře, možnost sdílení dat.',
       icon: '📊',
     },
     {
       title: 'Echokardiografie',
       description:
-        'Ultrazvukové vyšetření srdce včetně jícnové varianty. Umožňuje posouzení funkce srdečních komor, chlopní a dalších struktur.',
+        'Ultrazvukové posouzení komor, chlopní a velkých tepen včetně jícnové varianty.',
       icon: '🫀',
     },
     {
       title: 'Zátěžové testy',
       description:
-        'Ergometrie a zátěžové echokardiografické vyšetření pro posouzení výkonnosti srdce a odhalení ischemické choroby srdeční.',
+        'Ergometrie a zátěžové echo pro odhalení ischemie a posouzení výkonnosti srdce.',
       icon: '🚴',
     },
     {
       title: 'EKG Holter',
       description:
-        '24-96 hodinová monitorace EKG pro zachycení poruch srdečního rytmu a vedení vzruchu. Možnost zapůjčení okamžitého EKG záznamníku na týden domů.',
+        '24–96 hodin záznamu rytmu. V případě potřeby zapůjčení okamžitého EKG záznamníku domů.',
       icon: '⏱️',
     },
     {
-      title: '24hodinová monitorace krevního tlaku (ABPM)',
+      title: 'ABPM',
       description:
-        'Přesné měření krevního tlaku po celých 24 hodin pro diagnostiku hypertenze a kontrolu účinnosti léčby.',
+        '24hodinová monitorace krevního tlaku (ABPM) pro přesnou diagnostiku hypertenze.',
       icon: '📈',
     },
     {
       title: 'Arytmologie',
       description:
-        'Specializovaná péče o pacienty s poruchami srdečního rytmu. Kontroly stimulátorů pod vedením prof. MUDr. Pavla Osmančíka, Ph.D. Arytmologická poradna každé pondělí večer (17:00–19:30).',
+        'Poruchy rytmu řešíme s prof. MUDr. Pavlem Osmančíkem, Ph.D. Kontroly stimulátorů každé pondělí večer.',
       icon: '⚡',
     },
     {
       title: 'Vyšetření sportovců',
       description:
-        'Prevence náhlé smrti u sportovců. Komplexní vyšetření zahrnující EKG a echokardiografii. Specializované vyšetření ve čtvrtek od 15:30 na objednání.',
+        'Screening náhlé smrti, komplexní balíčky se zaměřením na výkon a regeneraci.',
       icon: '🏃',
     },
     {
       title: 'Spánkový screening',
-      description:
-        'Diagnostika poruch dýchání ve spánku a jejich vliv na kardiovaskulární systém.',
+      description: 'Odhalujeme poruchy dýchání ve spánku a jejich dopad na kardiovaskulární systém.',
       icon: '😴',
     },
     {
-      title: 'Vnitřní lékařství (interna)',
-      description:
-        'Komplexní interní vyšetření a péče pro vybrané pojišťovny. Interní předoperační vyšetření.',
+      title: 'Vnitřní lékařství',
+      description: 'Předoperační interní vyšetření a péče pro vybrané zdravotní pojišťovny.',
       icon: '💊',
     },
     {
-      title: 'Dispenzarizace pacientů',
-      description:
-        'Dlouhodobé sledování a léčba pacientů s kardiovaskulárními onemocněními. Pravidelné kontroly účinnosti léčby.',
+      title: 'Dispenzarizace',
+      description: 'Dlouhodobé sledování pacientů s kardiovaskulárními onemocněními.',
       icon: '📋',
     },
     {
       title: 'Klinické studie',
-      description:
-        'Možnost účasti v klinických studiích nových léčebných postupů a medikamentů v kardiologii.',
+      description: 'Zapojení do studií s novými terapiemi a zdravotnickými technologiemi.',
       icon: '🔬',
     },
     {
       title: 'Sonografie karotid',
-      description:
-        'Ultrazvukové vyšetření krčních tepen pro diagnostiku aterosklerózy a posouzení rizika cévní mozkové příhody.',
+      description: 'Ultrazvuk krčních tepen pro diagnostiku aterosklerózy a rizika CMP.',
       icon: '🔍',
     },
     {
-      title: 'DUS cév dolních končetin',
-      description:
-        'Duplexní ultrasonografie cév dolních končetin pro diagnostiku žilní nedostatečnosti a tepenných onemocnění.',
+      title: 'DUS dolních končetin',
+      description: 'Duplexní ultrasonografie žil i tepen dolních končetin.',
       icon: '🦵',
     },
     {
-      title: 'Laboratorní vyšetření (POCT)',
-      description:
-        'Point-of-care testování včetně INR, troponinu, D-dimeru a NT-proBNP pro okamžitou diagnostiku.',
+      title: 'Laboratoř (POCT)',
+      description: 'INR, troponin, D-dimer, NT-proBNP – výsledky v řádu minut.',
       icon: '🧪',
     },
   ]
 
   return (
-    <main className="min-h-screen py-16">
+    <main className="py-16">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold mb-4 text-center">Naše služby</h1>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Poskytujeme komplexní kardiologickou péči s využitím moderních diagnostických metod
-          </p>
+        <div className="mx-auto max-w-6xl space-y-12">
+          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl text-center">
+            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Naše služby</p>
+            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Komplexní kardiologická péče</h1>
+            <p className="mt-4 text-base text-brand-slate">
+              Kombinujeme vyšetření, konzultace a dlouhodobou péči podle standardů moderních kardiocenter.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold text-brand-navy">
+              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Diagnostika</span>
+              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Arytmologie</span>
+              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Sport & prevence</span>
+              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Výzkum</span>
+            </div>
+          </section>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {services.map((service, index) => (
+          <section className="grid gap-6 md:grid-cols-2">
+            {services.map((service) => (
               <div
-                key={index}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition"
+                key={service.title}
+                className="rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60 transition hover:-translate-y-1"
               >
-                <div className="text-4xl mb-3">{service.icon}</div>
-                <h2 className="text-xl font-semibold mb-3">{service.title}</h2>
-                <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                <div className="text-4xl">{service.icon}</div>
+                <h2 className="mt-4 text-2xl font-semibold text-brand-navy">{service.title}</h2>
+                <p className="mt-2 text-sm text-brand-slate leading-relaxed">{service.description}</p>
               </div>
             ))}
-          </div>
+          </section>
 
-          <div className="mt-12 bg-brand-gray rounded-lg p-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4 text-brand-red">Máte zájem o vyšetření?</h2>
-            <p className="text-gray-700 mb-6">
-              Kontaktujte nás pro objednání termínu nebo si prohlédněte náš ceník
+          <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue to-brand-blue-dark p-10 text-white shadow-2xl">
+            <h2 className="text-3xl font-semibold">Potřebujete poradit s výběrem vyšetření?</h2>
+            <p className="mt-3 text-white/80">
+              Zavolejte, nebo nám napište – připravíme balíček vyšetření během jednoho pracovního dne.
             </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <a
-                href="/kontakt"
-                className="inline-block bg-brand-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-blue-dark transition"
-              >
+            <div className="mt-6 flex flex-wrap gap-4">
+              <Link href="/kontakt" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg">
                 Kontaktujte nás
-              </a>
-              <a
-                href="/cenik"
-                className="inline-block bg-white text-brand-red border-2 border-brand-red px-8 py-3 rounded-lg font-semibold hover:bg-brand-red hover:text-white transition"
-              >
+              </Link>
+              <Link href="/cenik" className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white">
                 Zobrazit ceník
-              </a>
+              </Link>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </main>

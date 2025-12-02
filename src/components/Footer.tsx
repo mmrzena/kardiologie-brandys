@@ -1,107 +1,124 @@
 import Link from 'next/link'
+import { insurers } from '@/lib/insurers'
+
+const navigation = [
+  { label: 'Domů', href: '/' },
+  { label: 'O nás', href: '/o-nas' },
+  { label: 'Náš tým', href: '/tym' },
+  { label: 'Služby', href: '/sluzby' },
+  { label: 'Ceník', href: '/cenik' },
+  { label: 'Kontakt', href: '/kontakt' },
+]
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Contact Information */}
+    <footer className="relative mt-16 bg-gradient-to-b from-brand-navy to-black text-white">
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid gap-12 lg:grid-cols-[1.3fr,1fr,1fr]">
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Kontakt</h3>
-            <div className="space-y-2 text-sm">
-              <p>
-                <strong className="text-white">Adresa:</strong><br />
-                Nádražní 1317/5<br />
-                Brandýs nad Labem, 250 01
-              </p>
-              <p>
-                <strong className="text-white">Telefon:</strong><br />
-                <a href="tel:+420326396790" className="hover:text-brand-red transition">
+            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80 mb-3">
+              Kardiologická ambulance
+            </p>
+            <h3 className="text-2xl font-semibold mb-4">Kardiologie Brandýs</h3>
+            <p className="text-sm text-gray-300 leading-relaxed mb-6">
+              Precizní diagnostika, specializovaná arytmologická poradna a tým lékařů s praxí na
+              špičkových klinikách. Vaše srdce sledujeme s kombinací moderních technologií a
+              osobního přístupu.
+            </p>
+            <div className="mt-6 gap-3 text-sm text-gray-200 flex">
+              {insurers.map((insurer) => (
+                <a
+                  key={insurer.code}
+                  href={insurer.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-brand-teal/60"
+                >
+                  <span className="font-semibold text-white">{insurer.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-lg font-semibold mb-4">Kontakt</h4>
+            <div className="space-y-3 text-sm text-gray-300">
+              <p>Nádražní 1317/5, 250 01 Brandýs nad Labem</p>
+              <div>
+                <p className="text-white font-medium">Objednávky</p>
+                <a className="hover:text-brand-teal transition" href="tel:+420326396790">
                   +420 326 396 790
                 </a>
-              </p>
-              <p>
-                <strong className="text-white">Mobil:</strong><br />
-                <a href="tel:+420604415479" className="hover:text-brand-red transition">
+              </div>
+              <div>
+                <p className="text-white font-medium">Mobil</p>
+                <a className="hover:text-brand-teal transition" href="tel:+420604415479">
                   +420 604 415 479
                 </a>
-              </p>
-              <p>
-                <strong className="text-white">Fax:</strong><br />
-                +420 326 312 684
-              </p>
-              <p>
-                <strong className="text-white">Email:</strong><br />
-                <a href="mailto:kardiologie.brandys@seznam.cz" className="hover:text-brand-red transition">
+              </div>
+              <div>
+                <p className="text-white font-medium">Email</p>
+                <a className="hover:text-brand-teal transition" href="mailto:kardiologie.brandys@seznam.cz">
                   kardiologie.brandys@seznam.cz
                 </a>
-              </p>
+              </div>
             </div>
           </div>
 
-          {/* Opening Hours */}
           <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Ordinační hodiny</h3>
-            <div className="space-y-1 text-sm">
-              <p>
-                <strong className="text-white">Pondělí:</strong> 7:00–17:00<br />
-                <span className="text-xs text-gray-400">(arytmologie 17:00–19:30)</span>
-              </p>
-              <p><strong className="text-white">Úterý:</strong> 7:00–16:00</p>
-              <p><strong className="text-white">Středa:</strong> 8:00–16:00</p>
-              <p>
-                <strong className="text-white">Čtvrtek:</strong> 8:00–15:00<br />
-                <span className="text-xs text-gray-400">(sportovci od 15:30 na objednání)</span>
-              </p>
-              <p><strong className="text-white">Pátek:</strong> 7:30–15:00</p>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white text-lg font-semibold mb-4">Rychlé odkazy</h3>
-            <nav className="space-y-2 text-sm">
-              <Link href="/" className="block hover:text-brand-red transition">
-                Domů
-              </Link>
-              <Link href="/o-nas" className="block hover:text-brand-red transition">
-                O nás
-              </Link>
-              <Link href="/tym" className="block hover:text-brand-red transition">
-                Náš tým
-              </Link>
-              <Link href="/sluzby" className="block hover:text-brand-red transition">
-                Služby
-              </Link>
-              <Link href="/cenik" className="block hover:text-brand-red transition">
-                Ceník
-              </Link>
-              <Link href="/kontakt" className="block hover:text-brand-red transition">
-                Kontakt
-              </Link>
-            </nav>
+            <h4 className="text-lg font-semibold mb-4">Ordinační hodiny</h4>
+            <dl className="space-y-3 text-sm text-gray-300 text-right">
+              <div className="flex justify-between gap-3">
+                <dt className="text-white">Pondělí</dt>
+                <dd>7:00–17:00 <span className="text-xs text-gray-400 block">Arytmologie 17:00–19:30</span></dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-white">Úterý</dt>
+                <dd>7:00–16:00</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-white">Středa</dt>
+                <dd>8:00–16:00</dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-white">Čtvrtek</dt>
+                <dd>8:00–15:00 <span className="text-xs text-gray-400 block">Sportovci od 15:30</span></dd>
+              </div>
+              <div className="flex justify-between gap-3">
+                <dt className="text-white">Pátek</dt>
+                <dd>7:30–15:00</dd>
+              </div>
+            </dl>
           </div>
         </div>
 
-        {/* Bottom section */}
-        <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="grid md:grid-cols-2 gap-4 text-sm">
+        <div className="mt-12 rounded-3xl border border-white/20 bg-white/5 p-6 backdrop-blur">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="mb-2">
-                <strong className="text-white">MEDICUS SERVICES s.r.o.</strong>
+              <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
+                Potřebujete termín?
               </p>
-              <p className="text-xs">
-                IČO: 47547898<br />
-                Zapsáno v obchodním rejstříku vedeném Městským soudem v Praze, oddíl C, vložka 20327
-              </p>
+              <h4 className="text-xl font-semibold mt-2">Napište nám, odpovídáme do 1 pracovního dne</h4>
             </div>
-            <div className="md:text-right">
-              <p className="text-xs">
-                © {new Date().getFullYear()} Kardiologie Brandýs nad Labem<br />
-                Všechna práva vyhrazena
-              </p>
-            </div>
+            <Link
+              href="/kontakt"
+              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/30"
+            >
+              Spojit se s ambulancí
+            </Link>
           </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
+          <p>© {new Date().getFullYear()} Kardiologie Brandýs nad Labem</p>
+          <p>MEDICUS SERVICES s.r.o. • IČO 47547898 • Městský soud v Praze, oddíl C, vložka 20327</p>
+          <nav className="flex flex-wrap gap-4 text-gray-400">
+            {navigation.map((item) => (
+              <Link key={item.href} href={item.href} className="hover:text-brand-teal transition">
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
