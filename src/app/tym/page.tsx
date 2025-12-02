@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { useStaff } from '@/hooks/useStaff'
 import { SkeletonList } from '@/components/SkeletonLoader'
-import Image from 'next/image'
 
 export default function TeamPage() {
   const { data: staff = [], isLoading, error } = useStaff()
@@ -56,7 +55,8 @@ export default function TeamPage() {
         >
           {member.photo_url ? (
             <div className="h-48 bg-gray-200">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={member.photo_url}
                 alt={member.name}
                 className="w-full h-full object-cover"

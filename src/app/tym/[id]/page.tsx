@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { useStaffById } from '@/hooks/useStaff'
 import { SkeletonDetail } from '@/components/SkeletonLoader'
-import Image from 'next/image'
 
 export default function StaffDetailPage() {
   const params = useParams()
@@ -54,7 +53,8 @@ export default function StaffDetailPage() {
             <div className="md:flex">
               {staff.photo_url ? (
                 <div className="md:w-1/3">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={staff.photo_url}
                     alt={staff.name}
                     className="w-full h-full object-cover"
