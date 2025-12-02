@@ -122,7 +122,7 @@ export default function Navigation() {
               <Link
                 href="/kontakt"
                 onClick={() => setIsMenuOpen(false)}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-4 py-3 text-sm font-semibold text-white shadow-md shadow-brand-red/30"
+                className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-4 py-3 text-sm font-semibold text-white shadow-md shadow-brand-red/30 transition hover:bg-brand-red-dark"
               >
                 Objednat
               </Link>

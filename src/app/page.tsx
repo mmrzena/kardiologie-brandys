@@ -2,8 +2,6 @@ import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { announcements } from '@/data/announcements'
-import { doctorArotmologists, doctors, nurses } from '@/data/staff'
-import { insurers } from '@/lib/insurers'
 
 const services = [
   {
@@ -22,40 +20,6 @@ const services = [
   {
     title: 'Klinické studie',
     description: 'Možnost zapojení do klinických studií inovativních léčebných postupů.',
-  },
-]
-
-const roadmap = [
-  {
-    title: 'Online objednávka',
-    content: 'Během jednoho hovoru či zprávy zvolíme vhodný typ vyšetření.',
-  },
-  {
-    title: 'Precizní diagnostika',
-    content: 'Moderní přístrojové vybavení a lékaři s praxí z fakultních klinik.',
-  },
-  {
-    title: 'Týmová konzultace',
-    content: 'Nálezy sdílíme napříč týmem a navrhujeme finální doporučení.',
-  },
-  {
-    title: 'Dlouhodobá péče',
-    content: 'Dispenzarizace, kontroly stimulátorů a sledování efektu terapie.',
-  },
-]
-
-const highlights = [
-  {
-    title: 'Spolupráce s pojišťovnami',
-    detail: insurers.map((insurer) => insurer.name).join(', '),
-  },
-  {
-    title: 'Specializované programy',
-    detail: 'Arytmologická poradna • vyšetření sportovců',
-  },
-  {
-    title: 'Multioborový tým',
-    detail: `${doctors.length + doctorArotmologists.length} lékařů, ${nurses.length} sestry, Clinical Research Department`,
   },
 ]
 
@@ -86,7 +50,7 @@ export default function Home() {
                 Kardiologická ambulance
               </p>
               <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
-                Kompletní kardiologická péče na jednom místě
+                Komplexní kardiologická péče na jednom místě
               </h1>
             </div>
             <p className="text-lg text-white/80">
@@ -98,14 +62,14 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/kontakt"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:bg-white/90"
               >
                 Objednat na vyšetření
                 <ArrowUpRightIcon />
               </Link>
               <Link
                 href="/kontakt"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:bg-white/90"
               >
                 Žádost o recept
                 <ArrowUpRightIcon />
@@ -216,6 +180,36 @@ export default function Home() {
         </div>
       </section>
 
+      <section>
+        <div className="container mx-auto px-4">
+          <div className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
+            <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-2xl">
+                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
+                  Potřebujete konzultaci?
+                </p>
+                <h2 className="mt-3 text-3xl font-semibold text-brand-navy">
+                  Kardiologická poradna
+                </h2>
+                <p className="mt-4 text-brand-slate">
+                  On-line poradna je pro každého, kdo má otázky nebo pochybnosti o svém zdravotním
+                  stavu, léčbě či doporučených zákrocích. Pomůžeme vám porozumět diagnóze, lékům i
+                  možnostem další péče.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-4 md:justify-end">
+                <Link
+                  href="/kontakt"
+                  className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
+                >
+                  Napište nám
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
@@ -223,163 +217,18 @@ export default function Home() {
               <div>
                 <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Pojišťovny</p>
                 <h2 className="mt-2 text-2xl font-semibold text-brand-navy">
-                  Spolupracujeme s hlavními partnery
+                  Máme smlouvy se všemi významnými zdravotními pojišťovnami
                 </h2>
-                <p className="text-sm text-brand-slate">
-                  Vyšetření hradíme klientům šesti nejčastějších zdravotních pojišťoven.
-                </p>
               </div>
               <Link
                 href="/cenik"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy transition hover:border-brand-navy hover:bg-brand-gray/60"
               >
                 Detailní ceník
                 <ArrowUpRightIcon />
               </Link>
             </div>
             <InsuranceLogos className="mt-8" compact showLink />
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16">
-        <div className="container mx-auto grid gap-10 px-4 lg:grid-cols-[1.1fr,0.9fr]">
-          <div className="rounded-3xl border border-brand-gray bg-white/90 p-8 shadow-xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Jak pracujeme</p>
-            <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Cesta pacienta</h2>
-            <p className="mt-4 text-brand-slate">
-              Inspirujeme se moderními ambulancemi: místo jednotlivých vyšetření nabízíme orchestr
-              péče s jasným plánem.
-            </p>
-            <div className="mt-8 space-y-6">
-              {roadmap.map((step, index) => (
-                <div key={step.title} className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-gray text-sm font-semibold text-brand-navy">
-                    {index + 1}
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold text-brand-navy">{step.title}</p>
-                    <p className="text-sm text-brand-slate">{step.content}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-6">
-            {highlights.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-3xl border border-brand-gray bg-gradient-to-br from-white to-brand-gray/60 p-6 shadow-lg"
-              >
-                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
-                  {item.title}
-                </p>
-                <p className="mt-3 text-xl font-semibold text-brand-navy">{item.detail}</p>
-              </div>
-            ))}
-            <div className="rounded-3xl bg-gradient-to-r from-brand-red to-brand-red-dark p-6 text-white shadow-xl">
-              <p className="text-xs uppercase tracking-[0.4em] text-white/70">Prevence</p>
-              <h3 className="mt-4 text-2xl font-semibold">Vyšetření sportovců</h3>
-              <p className="mt-2 text-sm text-white/80">
-                Čtvrtek od 15:30 pouze na objednání. Zahrnuje EKG, echokardiografii a konzultaci
-                tréninku.
-              </p>
-              <Link
-                href="/kontakt"
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold"
-              >
-                Rezervovat termín
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16">
-        <div className="container mx-auto grid gap-10 px-4 md:grid-cols-2">
-          <div className="rounded-3xl border border-brand-gray bg-white/90 p-8 shadow-xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Technologie</p>
-            <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Moderní vybavení</h2>
-            <ul className="mt-6 space-y-4 text-sm text-brand-slate">
-              {[
-                'Echokardiografický přístroj včetně jícnové sondy',
-                'Digitální ergometry pro vyšetření zátěže',
-                'Holter monitorace EKG i krevního tlaku s okamžitým exportem',
-                'POCT laboratorní diagnostika (troponin, D-dimer, NT-proBNP)',
-              ].map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="text-brand-red">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-3xl border border-brand-gray bg-white/90 p-8 shadow-xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Důvěra</p>
-            <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Proč pacienti volí nás</h2>
-            <ul className="mt-6 space-y-4 text-sm text-brand-slate">
-              {[
-                'Transparentní komunikace výsledků včetně doporučení pro další péči',
-                'Napojení na špičková kardiovaskulární centra v Praze',
-                'Možnost zapojení do klinických studií nových terapií',
-                'Koordinace péče pro sportovní kluby a firmy',
-              ].map((item) => (
-                <li key={item} className="flex gap-3">
-                  <span className="text-brand-red">•</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="pb-20">
-        <div className="container mx-auto px-4">
-          <div className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
-            <div className="grid gap-8 md:grid-cols-[1.3fr,0.7fr] md:items-center">
-              <div>
-                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Další krok</p>
-                <h2 className="mt-3 text-3xl font-semibold text-brand-navy">
-                  Potřebujete konzultaci?
-                </h2>
-                <p className="mt-4 text-brand-slate">
-                  Připravíme pro vás plán vyšetření a navazující péči. Odpovídáme během jednoho
-                  pracovního dne.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-4">
-                  <Link
-                    href="/kontakt"
-                    className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30"
-                  >
-                    Napište nám
-                  </Link>
-                  <a
-                    href="tel:+420326396790"
-                    className="inline-flex items-center gap-2 rounded-full border border-brand-gray px-6 py-3 text-sm font-semibold text-brand-navy"
-                  >
-                    Zavolejte recepci
-                  </a>
-                </div>
-              </div>
-              <div className="rounded-3xl border border-brand-gray bg-brand-gray/70 p-6 text-brand-navy">
-                <p className="text-sm font-semibold">Nádražní 1317/5, Brandýs nad Labem</p>
-                <p className="mt-2 text-sm text-brand-slate">
-                  Snadné parkování, bezbariérový vstup, čekárna s Wi-Fi.
-                </p>
-                <div className="mt-6 flex items-center gap-4">
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-red">
-                    Bezpečí
-                  </div>
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-teal">
-                    Prevence
-                  </div>
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-blue">
-                    Výzkum
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
