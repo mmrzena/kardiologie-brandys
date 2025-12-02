@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
-import { createClient } from '@supabase/supabase-js'
-import { addContactMessage } from '@/lib/mockDb'
-
-// Create admin client with service role key (bypasses RLS)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-const supabaseAdmin = supabaseServiceKey
-  ? createClient(supabaseUrl, supabaseServiceKey)
-  : null
 
 // Validation schema
 const contactSchema = z.object({
@@ -19,70 +10,38 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
 })
 
-export async function POST(request: NextRequest) {
-  const useMockDb = process.env.NEXT_PUBLIC_USE_MOCK_DB === 'true' || !supabaseAdmin
+function logEmail(validatedData: z.infer<typeof contactSchema>) {
+  console.log('\n==================== EMAIL (DEV MODE) ====================')
+  console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
+  console.log('To:', process.env.EMAIL_TO || 'doctor@kardiologiebrandys.cz')
+  console.log('Reply-To:', validatedData.email)
+  console.log('Subject:', `Nová zpráva z webu - ${validatedData.name}`)
+  console.log('-----------------------------------------------------------')
+  console.log('Jméno:', validatedData.name)
+  console.log('Email:', validatedData.email)
+  if (validatedData.phone) console.log('Telefon:', validatedData.phone)
+  console.log('\nZpráva:')
+  console.log(validatedData.message)
+  console.log('===========================================================\n')
+}
 
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
     // Validate input
     const validatedData = contactSchema.parse(body)
 
-    let data
+    const useMockEmail =
+      process.env.NEXT_PUBLIC_USE_MOCK_DB === 'true' ||
+      !process.env.EMAIL_HOST ||
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASSWORD ||
+      !process.env.EMAIL_TO
 
-    // Save to database (mock or Supabase)
-    if (useMockDb) {
-      // Use mock database for local development
-      data = [addContactMessage({
-        name: validatedData.name,
-        email: validatedData.email,
-        phone: validatedData.phone || '',
-        message: validatedData.message,
-        status: 'new',
-      })]
-      console.log('[DEV MODE] Saved contact message to local JSON database')
+    if (useMockEmail) {
+      logEmail(validatedData)
     } else {
-      // Use Supabase in production with admin client (bypasses RLS)
-      const { data: supabaseData, error } = await supabaseAdmin
-        .from('contact_messages')
-        .insert([
-          {
-            name: validatedData.name,
-            email: validatedData.email,
-            phone: validatedData.phone || null,
-            message: validatedData.message,
-            status: 'new',
-          },
-        ])
-        .select()
-
-      if (error) {
-        console.error('Supabase error:', error)
-        return NextResponse.json(
-          { error: 'Nepodařilo se uložit zprávu do databáze' },
-          { status: 500 }
-        )
-      }
-      data = supabaseData
-    }
-
-    // Handle email (log to console in dev mode)
-    if (useMockDb) {
-      // Log email to console in development mode
-      console.log('\n==================== EMAIL (DEV MODE) ====================')
-      console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
-      console.log('To:', process.env.EMAIL_TO || 'doctor@kardiologiebrandys.cz')
-      console.log('Reply-To:', validatedData.email)
-      console.log('Subject:', `Nová zpráva z webu - ${validatedData.name}`)
-      console.log('-----------------------------------------------------------')
-      console.log('Jméno:', validatedData.name)
-      console.log('Email:', validatedData.email)
-      if (validatedData.phone) console.log('Telefon:', validatedData.phone)
-      console.log('\nZpráva:')
-      console.log(validatedData.message)
-      console.log('===========================================================\n')
-    } else {
-      // Send actual email in production
       try {
         const transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
@@ -120,12 +79,15 @@ ${validatedData.message}
         })
       } catch (emailError) {
         console.error('Email error:', emailError)
-        // Continue even if email fails - we saved to database
+        return NextResponse.json(
+          { error: 'Nepodařilo se odeslat email' },
+          { status: 500 }
+        )
       }
     }
 
     return NextResponse.json(
-      { message: 'Zpráva byla úspěšně odeslána', data },
+      { message: 'Zpráva byla úspěšně odeslána' },
       { status: 200 }
     )
   } catch (error) {
