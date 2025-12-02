@@ -3,13 +3,14 @@ import { notFound } from 'next/navigation'
 import { getStaffMember } from '@/data/staff'
 
 interface StaffDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
-export default function StaffDetailPage({ params }: StaffDetailPageProps) {
-  const staff = getStaffMember(params.id)
+export default async function StaffDetailPage({ params }: StaffDetailPageProps) {
+  const { id } = await params
+  const staff = getStaffMember(id)
 
   if (!staff) {
     notFound()
