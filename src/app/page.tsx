@@ -14,7 +14,8 @@ const services = [
   },
   {
     title: 'Sportovní kardiologie',
-    description: 'Preventivní balíčky pro vrcholové i amatérské sportovce, screening náhlých příhod.',
+    description:
+      'Preventivní balíčky pro vrcholové i amatérské sportovce, screening náhlých příhod.',
     icon: '🏃‍♂️',
   },
   {
@@ -25,10 +26,22 @@ const services = [
 ]
 
 const roadmap = [
-  { title: 'Online objednávka', content: 'Během jednoho hovoru či zprávy zvolíme vhodný typ vyšetření.' },
-  { title: 'Precizní diagnostika', content: 'Moderní přístrojové vybavení a lékaři s praxí z fakultních klinik.' },
-  { title: 'Týmová konzultace', content: 'Nálezy sdílíme napříč týmem a navrhujeme finální doporučení.' },
-  { title: 'Dlouhodobá péče', content: 'Dispenzarizace, kontroly stimulátorů a sledování efektu terapie.' },
+  {
+    title: 'Online objednávka',
+    content: 'Během jednoho hovoru či zprávy zvolíme vhodný typ vyšetření.',
+  },
+  {
+    title: 'Precizní diagnostika',
+    content: 'Moderní přístrojové vybavení a lékaři s praxí z fakultních klinik.',
+  },
+  {
+    title: 'Týmová konzultace',
+    content: 'Nálezy sdílíme napříč týmem a navrhujeme finální doporučení.',
+  },
+  {
+    title: 'Dlouhodobá péče',
+    content: 'Dispenzarizace, kontroly stimulátorů a sledování efektu terapie.',
+  },
 ]
 
 const highlights = [
@@ -69,8 +82,9 @@ export default function Home() {
               </h1>
             </div>
             <p className="text-lg text-white/80">
-              O ambulanci se stará tým MUDr. Jiřího Krupičky. Navazujeme na standardy fakultních nemocnic
-              a přinášíme specializovanou arytmologickou poradnu, vyšetření sportovců i klinický výzkum.
+              O ambulanci se stará tým MUDr. Jiřího Krupičky. Navazujeme na standardy fakultních
+              nemocnic a přinášíme specializovanou arytmologickou poradnu, vyšetření sportovců i
+              klinický výzkum.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -110,7 +124,9 @@ export default function Home() {
             <div className="relative rounded-[32px] border border-white/20 bg-white/10 p-8 backdrop-blur-xl shadow-2xl">
               <div className="flex items-center justify-between border-b border-white/15 pb-6">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.4em] text-white/70">Ordinační hodiny</p>
+                  <p className="text-xs uppercase tracking-[0.4em] text-white/70">
+                    Ordinační hodiny
+                  </p>
                   <p className="text-2xl font-semibold mt-1">Pondělí–Pátek</p>
                 </div>
                 <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">
@@ -125,7 +141,10 @@ export default function Home() {
                   ['Čtvrtek', '8:00–15:00 • Sportovci 15:30'],
                   ['Pátek', '7:30–15:00'],
                 ].map(([day, info]) => (
-                  <div key={day} className="flex items-start justify-between gap-3 rounded-2xl bg-white/5 px-4 py-3">
+                  <div
+                    key={day}
+                    className="flex items-start justify-between gap-3 rounded-2xl bg-white/5 px-4 py-3"
+                  >
                     <p className="font-semibold">{day}</p>
                     <p className="text-right text-white/80 s-">{info}</p>
                   </div>
@@ -165,7 +184,9 @@ export default function Home() {
                 <h3 className="mt-4 text-xl font-semibold text-brand-navy group-hover:text-brand-red transition">
                   {service.title}
                 </h3>
-                <p className="mt-2 text-sm text-brand-slate leading-relaxed">{service.description}</p>
+                <p className="mt-2 text-sm text-brand-slate leading-relaxed">
+                  {service.description}
+                </p>
               </div>
             ))}
           </div>
@@ -178,12 +199,17 @@ export default function Home() {
             <div className="flex flex-col gap-3 text-center md:flex-row md:items-center md:justify-between md:text-left">
               <div>
                 <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Pojišťovny</p>
-                <h2 className="mt-2 text-2xl font-semibold text-brand-navy">Spolupracujeme s hlavními partnery</h2>
+                <h2 className="mt-2 text-2xl font-semibold text-brand-navy">
+                  Spolupracujeme s hlavními partnery
+                </h2>
                 <p className="text-sm text-brand-slate">
                   Vyšetření hradíme klientům šesti nejčastějších zdravotních pojišťoven.
                 </p>
               </div>
-              <Link href="/cenik" className="inline-flex items-center justify-center rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy">
+              <Link
+                href="/cenik"
+                className="inline-flex items-center justify-center rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy"
+              >
                 Detailní ceník ↗
               </Link>
             </div>
@@ -198,8 +224,8 @@ export default function Home() {
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Jak pracujeme</p>
             <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Cesta pacienta</h2>
             <p className="mt-4 text-brand-slate">
-              Inspirujeme se moderními ambulancemi: místo jednotlivých vyšetření nabízíme orchestr péče
-              s jasným plánem.
+              Inspirujeme se moderními ambulancemi: místo jednotlivých vyšetření nabízíme orchestr
+              péče s jasným plánem.
             </p>
             <div className="mt-8 space-y-6">
               {roadmap.map((step, index) => (
@@ -217,8 +243,13 @@ export default function Home() {
           </div>
           <div className="space-y-6">
             {highlights.map((item) => (
-              <div key={item.title} className="rounded-3xl border border-brand-gray bg-gradient-to-br from-white to-brand-gray/60 p-6 shadow-lg">
-                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">{item.title}</p>
+              <div
+                key={item.title}
+                className="rounded-3xl border border-brand-gray bg-gradient-to-br from-white to-brand-gray/60 p-6 shadow-lg"
+              >
+                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
+                  {item.title}
+                </p>
                 <p className="mt-3 text-xl font-semibold text-brand-navy">{item.detail}</p>
               </div>
             ))}
@@ -226,9 +257,13 @@ export default function Home() {
               <p className="text-xs uppercase tracking-[0.4em] text-white/70">Prevence</p>
               <h3 className="mt-4 text-2xl font-semibold">Vyšetření sportovců</h3>
               <p className="mt-2 text-sm text-white/80">
-                Čtvrtek od 15:30 pouze na objednání. Zahrnuje EKG, echokardiografii a konzultaci tréninku.
+                Čtvrtek od 15:30 pouze na objednání. Zahrnuje EKG, echokardiografii a konzultaci
+                tréninku.
               </p>
-              <Link href="/kontakt" className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold">
+              <Link
+                href="/kontakt"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold"
+              >
                 Rezervovat termín
               </Link>
             </div>
@@ -281,9 +316,12 @@ export default function Home() {
             <div className="grid gap-8 md:grid-cols-[1.3fr,0.7fr] md:items-center">
               <div>
                 <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Další krok</p>
-                <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Potřebujete konzultaci?</h2>
+                <h2 className="mt-3 text-3xl font-semibold text-brand-navy">
+                  Potřebujete konzultaci?
+                </h2>
                 <p className="mt-4 text-brand-slate">
-                  Připravíme pro vás plán vyšetření a navazující péči. Odpovídáme během jednoho pracovního dne.
+                  Připravíme pro vás plán vyšetření a navazující péči. Odpovídáme během jednoho
+                  pracovního dne.
                 </p>
                 <div className="mt-6 flex flex-wrap gap-4">
                   <Link
@@ -306,9 +344,15 @@ export default function Home() {
                   Snadné parkování, bezbariérový vstup, čekárna s Wi-Fi.
                 </p>
                 <div className="mt-6 flex items-center gap-4">
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-red">Bezpečí</div>
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-teal">Prevence</div>
-                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-blue">Výzkum</div>
+                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-red">
+                    Bezpečí
+                  </div>
+                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-teal">
+                    Prevence
+                  </div>
+                  <div className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-brand-blue">
+                    Výzkum
+                  </div>
                 </div>
               </div>
             </div>

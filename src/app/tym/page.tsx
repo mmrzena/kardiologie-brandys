@@ -1,50 +1,35 @@
 import Link from 'next/link'
-import { staffMembers, StaffMember } from '@/data/staff'
+import { staffMembers, StaffMember, doctors, nurses, researches } from '@/data/staff'
 
-  // Categorize staff members
-  const doctors = staffMembers.filter(member =>
-    member.type === "doctor"
-  )
-  const nurses = staffMembers.filter(member =>
-    member.type === "nurse"
-  )
-  const research = staffMembers.filter(member =>
-    member.type === "research"
-  )
-
-  const renderStaffGrid = (members: StaffMember[]) => (
-    <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {members.map((member) => (
-        <Link
-          key={member.id}
-          href={`/tym/${member.id}`}
-          className="overflow-hidden rounded-3xl border border-brand-gray bg-white shadow-lg transition hover:-translate-y-1 hover:border-brand-red/40"
-        >
-          {member.photo_url ? (
-            <div className="h-52 bg-gray-100">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={member.photo_url}
-                alt={member.name}
-                className="h-full w-full object-cover"
-              />
-            </div>
-          ) : (
-            <div className="flex h-52 items-center justify-center bg-gradient-to-br from-brand-blue/20 to-brand-teal/20 text-5xl">
-              👤
-            </div>
-          )}
-          <div className="space-y-1 p-5">
-            <h2 className="text-lg font-semibold text-brand-navy">{member.name}</h2>
-            <p className="text-sm font-medium text-brand-red">{member.title}</p>
-            {member.specialization && (
-              <p className="text-xs text-brand-slate">{member.specialization}</p>
-            )}
+const renderStaffGrid = (members: StaffMember[]) => (
+  <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {members.map((member) => (
+      <Link
+        key={member.id}
+        href={`/tym/${member.id}`}
+        className="overflow-hidden rounded-3xl border border-brand-gray bg-white shadow-lg transition hover:-translate-y-1 hover:border-brand-red/40"
+      >
+        {member.photo_url ? (
+          <div className="h-52 bg-gray-100">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={member.photo_url} alt={member.name} className="h-full w-full object-cover" />
           </div>
-        </Link>
-      ))}
-    </div>
-  )
+        ) : (
+          <div className="flex h-52 items-center justify-center bg-gradient-to-br from-brand-blue/20 to-brand-teal/20 text-5xl">
+            👤
+          </div>
+        )}
+        <div className="space-y-1 p-5">
+          <h2 className="text-lg font-semibold text-brand-navy">{member.name}</h2>
+          <p className="text-sm font-medium text-brand-red">{member.title}</p>
+          {member.specialization && (
+            <p className="text-xs text-brand-slate">{member.specialization}</p>
+          )}
+        </div>
+      </Link>
+    ))}
+  </div>
+)
 
 export default function TeamPage() {
   return (
@@ -52,9 +37,11 @@ export default function TeamPage() {
       <div className="container mx-auto px-4">
         <header className="mx-auto max-w-4xl rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
           <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Náš tým</p>
-          <h1 className="mt-4 text-4xl font-semibold text-brand-navy">{doctors.length + nurses.length + research.length} odborníků připravených řešit váš případ</h1>
+          <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
+            {staffMembers.length} odborníků připravených řešit váš případ
+          </h1>
           <p className="mt-4 text-base text-brand-slate">
-            {`${doctors.length} lékařů, ${nurses.length} zkušené sestry a ${research.length} členové Clinical Research Department – všichni s praxí z předních kardiologických center.`}
+            {`${doctors.length} lékařů, ${nurses.length} zkušené sestry a ${researches.length} členové Clinical Research Department – všichni s praxí z předních kardiologických center.`}
           </p>
         </header>
 
@@ -68,7 +55,9 @@ export default function TeamPage() {
               <section className="space-y-6">
                 <div className="flex flex-col gap-2 text-center">
                   <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Lékaři</p>
-                  <h2 className="text-2xl font-semibold text-brand-navy">Kardiologie, arytmologie a výzkum</h2>
+                  <h2 className="text-2xl font-semibold text-brand-navy">
+                    Kardiologie, arytmologie a výzkum
+                  </h2>
                 </div>
                 {renderStaffGrid(doctors)}
               </section>
@@ -77,20 +66,28 @@ export default function TeamPage() {
             {nurses.length > 0 && (
               <section className="space-y-6">
                 <div className="flex flex-col gap-2 text-center">
-                  <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Zdravotní sestry</p>
-                  <h2 className="text-2xl font-semibold text-brand-navy">Koordinace péče a edukace</h2>
+                  <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
+                    Zdravotní sestry
+                  </p>
+                  <h2 className="text-2xl font-semibold text-brand-navy">
+                    Koordinace péče a edukace
+                  </h2>
                 </div>
                 {renderStaffGrid(nurses)}
               </section>
             )}
 
-            {research.length > 0 && (
+            {researches.length > 0 && (
               <section className="space-y-6">
                 <div className="flex flex-col gap-2 text-center">
-                  <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Clinical Research Department</p>
-                  <h2 className="text-2xl font-semibold text-brand-navy">Klinické studie a inovace</h2>
+                  <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
+                    Clinical Research Department
+                  </p>
+                  <h2 className="text-2xl font-semibold text-brand-navy">
+                    Klinické studie a inovace
+                  </h2>
                 </div>
-                {renderStaffGrid(research)}
+                {renderStaffGrid(researches)}
               </section>
             )}
           </div>

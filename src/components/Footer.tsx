@@ -58,7 +58,10 @@ export default function Footer() {
               </div>
               <div>
                 <p className="text-white font-medium">Email</p>
-                <a className="hover:text-brand-teal transition" href="mailto:kardiologie.brandys@seznam.cz">
+                <a
+                  className="hover:text-brand-teal transition"
+                  href="mailto:kardiologie.brandys@seznam.cz"
+                >
                   kardiologie.brandys@seznam.cz
                 </a>
               </div>
@@ -70,7 +73,10 @@ export default function Footer() {
             <dl className="space-y-3 text-sm text-gray-300 text-right">
               <div className="flex justify-between gap-3">
                 <dt className="text-white">Pondělí</dt>
-                <dd>7:00–17:00 <span className="text-xs text-gray-400 block">Arytmologie 17:00–19:30</span></dd>
+                <dd>
+                  7:00–17:00{' '}
+                  <span className="text-xs text-gray-400 block">Arytmologie 17:00–19:30</span>
+                </dd>
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-white">Úterý</dt>
@@ -82,7 +88,9 @@ export default function Footer() {
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-white">Čtvrtek</dt>
-                <dd>8:00–15:00 <span className="text-xs text-gray-400 block">Sportovci od 15:30</span></dd>
+                <dd>
+                  8:00–15:00 <span className="text-xs text-gray-400 block">Sportovci od 15:30</span>
+                </dd>
               </div>
               <div className="flex justify-between gap-3">
                 <dt className="text-white">Pátek</dt>
@@ -98,7 +106,9 @@ export default function Footer() {
               <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
                 Potřebujete termín?
               </p>
-              <h4 className="text-xl font-semibold mt-2">Napište nám, odpovídáme do 1 pracovního dne</h4>
+              <h4 className="text-xl font-semibold mt-2">
+                Napište nám, odpovídáme do 1 pracovního dne
+              </h4>
             </div>
             <Link
               href="/kontakt"
@@ -111,7 +121,9 @@ export default function Footer() {
 
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Kardiologie Brandýs nad Labem</p>
-          <p>MEDICUS SERVICES s.r.o. • IČO 47547898 • Městský soud v Praze, oddíl C, vložka 20327</p>
+          <p>
+            MEDICUS SERVICES s.r.o. • IČO 47547898 • Městský soud v Praze, oddíl C, vložka 20327
+          </p>
           <nav className="flex flex-wrap gap-4 text-gray-400">
             {navigation.map((item) => (
               <Link key={item.href} href={item.href} className="hover:text-brand-teal transition">

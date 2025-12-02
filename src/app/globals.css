@@ -16,7 +16,13 @@ body {
     radial-gradient(circle at 80% 0%, rgba(244, 63, 94, 0.15), transparent 40%),
     linear-gradient(180deg, #fbfdff 0%, #f1f4fb 100%);
   min-height: 100vh;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 

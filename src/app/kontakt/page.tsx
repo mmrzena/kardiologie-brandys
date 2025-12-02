@@ -44,9 +44,12 @@ export default function ContactPage() {
         <div className="mx-auto max-w-5xl space-y-12">
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Kontakt</p>
-            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Jsme k dispozici každý pracovní den</h1>
+            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
+              Jsme k dispozici každý pracovní den
+            </h1>
             <p className="mt-4 text-base text-brand-slate">
-              Zavolejte nám na +420 326 396 790 nebo +420 604 415 479. Odpovídáme na zprávy do 1 pracovního dne.
+              Zavolejte nám na +420 326 396 790 nebo +420 604 415 479. Odpovídáme na zprávy do 1
+              pracovního dne.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold text-brand-navy">
               <span className="rounded-full bg-brand-gray/80 px-4 py-1">Bezpečné prostředí</span>
@@ -66,19 +69,28 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-brand-navy">Telefon – objednávky</p>
-                    <a href="tel:+420326396790" className="text-brand-navy hover:text-brand-red transition">
+                    <a
+                      href="tel:+420326396790"
+                      className="text-brand-navy hover:text-brand-red transition"
+                    >
                       +420 326 396 790
                     </a>
                   </div>
                   <div>
                     <p className="font-semibold text-brand-navy">Mobil</p>
-                    <a href="tel:+420604415479" className="text-brand-navy hover:text-brand-red transition">
+                    <a
+                      href="tel:+420604415479"
+                      className="text-brand-navy hover:text-brand-red transition"
+                    >
                       +420 604 415 479
                     </a>
                   </div>
                   <div>
                     <p className="font-semibold text-brand-navy">Email</p>
-                    <a href="mailto:kardiologie.brandys@seznam.cz" className="text-brand-navy hover:text-brand-red transition">
+                    <a
+                      href="mailto:kardiologie.brandys@seznam.cz"
+                      className="text-brand-navy hover:text-brand-red transition"
+                    >
                       kardiologie.brandys@seznam.cz
                     </a>
                   </div>
@@ -97,7 +109,10 @@ export default function ContactPage() {
                 <h2 className="text-2xl font-semibold text-brand-navy">Ordinační hodiny</h2>
                 <div className="mt-4 space-y-3">
                   {openingHours.map((item) => (
-                    <div key={item.day} className="rounded-2xl border border-brand-gray/60 px-4 py-3 text-sm">
+                    <div
+                      key={item.day}
+                      className="rounded-2xl border border-brand-gray/60 px-4 py-3 text-sm"
+                    >
                       <p className="font-semibold text-brand-navy">{item.day}</p>
                       <p className="text-brand-slate">{item.hours}</p>
                       {item.note && <p className="text-xs text-brand-slate">{item.note}</p>}
@@ -121,7 +136,9 @@ export default function ContactPage() {
 
               {mutation.error && (
                 <div className="mt-6 rounded-2xl border border-brand-red bg-red-50 p-4 text-sm text-brand-red">
-                  {mutation.error instanceof Error ? mutation.error.message : 'Nastala chyba při odesílání zprávy.'}
+                  {mutation.error instanceof Error
+                    ? mutation.error.message
+                    : 'Nastala chyba při odesílání zprávy.'}
                 </div>
               )}
 

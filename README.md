@@ -61,6 +61,7 @@ EMAIL_TO=doctor@kardiologiebrandys.cz
 ```
 
 **Gmail Setup:**
+
 - Use Gmail App Password (not your regular password)
 - Generate at: https://myaccount.google.com/apppasswords
 
@@ -155,6 +156,7 @@ The project uses two tables:
 ## Support
 
 For issues or questions, refer to:
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Supabase Documentation](https://supabase.com/docs)
 - [Vercel Documentation](https://vercel.com/docs)

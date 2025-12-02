@@ -18,17 +18,14 @@ export default function InsuranceLogos({
   showDescription,
   showLink,
 }: Props) {
-  const containerClasses = className
-    ? `${baseContainer} ${className}`
-    : baseContainer
+  const containerClasses = className ? `${baseContainer} ${className}` : baseContainer
 
   const cardClasses =
     variant === 'dark'
       ? 'border-white/20 bg-white/5 text-white'
       : 'border-brand-gray bg-white text-brand-navy'
 
-  const subTextClass =
-    variant === 'dark' ? 'text-white/70' : 'text-[#43484d]'
+  const subTextClass = variant === 'dark' ? 'text-white/70' : 'text-[#43484d]'
 
   return (
     <div className={containerClasses}>
@@ -47,14 +44,9 @@ export default function InsuranceLogos({
               {!compact ? (
                 <div className="text-sm">
                   <p className="font-semibold">
-                    {insurer.name}{' '}
-                    <span className="font-normal text-sm">
-                      ({insurer.code})
-                    </span>
+                    {insurer.name} <span className="font-normal text-sm">({insurer.code})</span>
                   </p>
-                  {showDescription && (
-                    <p className={subTextClass}>{insurer.description}</p>
-                  )}
+                  {showDescription && <p className={subTextClass}>{insurer.description}</p>}
                 </div>
               ) : (
                 <span className="sr-only">
@@ -68,10 +60,7 @@ export default function InsuranceLogos({
                   variant === 'dark' ? 'text-white/80' : 'text-brand-slate'
                 }`}
               >
-                Program{' '}
-                <span className="text-brand-red">
-                  více
-                </span>
+                Program <span className="text-brand-red">více</span>
               </span>
             )}
           </>

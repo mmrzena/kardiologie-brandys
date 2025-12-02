@@ -23,7 +23,12 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="group flex flex-col">
-            <Image src={'/logo_KardiologieBrandys.png'} alt="Kardiologie Brandýs" width={120} height={60} />
+            <Image
+              src={'/logo_KardiologieBrandys.png'}
+              alt="Kardiologie Brandýs"
+              width={120}
+              height={60}
+            />
           </Link>
 
           {/* Desktop menu */}
@@ -36,9 +41,7 @@ export default function Navigation() {
                   key={link.href}
                   href={link.href}
                   className={`relative px-3 py-2 text-sm font-medium transition ${
-                    isActive
-                      ? 'text-brand-navy'
-                      : 'text-brand-slate hover:text-brand-navy'
+                    isActive ? 'text-brand-navy' : 'text-brand-slate hover:text-brand-navy'
                   }`}
                 >
                   {isActive && (
@@ -73,12 +76,7 @@ export default function Navigation() {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -87,12 +85,7 @@ export default function Navigation() {
                 />
               </svg>
             ) : (
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

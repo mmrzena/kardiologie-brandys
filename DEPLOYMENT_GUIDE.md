@@ -5,11 +5,13 @@ Step-by-step guide to deploy your cardiology website.
 ## Step 1: Set Up Supabase (Database)
 
 ### 1.1 Create Supabase Account
+
 1. Go to https://supabase.com
 2. Click "Start your project"
 3. Sign up with GitHub or email
 
 ### 1.2 Create New Project
+
 1. Click "New Project"
 2. Choose organization (or create new)
 3. Enter project details:
@@ -20,6 +22,7 @@ Step-by-step guide to deploy your cardiology website.
 5. Wait 2-3 minutes for setup
 
 ### 1.3 Run Database Schema
+
 1. In your Supabase dashboard, click "SQL Editor" (left sidebar)
 2. Click "New Query"
 3. Copy entire content from `supabase-schema.sql`
@@ -28,6 +31,7 @@ Step-by-step guide to deploy your cardiology website.
 6. You should see: "Success. No rows returned"
 
 ### 1.4 Get API Credentials
+
 1. Click "Settings" (left sidebar)
 2. Click "API"
 3. Copy these values:
@@ -37,10 +41,12 @@ Step-by-step guide to deploy your cardiology website.
 ## Step 2: Set Up Email (Gmail)
 
 ### 2.1 Enable 2-Step Verification
+
 1. Go to https://myaccount.google.com/security
 2. Enable "2-Step Verification" if not already enabled
 
 ### 2.2 Create App Password
+
 1. Go to https://myaccount.google.com/apppasswords
 2. Select app: "Mail"
 3. Select device: "Other" → type "Kardiologie Website"
@@ -50,11 +56,13 @@ Step-by-step guide to deploy your cardiology website.
 ## Step 3: Set Up Vercel (Hosting)
 
 ### 3.1 Create Vercel Account
+
 1. Go to https://vercel.com
 2. Click "Sign Up"
 3. Sign up with GitHub (recommended)
 
 ### 3.2 Push Code to GitHub (if not done)
+
 ```bash
 # Initialize git (if not already)
 git init
@@ -70,6 +78,7 @@ gh repo create kardiologie-brandys --public --source=. --remote=origin --push
 ```
 
 ### 3.3 Deploy to Vercel
+
 1. Go to https://vercel.com/dashboard
 2. Click "Add New..." → "Project"
 3. Import your GitHub repository
@@ -79,6 +88,7 @@ gh repo create kardiologie-brandys --public --source=. --remote=origin --push
 **Wait! Before clicking deploy, add environment variables:**
 
 ### 3.4 Add Environment Variables
+
 1. Expand "Environment Variables" section
 2. Add these variables:
 
@@ -96,7 +106,9 @@ EMAIL_TO = [doctor's email address]
 4. Wait 2-3 minutes for deployment
 
 ### 3.5 Get Your URL
+
 After deployment completes:
+
 1. You'll see: "Congratulations! Your project has been deployed"
 2. Your URL: `https://kardiologie-brandys.vercel.app` (or similar)
 3. Click the URL to view your site!
@@ -104,6 +116,7 @@ After deployment completes:
 ## Step 4: Test Everything
 
 ### 4.1 Test Staff Directory
+
 1. Go to your Supabase dashboard
 2. Click "Table Editor" → "staff"
 3. Add a test staff member
@@ -111,6 +124,7 @@ After deployment completes:
 5. You should see the staff member
 
 ### 4.2 Test Contact Form
+
 1. Visit `your-url.vercel.app/kontakt`
 2. Fill out and submit the form
 3. Check:
@@ -120,6 +134,7 @@ After deployment completes:
 ## Step 5: Connect Your Domain
 
 ### Option A: Point Existing Domain to Vercel
+
 1. In Vercel dashboard, click your project
 2. Click "Settings" → "Domains"
 3. Add your domain: `kardiologiebrandys.cz`
@@ -129,27 +144,32 @@ After deployment completes:
    - `CNAME` record: `www` → `cname.vercel-dns.com`
 
 ### Option B: Transfer Domain to Vercel
+
 1. Transfer domain management to Vercel
 2. Easier but requires domain transfer
 
 ## Troubleshooting
 
 ### Environment Variables Not Working
+
 - Check they're added in Vercel dashboard
 - Redeploy after adding variables
 - Make sure no typos in variable names
 
 ### Contact Form Not Sending Email
+
 - Verify Gmail App Password is correct
 - Check email in Vercel logs: Dashboard → Deployments → [latest] → Functions
 - Make sure 2-Step Verification is enabled
 
 ### Database Connection Issues
+
 - Verify Supabase URL and key are correct
 - Check Supabase project is not paused (free tier pauses after inactivity)
 - Check RLS policies are created (run schema.sql again)
 
 ### Site Not Loading
+
 - Check deployment status in Vercel
 - Check build logs for errors
 - Verify all environment variables are set

@@ -40,13 +40,13 @@ export const insurers: Insurer[] = [
     code: '209',
     logo: '/logos/zps.jpg',
     description: 'Zdravotní pojišťovna Škoda',
-    link: 'https://www.zpskoda.cz/pro-pojistence/zdravotni-programy-2019/balicky-pro-deti-darce-krve-a-seniory',
+    link: 'https://www.zpskoda.cz/zdravotni-programy',
   },
   {
     name: 'ZPMV',
     code: '211',
     logo: '/logos/zpmv.jpg',
     description: 'Zdravotní pojišťovna MV ČR',
-    link: 'https://www.zpmvcr.cz/pojistenci/vyhody-pro-pojistence/fond-prevence-2019/prevence-civilizacnich-onemocneni/',
+    link: 'https://www.zpmvcr.cz/pojistenci/prispevky-z-fondu-prevence',
   },
 ]

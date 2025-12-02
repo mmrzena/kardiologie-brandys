@@ -22,10 +22,12 @@ Server will run at: **http://localhost:3000**
 ### 2. Test All Features
 
 #### Test Homepage
+
 1. Visit: http://localhost:3000
 2. Check: Navigation, hero section, services, links work
 
 #### Test Staff Directory
+
 1. Visit: http://localhost:3000/team
 2. You should see **3 sample doctors**:
    - MUDr. Jan Novák
@@ -34,11 +36,13 @@ Server will run at: **http://localhost:3000**
 3. Click on any doctor to see their detail page
 
 #### Test Staff Detail Page
+
 1. Visit: http://localhost:3000/team/1
 2. Should show Dr. Novák's full profile
 3. Try: http://localhost:3000/team/2 and http://localhost:3000/team/3
 
 #### Test Contact Form
+
 1. Visit: http://localhost:3000/contact
 2. Fill out the form:
    - Name: Test User
@@ -67,6 +71,7 @@ This is a test message
 6. ✅ Check: `/data/contact_messages.json` - your message is saved!
 
 #### Test Other Pages
+
 - Visit: http://localhost:3000/about
 - Visit: http://localhost:3000/services
 
@@ -75,6 +80,7 @@ This is a test message
 Your local data is stored in JSON files:
 
 ### Staff Database
+
 File: `/data/staff.json`
 
 ```json
@@ -89,6 +95,7 @@ File: `/data/staff.json`
 ```
 
 ### Contact Messages
+
 File: `/data/contact_messages.json`
 
 - Initially empty `[]`
@@ -137,12 +144,14 @@ git checkout data/staff.json
 ## 🔄 How It Works
 
 ### Development Mode (Now)
+
 - No Supabase credentials needed
 - Uses JSON files in `/data` folder
 - Emails log to console
 - Perfect for testing
 
 ### Production Mode (After Deployment)
+
 - Uses real Supabase database
 - Sends actual emails
 - Auto-switches when you add credentials
@@ -150,17 +159,20 @@ git checkout data/staff.json
 ## 🐛 Troubleshooting
 
 ### "Cannot find module '@/lib/mockDb'"
+
 ```bash
 # Restart the dev server
 npm run dev
 ```
 
 ### Staff Not Showing
+
 1. Check `/data/staff.json` exists
 2. Verify JSON is valid
 3. Check browser console for errors
 
 ### Contact Form Error
+
 1. Check `/data/contact_messages.json` is writable
 2. Look at terminal for error messages
 3. Verify JSON syntax in data files

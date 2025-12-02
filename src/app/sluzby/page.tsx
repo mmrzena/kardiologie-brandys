@@ -16,14 +16,12 @@ export default function ServicesPage() {
     },
     {
       title: 'Echokardiografie',
-      description:
-        'Ultrazvukové posouzení komor, chlopní a velkých tepen včetně jícnové varianty.',
+      description: 'Ultrazvukové posouzení komor, chlopní a velkých tepen včetně jícnové varianty.',
       icon: '🫀',
     },
     {
       title: 'Zátěžové testy',
-      description:
-        'Ergometrie a zátěžové echo pro odhalení ischemie a posouzení výkonnosti srdce.',
+      description: 'Ergometrie a zátěžové echo pro odhalení ischemie a posouzení výkonnosti srdce.',
       icon: '🚴',
     },
     {
@@ -46,13 +44,13 @@ export default function ServicesPage() {
     },
     {
       title: 'Vyšetření sportovců',
-      description:
-        'Screening náhlé smrti, komplexní balíčky se zaměřením na výkon a regeneraci.',
+      description: 'Screening náhlé smrti, komplexní balíčky se zaměřením na výkon a regeneraci.',
       icon: '🏃',
     },
     {
       title: 'Spánkový screening',
-      description: 'Odhalujeme poruchy dýchání ve spánku a jejich dopad na kardiovaskulární systém.',
+      description:
+        'Odhalujeme poruchy dýchání ve spánku a jejich dopad na kardiovaskulární systém.',
       icon: '😴',
     },
     {
@@ -93,9 +91,12 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-6xl space-y-12">
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl text-center">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Naše služby</p>
-            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Komplexní kardiologická péče</h1>
+            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
+              Komplexní kardiologická péče
+            </h1>
             <p className="mt-4 text-base text-brand-slate">
-              Kombinujeme vyšetření, konzultace a dlouhodobou péči podle standardů moderních kardiocenter.
+              Kombinujeme vyšetření, konzultace a dlouhodobou péči podle standardů moderních
+              kardiocenter.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold text-brand-navy">
               <span className="rounded-full bg-brand-gray/80 px-4 py-1">Diagnostika</span>
@@ -113,7 +114,9 @@ export default function ServicesPage() {
               >
                 <div className="text-4xl">{service.icon}</div>
                 <h2 className="mt-4 text-2xl font-semibold text-brand-navy">{service.title}</h2>
-                <p className="mt-2 text-sm text-brand-slate leading-relaxed">{service.description}</p>
+                <p className="mt-2 text-sm text-brand-slate leading-relaxed">
+                  {service.description}
+                </p>
               </div>
             ))}
           </section>
@@ -121,13 +124,20 @@ export default function ServicesPage() {
           <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue to-brand-blue-dark p-10 text-white shadow-2xl">
             <h2 className="text-3xl font-semibold">Potřebujete poradit s výběrem vyšetření?</h2>
             <p className="mt-3 text-white/80">
-              Zavolejte, nebo nám napište – připravíme balíček vyšetření během jednoho pracovního dne.
+              Zavolejte, nebo nám napište – připravíme balíček vyšetření během jednoho pracovního
+              dne.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
-              <Link href="/kontakt" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg">
+              <Link
+                href="/kontakt"
+                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg"
+              >
                 Kontaktujte nás
               </Link>
-              <Link href="/cenik" className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white">
+              <Link
+                href="/cenik"
+                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white"
+              >
                 Zobrazit ceník
               </Link>
             </div>

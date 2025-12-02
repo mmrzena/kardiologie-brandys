@@ -79,30 +79,18 @@ ${validatedData.message}
         })
       } catch (emailError) {
         console.error('Email error:', emailError)
-        return NextResponse.json(
-          { error: 'Nepodařilo se odeslat email' },
-          { status: 500 }
-        )
+        return NextResponse.json({ error: 'Nepodařilo se odeslat email' }, { status: 500 })
       }
     }
 
-    return NextResponse.json(
-      { message: 'Zpráva byla úspěšně odeslána' },
-      { status: 200 }
-    )
+    return NextResponse.json({ message: 'Zpráva byla úspěšně odeslána' }, { status: 200 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const message = error.errors.map(err => err.message).join('; ')
-      return NextResponse.json(
-        { error: message, details: error.issues },
-        { status: 400 }
-      )
+      const message = error.errors.map((err) => err.message).join('; ')
+      return NextResponse.json({ error: message, details: error.issues }, { status: 400 })
     }
 
     console.error('Unexpected error:', error)
-    return NextResponse.json(
-      { error: 'Nastala chyba při zpracování požadavku' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Nastala chyba při zpracování požadavku' }, { status: 500 })
   }
 }

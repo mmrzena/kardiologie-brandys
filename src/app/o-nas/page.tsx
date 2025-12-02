@@ -1,18 +1,5 @@
+import { doctors, nurses, researches } from '@/data/staff'
 import { insurers } from '@/lib/insurers'
-
-const doctors = [
-  'MUDr. Jiří Krupička, Ph.D. – zakladatel',
-  'MUDr. Pavel Franc – kardiolog, internista',
-  'MUDr. Robin Králík – kardiolog, internista',
-  'prof. MUDr. Pavel Osmančík, Ph.D. – arytmolog',
-  'MUDr. Tereza Benešová – kardioložka',
-  'MUDr. Petra Srbová – kardioložka, internistka',
-  'MUDr. Markéta Hodboďová – kardioložka',
-  'MUDr. Tomáš Budek – klinický výzkum',
-]
-
-const nurses = ['Klára Bernardová – staniční sestra', 'Petra Livorová', 'Tereza Režná']
-const research = ['Jana Budková', 'Stanislava Podzimková', 'Ing. Hedvika Tůmová']
 
 export default function AboutPage() {
   return (
@@ -21,20 +8,25 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl space-y-12">
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">O ambulanci</p>
-            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Profesionální péče od roku 2009</h1>
+            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
+              Profesionální péče od roku 2009
+            </h1>
             <p className="mt-6 text-lg text-brand-slate">
-              Soukromá ambulance MUDr. Jiřího Krupičky poskytuje komplexní kardiologický servis
-              od ambulantních diagnostických vyšetření až po specializovanou arytmologii.
-              Sídlíme na adrese Nádražní 1317/5 v Brandýse nad Labem a dlouhodobě spolupracujeme
-              s předními českými pracovišti.
+              Soukromá ambulance MUDr. Jiřího Krupičky poskytuje komplexní kardiologický servis od
+              ambulantních diagnostických vyšetření až po specializovanou arytmologii. Sídlíme na
+              adrese Nádražní 1317/5 v Brandýse nad Labem a dlouhodobě spolupracujeme s předními
+              českými pracovišti.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
                 [doctors.length, 'lékařů'],
                 [nurses.length, 'zdravotní sestry'],
-                [research.length, 'Clinical Research'],
+                [researches.length, 'Clinical Research'],
               ].map(([value, label]) => (
-                <div key={label} className="rounded-2xl border border-brand-gray bg-brand-gray/70 p-4 text-center">
+                <div
+                  key={label}
+                  className="rounded-2xl border border-brand-gray bg-brand-gray/70 p-4 text-center"
+                >
                   <p className="text-3xl font-semibold text-brand-navy">{value}</p>
                   <p className="text-sm text-brand-slate">{label}</p>
                 </div>
@@ -46,30 +38,33 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl font-semibold text-brand-navy">Náš tým</h2>
               <p className="mt-2 text-sm text-brand-slate">
-                Tvoří jej {doctors.length + nurses.length + research.length} odborníků: lékaři s praxí na fakultních klinikách, zkušené sestry a Clinical Research Department.
+                Tvoří jej {doctors.length + nurses.length + researches.length} odborníků: lékaři s
+                praxí na fakultních klinikách, zkušené sestry a Clinical Research Department.
               </p>
               <div className="mt-6 space-y-4">
                 <div>
                   <p className="text-sm font-semibold text-brand-navy">Lékaři</p>
                   <ul className="mt-2 space-y-1 text-sm text-brand-slate">
-                    {doctors.map((name) => (
-                      <li key={name}>• {name}</li>
+                    {doctors.map(({ name, id }) => (
+                      <li key={id}>• {name}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-brand-navy">Zdravotní sestry</p>
                   <ul className="mt-2 space-y-1 text-sm text-brand-slate">
-                    {nurses.map((name) => (
-                      <li key={name}>• {name}</li>
+                    {nurses.map(({ name, id }) => (
+                      <li key={id}>• {name}</li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-brand-navy">Clinical Research Department</p>
+                  <p className="text-sm font-semibold text-brand-navy">
+                    Clinical Research Department
+                  </p>
                   <ul className="mt-2 space-y-1 text-sm text-brand-slate">
-                    {research.map((name) => (
-                      <li key={name}>• {name}</li>
+                    {researches.map(({ name, id }) => (
+                      <li key={id}>• {name}</li>
                     ))}
                   </ul>
                 </div>
@@ -99,9 +94,9 @@ export default function AboutPage() {
               <h2 className="text-2xl font-semibold text-brand-navy">Historie</h2>
               <p className="mt-4 text-sm text-brand-slate leading-relaxed">
                 Ambulance vznikla v roce 2009. MUDr. Jiří Krupička, Ph.D. navázal na své zkušenosti
-                z Fakultní nemocnice Královské Vinohrady a Nemocnice Na Homolce.
-                Díky postupnému rozšiřování týmu poskytujeme nejen klasickou ambulantní péči,
-                ale i specializované arytmologické programy a klinický výzkum.
+                z Fakultní nemocnice Královské Vinohrady a Nemocnice Na Homolce. Díky postupnému
+                rozšiřování týmu poskytujeme nejen klasickou ambulantní péči, ale i specializované
+                arytmologické programy a klinický výzkum.
               </p>
             </div>
             <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
