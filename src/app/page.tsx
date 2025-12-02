@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
+import { announcements } from '@/data/announcements'
 import { doctors, nurses } from '@/data/staff'
 import { insurers } from '@/lib/insurers'
 
@@ -62,6 +63,18 @@ const highlights = [
 ]
 
 export default function Home() {
+  const now = new Date()
+  const dateFormatter = new Intl.DateTimeFormat('cs-CZ', {
+    day: 'numeric',
+    month: 'long',
+  })
+  const formatDate = (value: string) => dateFormatter.format(new Date(value))
+  const activeAnnouncements = announcements.filter((announcement) => {
+    const start = new Date(announcement.startDate)
+    const end = new Date(announcement.endDate)
+    return now >= start && now <= end
+  })
+
   return (
     <main className="min-h-screen">
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-navy via-brand-blue-dark to-brand-navy text-white">
@@ -161,6 +174,37 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {activeAnnouncements.length > 0 && (
+        <section className="bg-brand-red/5 border-y border-brand-red/10 py-6">
+          <div className="container mx-auto flex flex-col gap-4 px-4">
+            {activeAnnouncements.map((announcement) => (
+              <div
+                key={`${announcement.title}-${announcement.startDate}`}
+                className="flex flex-col items-start gap-3 rounded-2xl border border-brand-red/20 bg-white px-6 py-4 text-brand-navy shadow-lg shadow-brand-red/10 md:flex-row md:items-center md:justify-between"
+              >
+                <div>
+                  <p className="text-xs uppercase tracking-[0.4em] text-brand-red">Aktuálně</p>
+                  <p className="mt-2 text-lg font-semibold">{announcement.title}</p>
+                  <p className="text-sm text-brand-slate">{announcement.message}</p>
+                  <p className="mt-2 text-xs text-brand-slate/80">
+                    Platí od {formatDate(announcement.startDate)} do {formatDate(announcement.endDate)}.
+                  </p>
+                </div>
+                {announcement.link ? (
+                  <Link
+                    href={announcement.link}
+                    className="inline-flex items-center gap-2 rounded-full border border-brand-red/30 px-4 py-2 text-sm font-semibold text-brand-red"
+                  >
+                    {announcement.linkLabel ?? 'Více informací'}
+                    <span aria-hidden>↗</span>
+                  </Link>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="py-16">
         <div className="container mx-auto px-4">

@@ -1,89 +1,18 @@
+'use client'
+
 import Link from 'next/link'
+import { useState } from 'react'
+
+import { serviceCategories, services } from '@/data/services'
 
 export default function ServicesPage() {
-  const services = [
-    {
-      title: 'Kardiologické vyšetření',
-      description:
-        'Komplexní vyšetření včetně EKG a echokardiografie, posouzení rizik a jasný plán terapie.',
-      icon: '🩺',
-    },
-    {
-      title: 'EKG',
-      description:
-        'Digitální záznam elektrické aktivity srdce s rychlým popisem lékaře, možnost sdílení dat.',
-      icon: '📊',
-    },
-    {
-      title: 'Echokardiografie',
-      description: 'Ultrazvukové posouzení komor, chlopní a velkých tepen včetně jícnové varianty.',
-      icon: '🫀',
-    },
-    {
-      title: 'Zátěžové testy',
-      description: 'Ergometrie a zátěžové echo pro odhalení ischemie a posouzení výkonnosti srdce.',
-      icon: '🚴',
-    },
-    {
-      title: 'EKG Holter',
-      description:
-        '24–96 hodin záznamu rytmu. V případě potřeby zapůjčení okamžitého EKG záznamníku domů.',
-      icon: '⏱️',
-    },
-    {
-      title: 'ABPM',
-      description:
-        '24hodinová monitorace krevního tlaku (ABPM) pro přesnou diagnostiku hypertenze.',
-      icon: '📈',
-    },
-    {
-      title: 'Arytmologie',
-      description:
-        'Poruchy rytmu řešíme s prof. MUDr. Pavlem Osmančíkem, Ph.D. Kontroly stimulátorů každé pondělí večer.',
-      icon: '⚡',
-    },
-    {
-      title: 'Vyšetření sportovců',
-      description: 'Screening náhlé smrti, komplexní balíčky se zaměřením na výkon a regeneraci.',
-      icon: '🏃',
-    },
-    {
-      title: 'Spánkový screening',
-      description:
-        'Odhalujeme poruchy dýchání ve spánku a jejich dopad na kardiovaskulární systém.',
-      icon: '😴',
-    },
-    {
-      title: 'Vnitřní lékařství',
-      description: 'Předoperační interní vyšetření a péče pro vybrané zdravotní pojišťovny.',
-      icon: '💊',
-    },
-    {
-      title: 'Dispenzarizace',
-      description: 'Dlouhodobé sledování pacientů s kardiovaskulárními onemocněními.',
-      icon: '📋',
-    },
-    {
-      title: 'Klinické studie',
-      description: 'Zapojení do studií s novými terapiemi a zdravotnickými technologiemi.',
-      icon: '🔬',
-    },
-    {
-      title: 'Sonografie karotid',
-      description: 'Ultrazvuk krčních tepen pro diagnostiku aterosklerózy a rizika CMP.',
-      icon: '🔍',
-    },
-    {
-      title: 'DUS dolních končetin',
-      description: 'Duplexní ultrasonografie žil i tepen dolních končetin.',
-      icon: '🦵',
-    },
-    {
-      title: 'Laboratoř (POCT)',
-      description: 'INR, troponin, D-dimer, NT-proBNP – výsledky v řádu minut.',
-      icon: '🧪',
-    },
-  ]
+  const [activeCategory, setActiveCategory] = useState<(typeof serviceCategories)[number] | null>(
+    null
+  )
+
+  const filteredServices = activeCategory
+    ? services.filter((service) => service.categories.includes(activeCategory))
+    : services
 
   return (
     <main className="py-16">
@@ -99,25 +28,60 @@ export default function ServicesPage() {
               kardiocenter.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold text-brand-navy">
-              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Diagnostika</span>
-              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Arytmologie</span>
-              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Sport & prevence</span>
-              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Výzkum</span>
+              {serviceCategories.map((category) => {
+                const isActive = category === activeCategory
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => setActiveCategory(isActive ? null : category)}
+                    className={`rounded-full px-4 py-1 transition ${
+                      isActive
+                        ? 'bg-brand-navy text-white shadow-lg shadow-brand-navy/30'
+                        : 'bg-brand-gray/80 text-brand-navy hover:bg-brand-gray'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                )
+              })}
             </div>
           </section>
 
           <section className="grid gap-6 md:grid-cols-2">
-            {services.map((service) => (
-              <div
-                key={service.title}
-                className="rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60 transition hover:-translate-y-1"
+            {filteredServices.map((service) => (
+              <Link
+                key={service.slug}
+                href={`/sluzby/${service.slug}`}
+                className="flex h-full flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60 transition hover:-translate-y-1 hover:border-brand-navy"
               >
-                <div className="text-4xl">{service.icon}</div>
-                <h2 className="mt-4 text-2xl font-semibold text-brand-navy">{service.title}</h2>
-                <p className="mt-2 text-sm text-brand-slate leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
+                <div className="flex-1">
+                  <p className="text-xs uppercase tracking-[0.3em] text-brand-teal">
+                    {service.categories.join(' • ')}
+                  </p>
+                  <h2 className="mt-3 text-2xl font-semibold text-brand-navy">{service.title}</h2>
+                  <p className="mt-3 text-sm text-brand-slate leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+                <span className="mt-6 inline-flex items-center text-sm font-semibold text-brand-navy">
+                  Detail služby
+                  <svg
+                    className="ml-2 h-4 w-4"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 3l5 5-5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </Link>
             ))}
           </section>
 

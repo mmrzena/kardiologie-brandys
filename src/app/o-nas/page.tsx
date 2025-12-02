@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import AmbulanceSlideshow from '@/components/AmbulanceSlideshow'
 import { StaffMember, doctors, nurses, researches } from '@/data/staff'
-import { insurers } from '@/lib/insurers'
 
 const renderStaffGrid = (members: StaffMember[]) => (
   <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -217,49 +216,6 @@ export default function AboutPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </section>
-
-          <section className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold text-brand-navy">Pojišťovny</h2>
-              <p className="mt-2 text-sm text-brand-slate">
-                Vybraná vyšetření hradíme klientům těchto pojišťoven:
-              </p>
-              <div className="mt-4 flex flex-col gap-3">
-                {insurers.map((insurer) => (
-                  <a
-                    key={insurer.code}
-                    href={insurer.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-2xl border border-brand-gray/70 bg-brand-gray/40 px-4 py-3 text-sm transition hover:border-brand-red/50"
-                  >
-                    <div>
-                      <p className="font-semibold text-brand-navy">{insurer.name}</p>
-                      <p className="text-xs text-brand-slate">{insurer.description}</p>
-                    </div>
-                    <span className="text-xs font-semibold text-brand-slate">{insurer.code}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold text-brand-navy">Identifikační údaje</h2>
-              <dl className="mt-4 space-y-2 text-sm text-brand-slate">
-                <div>
-                  <dt className="font-semibold text-brand-navy">Provozovatel</dt>
-                  <dd>MEDICUS SERVICES s.r.o.</dd>
-                </div>
-                <div>
-                  <dt className="font-semibold text-brand-navy">IČO</dt>
-                  <dd>47547898</dd>
-                </div>
-                <div>
-                  <dt className="font-semibold text-brand-navy">Registrace</dt>
-                  <dd>Městský soud v Praze, oddíl C, vložka 20327</dd>
-                </div>
-              </dl>
             </div>
           </section>
         </div>

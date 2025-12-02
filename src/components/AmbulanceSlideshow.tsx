@@ -5,41 +5,49 @@ import { useState } from 'react'
 
 const slides = [
   {
+    id: 1,
     src: '/images/ambulance/KARDIO_AMBULANCE-02.jpg',
     title: 'Příjemné prostředí',
     description: 'Recepce a čekárna se zaměřením na klidné prostředí pro pacienty.',
   },
   {
+    id: 2,
     src: '/images/ambulance/KARDIO_AMBULANCE-04.jpg',
     title: 'Moderní klinika',
     description: 'Ordinace vybavená špičkovou technikou pro vyšetření srdce.',
   },
   {
-    src: '/images/ambulance/KARDIO_AMBULANCE-05.jpg',
+    id: 3,
+    src: '/images/ambulance/KARDIO_AMBULANCE-06.jpg',
     title: 'Základní laboratorní vyšetření',
     description: 'Možnost provedení základních laboratorních testů přímo na místě.',
   },
   {
+    id: 4,
     src: '/images/ambulance/KARDIO_AMBULANCE-07.jpg',
     title: 'Vysoce specializované echokardiografické vyšetření',
     description: 'Diagnostika s využitím nejnovějších echokardiografických metod.',
   },
   {
+    id: 5,
     src: '/images/ambulance/KARDIO_AMBULANCE-09.jpg',
     title: 'Sledování a léčba',
     description: 'Kontinuální monitoring pacientů a individuální léčebné plány.',
   },
   {
+    id: 6,
     src: '/images/ambulance/KARDIO_AMBULANCE-11.jpg',
     title: 'Zátěžové EKG',
     description: 'Laboratoř pro zátěžové EKG vyšetření s bezpečnostním dohledem.',
   },
   {
+    id: 7,
     src: '/images/ambulance/KARDIO_AMBULANCE-14.jpg',
     title: 'Klinické vyšetření',
     description: 'Kompletní klinické vyšetření v soukromí a s dostatkem času.',
   },
   {
+    id: 8,
     src: '/images/ambulance/KARDIO_AMBULANCE-17.jpg',
     title: 'Specializované služby',
     description: 'Zázemí pro vysoce specializované zákroky a konzultace.',
@@ -61,6 +69,7 @@ export default function AmbulanceSlideshow() {
       <div className="relative overflow-hidden rounded-[32px] border border-brand-gray bg-white/90 shadow-2xl">
         <div className="relative aspect-[4/3] w-full sm:aspect-[16/9]">
           <Image
+            key={currentSlide.id}
             src={currentSlide.src}
             alt={currentSlide.title}
             fill
@@ -97,7 +106,7 @@ export default function AmbulanceSlideshow() {
       <div className="flex flex-wrap justify-center gap-2">
         {slides.map((slide, index) => (
           <button
-            key={slide.src}
+            key={slide.id}
             type="button"
             onClick={() => goTo(index)}
             className={`h-2 flex-1 rounded-full transition sm:flex-none sm:w-8 ${
