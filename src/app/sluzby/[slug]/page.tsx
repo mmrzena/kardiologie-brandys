@@ -5,17 +5,18 @@ import type { Metadata } from 'next'
 import { services } from '@/data/services'
 
 type ServiceDetailProps = {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export function generateStaticParams() {
   return services.map((service) => ({ slug: service.slug }))
 }
 
-export function generateMetadata({ params }: ServiceDetailProps): Metadata {
-  const service = services.find((item) => item.slug === params.slug)
+export async function generateMetadata({ params }: ServiceDetailProps): Promise<Metadata> {
+  const { slug } = await params
+  const service = services.find((item) => item.slug === slug)
   if (!service) {
     return {
       title: 'Služba',
@@ -27,8 +28,9 @@ export function generateMetadata({ params }: ServiceDetailProps): Metadata {
   }
 }
 
-export default function ServiceDetailPage({ params }: ServiceDetailProps) {
-  const service = services.find((item) => item.slug === params.slug)
+export default async function ServiceDetailPage({ params }: ServiceDetailProps) {
+  const { slug } = await params
+  const service = services.find((item) => item.slug === slug)
 
   if (!service) {
     notFound()
