@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
 
-// Validation schema
 const contactSchema = z.object({
   name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
   email: z.string().email('Neplatná emailová adresa'),
   phone: z.string().optional().or(z.literal('')),
+  topic: z.string().min(2, 'Vyberte prosím typ požadavku'),
   message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
 })
 
@@ -15,11 +15,12 @@ function logEmail(validatedData: z.infer<typeof contactSchema>) {
   console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
   console.log('To:', process.env.EMAIL_TO || 'doctor@kardiologiebrandys.cz')
   console.log('Reply-To:', validatedData.email)
-  console.log('Subject:', `Nová zpráva z webu - ${validatedData.name}`)
+  console.log('Subject:', `(${validatedData.topic}) Nová zpráva z webu - ${validatedData.name}`)
   console.log('-----------------------------------------------------------')
   console.log('Jméno:', validatedData.name)
   console.log('Email:', validatedData.email)
   if (validatedData.phone) console.log('Telefon:', validatedData.phone)
+  console.log('Téma:', validatedData.topic)
   console.log('\nZpráva:')
   console.log(validatedData.message)
   console.log('===========================================================\n')
@@ -57,12 +58,13 @@ export async function POST(request: NextRequest) {
           from: process.env.EMAIL_USER,
           to: process.env.EMAIL_TO,
           replyTo: validatedData.email,
-          subject: `Nová zpráva z webu - ${validatedData.name}`,
+          subject: `(${validatedData.topic}) Nová zpráva z webu - ${validatedData.name}`,
           html: `
             <h2>Nová zpráva z kontaktního formuláře</h2>
             <p><strong>Jméno:</strong> ${validatedData.name}</p>
             <p><strong>Email:</strong> ${validatedData.email}</p>
             ${validatedData.phone ? `<p><strong>Telefon:</strong> ${validatedData.phone}</p>` : ''}
+            <p><strong>Téma:</strong> ${validatedData.topic}</p>
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
           `,
@@ -72,7 +74,7 @@ Nová zpráva z kontaktního formuláře
 Jméno: ${validatedData.name}
 Email: ${validatedData.email}
 ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
-
+Téma: ${validatedData.topic}
 Zpráva:
 ${validatedData.message}
           `,

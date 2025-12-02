@@ -1,7 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
+
+const TOPIC_OPTIONS = [
+  { value: 'Vyšetření', label: 'Vyšetření' },
+  { value: 'Poradna', label: 'Poradna' },
+  { value: 'Sportovci', label: 'Sportovci' },
+  { value: 'Recept', label: 'Žádost o recept' },
+] as const
+
+const normalizeTopicParam = (value: string | null) => {
+  if (!value) return null
+  const lowerValue = value.toLowerCase()
+  const match = TOPIC_OPTIONS.find((option) => option.value.toLowerCase() === lowerValue)
+  return match?.value ?? null
+}
 
 const openingHours = [
   { day: 'Pondělí', hours: '7:00–17:00', note: 'Arytmologie 17:00–19:30' },
@@ -12,22 +27,38 @@ const openingHours = [
 ]
 
 export default function ContactPage() {
+  const searchParams = useSearchParams()
+  const topicFromQuery = normalizeTopicParam(searchParams.get('topic'))
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    topic: 'Vyšetření',
+    topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
     message: '',
   })
+  const [appliedPrefill, setAppliedPrefill] = useState<string | null>(topicFromQuery ?? null)
 
   const mutation = useContactForm()
+
+  useEffect(() => {
+    if (topicFromQuery && topicFromQuery !== appliedPrefill) {
+      setFormData((prev) => ({ ...prev, topic: topicFromQuery }))
+      setAppliedPrefill(topicFromQuery)
+    }
+  }, [topicFromQuery, appliedPrefill])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
     mutation.mutate(formData, {
       onSuccess: () => {
-        setFormData({ name: '', email: '', phone: '', topic: 'Vyšetření', message: '' })
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
+          message: '',
+        })
       },
     })
   }
@@ -198,9 +229,11 @@ export default function ContactPage() {
                     onChange={handleChange}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   >
-                    <option value="Vyšetření">Vyšetření</option>
-                    <option value="Poradna">Poradna</option>
-                    <option value="Sportovci">Sportovci</option>
+                    {TOPIC_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
