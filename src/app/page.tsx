@@ -112,7 +112,7 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-6 rounded-2xl border border-white/20 bg-white/5 p-4">
-                <p className="text-xs uppercase tracking-[0.4em] text-white/60 mb-1">Hotline</p>
+                <p className="text-xs uppercase tracking-[0.4em] text-white/60 mb-1">Objednání</p>
                 <a href="tel:+420326396790" className="text-2xl font-semibold">
                   +420 326 396 790
                 </a>
