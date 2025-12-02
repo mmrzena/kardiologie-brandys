@@ -48,13 +48,6 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
                 <h1 className="text-3xl font-bold mb-2">{staff.name}</h1>
                 <p className="text-xl text-brand-red font-medium mb-4">{staff.title}</p>
 
-                {staff.specialization && (
-                  <div className="mb-4">
-                    <h2 className="font-semibold text-gray-700 mb-1">Specializace:</h2>
-                    <p className="text-gray-600">{staff.specialization}</p>
-                  </div>
-                )}
-
                 {staff.bio && (
                   <div className="mb-4">
                     <h2 className="font-semibold text-gray-700 mb-2">O mně:</h2>
