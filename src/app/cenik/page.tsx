@@ -175,7 +175,7 @@ export default function PricingPage() {
               Kontaktujte nás pro objednání termínu na telefonu +420 326 396 790
             </p>
             <a
-              href="/contact"
+              href="/kontakt"
               className="inline-block bg-brand-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-blue-dark transition"
             >
               Kontaktujte nás

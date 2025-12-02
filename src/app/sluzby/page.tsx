@@ -121,13 +121,13 @@ export default function ServicesPage() {
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <a
-                href="/contact"
+                href="/kontakt"
                 className="inline-block bg-brand-blue text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-blue-dark transition"
               >
                 Kontaktujte nás
               </a>
               <a
-                href="/pricing"
+                href="/cenik"
                 className="inline-block bg-white text-brand-red border-2 border-brand-red px-8 py-3 rounded-lg font-semibold hover:bg-brand-red hover:text-white transition"
               >
                 Zobrazit ceník
