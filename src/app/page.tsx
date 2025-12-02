@@ -1,30 +1,27 @@
 import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
+import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { announcements } from '@/data/announcements'
-import { doctors, nurses } from '@/data/staff'
+import { doctorArotmologists, doctors, nurses } from '@/data/staff'
 import { insurers } from '@/lib/insurers'
 
 const services = [
   {
     title: 'Komplexní diagnostika',
     description: 'Echokardiografie, ergometrie, Holter EKG i 24h monitorace tlaku v jednom zázemí.',
-    icon: '🩺',
   },
   {
     title: 'Arytmologie',
     description: 'Specializovaná poradna pod vedením prof. MUDr. Pavla Osmančíka, Ph.D.',
-    icon: '⚡',
   },
   {
     title: 'Sportovní kardiologie',
     description:
       'Preventivní balíčky pro vrcholové i amatérské sportovce, screening náhlých příhod.',
-    icon: '🏃‍♂️',
   },
   {
     title: 'Klinické studie',
     description: 'Možnost zapojení do klinických studií inovativních léčebných postupů.',
-    icon: '🔬',
   },
 ]
 
@@ -58,7 +55,7 @@ const highlights = [
   },
   {
     title: 'Multioborový tým',
-    detail: `${doctors.length} lékařů, ${nurses.length} sestry, Clinical Research Department`,
+    detail: `${doctors.length + doctorArotmologists.length} lékařů, ${nurses.length} sestry, Clinical Research Department`,
   },
 ]
 
@@ -84,16 +81,12 @@ export default function Home() {
         </div>
         <div className="container relative mx-auto grid items-center gap-16 px-4 py-24 md:grid-cols-2">
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/30 px-4 py-1 text-sm font-semibold tracking-wide">
-              <span className="text-brand-teal">Precizní péče</span>
-              <span className="text-white/70">Brandýs nad Labem</span>
-            </div>
             <div>
               <p className="text-sm uppercase tracking-[0.4em] text-brand-teal/80 mb-4">
                 Kardiologická ambulance
               </p>
               <h1 className="text-4xl font-semibold leading-tight md:text-5xl">
-                Komplexní kardiologická diagnostika bez čekání
+                Kompletní kardiologická péče na jednom místě
               </h1>
             </div>
             <p className="text-lg text-white/80">
@@ -107,8 +100,15 @@ export default function Home() {
                 href="/kontakt"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:-translate-y-0.5"
               >
-                Objednat vyšetření
-                <span aria-hidden>↗</span>
+                Objednat na vyšetření
+                <ArrowUpRightIcon />
+              </Link>
+              <Link
+                href="/kontakt"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:-translate-y-0.5"
+              >
+                Žádost o recept
+                <ArrowUpRightIcon />
               </Link>
               <Link
                 href="/sluzby"
@@ -116,17 +116,6 @@ export default function Home() {
               >
                 Naše služby
               </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 text-left md:grid-cols-3">
-              <div className="rounded-2xl border border-white/20 bg-white/5 p-4">
-                <p className="text-3xl font-semibold">{doctors.length}</p>
-                <p className="text-sm text-white/80">lékařů</p>
-              </div>
-              <div className="rounded-2xl border border-white/20 bg-white/5 p-4">
-                <p className="text-3xl font-semibold">2000+</p>
-                <p className="text-sm text-white/80">pacientů ročně</p>
-              </div>
             </div>
           </div>
 
@@ -138,11 +127,8 @@ export default function Home() {
                   <p className="text-xs uppercase tracking-[0.4em] text-white/70">
                     Ordinační hodiny
                   </p>
-                  <p className="text-2xl font-semibold mt-1">Pondělí–Pátek</p>
+                  <p className="text-2xl font-semibold mt-1">Pondělí – Pátek</p>
                 </div>
-                <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white/80">
-                  Bezpečné prostředí
-                </span>
               </div>
               <div className="mt-6 space-y-4 text-sm text-white/90">
                 {[
@@ -163,12 +149,9 @@ export default function Home() {
               </div>
               <div className="mt-6 rounded-2xl border border-white/20 bg-white/5 p-4">
                 <p className="text-xs uppercase tracking-[0.4em] text-white/60 mb-1">Hotline</p>
-                <a href="tel:+420604415479" className="text-2xl font-semibold">
-                  +420 604 415 479
+                <a href="tel:+420326396790" className="text-2xl font-semibold">
+                  +420 326 396 790
                 </a>
-                <p className="text-sm text-white/70">
-                  Rychlé objednání, konzultace výsledků, koordinace klinických studií
-                </p>
               </div>
             </div>
           </div>
@@ -188,7 +171,8 @@ export default function Home() {
                   <p className="mt-2 text-lg font-semibold">{announcement.title}</p>
                   <p className="text-sm text-brand-slate">{announcement.message}</p>
                   <p className="mt-2 text-xs text-brand-slate/80">
-                    Platí od {formatDate(announcement.startDate)} do {formatDate(announcement.endDate)}.
+                    Platí od {formatDate(announcement.startDate)} do{' '}
+                    {formatDate(announcement.endDate)}.
                   </p>
                 </div>
                 {announcement.link ? (
@@ -197,7 +181,7 @@ export default function Home() {
                     className="inline-flex items-center gap-2 rounded-full border border-brand-red/30 px-4 py-2 text-sm font-semibold text-brand-red"
                   >
                     {announcement.linkLabel ?? 'Více informací'}
-                    <span aria-hidden>↗</span>
+                    <ArrowUpRightIcon />
                   </Link>
                 ) : null}
               </div>
@@ -220,12 +204,9 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="group rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 transition hover:-translate-y-1 hover:border-brand-red/30"
+                className="group rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 "
               >
-                <div className="text-4xl">{service.icon}</div>
-                <h3 className="mt-4 text-xl font-semibold text-brand-navy group-hover:text-brand-red transition">
-                  {service.title}
-                </h3>
+                <h3 className="mt-4 text-xl font-semibold text-brand-navy">{service.title}</h3>
                 <p className="mt-2 text-sm text-brand-slate leading-relaxed">
                   {service.description}
                 </p>
@@ -250,9 +231,10 @@ export default function Home() {
               </div>
               <Link
                 href="/cenik"
-                className="inline-flex items-center justify-center rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy"
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy"
               >
-                Detailní ceník ↗
+                Detailní ceník
+                <ArrowUpRightIcon />
               </Link>
             </div>
             <InsuranceLogos className="mt-8" compact showLink />

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
+import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 
 export default function Navigation() {
   const pathname = usePathname()
@@ -53,17 +54,17 @@ export default function Navigation() {
 
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+420604415479"
+              href="tel:+420326396790"
               className="text-sm font-medium text-brand-slate hover:text-brand-navy transition"
             >
-              +420 604 415 479
+              +420 326 396 790
             </a>
             <Link
               href="/kontakt"
               className="inline-flex items-center gap-2 rounded-full bg-brand-red px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
             >
               Objednat
-              <span aria-hidden>↗</span>
+              <ArrowUpRightIcon />
             </Link>
           </div>
 

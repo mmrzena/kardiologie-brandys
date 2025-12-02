@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import AmbulanceSlideshow from '@/components/AmbulanceSlideshow'
-import { StaffMember, doctors, nurses, researches } from '@/data/staff'
+import { StaffMember, doctorArotmologists, doctors, nurses, researches } from '@/data/staff'
 
 const renderStaffGrid = (members: StaffMember[]) => (
   <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -23,9 +23,6 @@ const renderStaffGrid = (members: StaffMember[]) => (
         <div className="space-y-1 p-5">
           <h2 className="text-lg font-semibold text-brand-navy">{member.name}</h2>
           <p className="text-sm font-medium text-brand-red">{member.title}</p>
-          {member.specialization && (
-            <p className="text-xs text-brand-slate">{member.specialization}</p>
-          )}
         </div>
       </Link>
     ))}
@@ -52,7 +49,7 @@ export default function AboutPage() {
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                [doctors.length, 'lékařů'],
+                [doctors.length + doctorArotmologists.length, 'lékařů'],
                 [nurses.length, 'zdravotní sestry'],
                 [researches.length, 'Clinical Research'],
               ].map(([value, label]) => (
@@ -73,67 +70,9 @@ export default function AboutPage() {
                 Fotogalerie ordinace
               </p>
               <h2 className="mt-4 text-3xl font-semibold text-brand-navy">Podívejte se dovnitř</h2>
-              <p className="mt-3 text-sm text-brand-slate">
-                Prohlédněte si prostory ambulance, diagnostické zázemí i specializovaná pracoviště,
-                se kterými se při návštěvě setkáte.
-              </p>
             </div>
             <div className="mt-8">
               <AmbulanceSlideshow />
-            </div>
-          </section>
-
-          <section className="grid gap-8 rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl md:grid-cols-2">
-            <div>
-              <h2 className="text-2xl font-semibold text-brand-navy">Náš tým</h2>
-              <p className="mt-2 text-sm text-brand-slate">
-                Tvoří jej {totalMembers} odborníků: lékaři s praxí na fakultních klinikách, zkušené
-                sestry a Clinical Research Department.
-              </p>
-              <dl className="mt-6 space-y-4 text-sm text-brand-slate">
-                <div className="flex items-center justify-between rounded-2xl border border-brand-gray/70 px-4 py-3">
-                  <dt className="font-semibold text-brand-navy">Lékaři</dt>
-                  <dd className="text-right">
-                    {doctors.length} specialistů na kardiologii a arytmologii
-                  </dd>
-                </div>
-                <div className="flex items-center justify-between rounded-2xl border border-brand-gray/70 px-4 py-3">
-                  <dt className="font-semibold text-brand-navy">Zdravotní sestry</dt>
-                  <dd className="text-right">{nurses.length} koordinátorek péče a edukace</dd>
-                </div>
-                <div className="flex items-center justify-between rounded-2xl border border-brand-gray/70 px-4 py-3">
-                  <dt className="font-semibold text-brand-navy">Clinical Research Department</dt>
-                  <dd className="text-right">
-                    {researches.length} členů věnujících se klinickému výzkumu
-                  </dd>
-                </div>
-              </dl>
-              <a
-                href="#nas-tym"
-                className="mt-6 inline-flex items-center text-sm font-semibold text-brand-red transition hover:text-brand-red-dark"
-              >
-                Seznamte se s jednotlivými členy týmu
-                <span aria-hidden className="ml-2">
-                  ↓
-                </span>
-              </a>
-            </div>
-            <div className="rounded-3xl border border-dashed border-brand-gray/80 p-6">
-              <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Specializace</p>
-              <ul className="mt-4 space-y-3 text-sm text-brand-navy">
-                {[
-                  'Komplexní kardiologická péče – diagnostika a léčba kardiovaskulárních onemocnění',
-                  'Arytmologie – kontroly stimulátorů a specializovaná poradna prof. MUDr. Pavla Osmančíka, Ph.D.',
-                  'Sportovní kardiologie – prevence náhlé smrti u sportovců, čtvrteční program od 15:30',
-                  'Vnitřní lékařství – interní vyšetření pro vybrané zdravotní pojišťovny',
-                  'Klinické studie – možnost účasti na moderních léčebných postupech',
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="text-brand-red">✓</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </section>
 
@@ -152,10 +91,20 @@ export default function AboutPage() {
                     <div className="text-center">
                       <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Lékaři</p>
                       <h3 className="text-2xl font-semibold text-brand-navy">
-                        Kardiologie, arytmologie a výzkum
+                        Kardiologie a interna
                       </h3>
                     </div>
                     {renderStaffGrid(doctors)}
+                  </div>
+                )}
+
+                {doctorArotmologists.length > 0 && (
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Lékaři</p>
+                      <h3 className="text-2xl font-semibold text-brand-navy">Arytmologie</h3>
+                    </div>
+                    {renderStaffGrid(doctorArotmologists)}
                   </div>
                 )}
 
@@ -165,9 +114,6 @@ export default function AboutPage() {
                       <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
                         Zdravotní sestry
                       </p>
-                      <h3 className="text-2xl font-semibold text-brand-navy">
-                        Koordinace péče a edukace
-                      </h3>
                     </div>
                     {renderStaffGrid(nurses)}
                   </div>
@@ -179,9 +125,7 @@ export default function AboutPage() {
                       <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
                         Clinical Research Department
                       </p>
-                      <h3 className="text-2xl font-semibold text-brand-navy">
-                        Klinické studie a inovace
-                      </h3>
+                      <h3 className="text-2xl font-semibold text-brand-navy">Klinické studie</h3>
                     </div>
                     {renderStaffGrid(researches)}
                   </div>
@@ -190,32 +134,28 @@ export default function AboutPage() {
             )}
           </section>
 
-          <section className="grid gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold text-brand-navy">Historie</h2>
-              <p className="mt-4 text-sm text-brand-slate leading-relaxed">
-                Ambulance vznikla v roce 2009. MUDr. Jiří Krupička, Ph.D. navázal na své zkušenosti
-                z Fakultní nemocnice Královské Vinohrady a Nemocnice Na Homolce. Díky postupnému
-                rozšiřování týmu poskytujeme nejen klasickou ambulantní péči, ale i specializované
-                arytmologické programy a klinický výzkum.
-              </p>
-            </div>
-            <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
-              <h2 className="text-2xl font-semibold text-brand-navy">Vybavení</h2>
-              <ul className="mt-4 space-y-2 text-sm text-brand-slate">
-                {[
-                  'Echokardiografický přístroj (včetně jícnové sondy)',
-                  'Zátěžové EKG (ergometrie a zátěžová echo)',
-                  'Holter monitoring EKG a krevního tlaku',
-                  'Point-of-care laboratorní vyšetření (POCT)',
-                  'Spánkový screening',
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span className="text-brand-red">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue/5 via-white to-brand-teal/5 p-10 shadow-2xl">
+            <div className="grid gap-6 md:grid-cols-[1.5fr,0.5fr] md:items-center">
+              <div className="space-y-4">
+                <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Naše služby</p>
+                <h2 className="text-3xl font-semibold text-brand-navy">
+                  Kompletní kardiologická péče na jednom místě
+                </h2>
+                <p className="text-sm text-brand-slate">
+                  Od preventivních prohlídek přes specializované arytmologické programy až po
+                  zapojení do klinických studií. Vyberte si službu, která nejlépe odpovídá vaší
+                  aktuální potřebě.
+                </p>
+              </div>
+              <div className="flex justify-center md:justify-end">
+                <Link
+                  href="/sluzby"
+                  className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
+                >
+                  Prohlédnout služby
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </div>
           </section>
         </div>
