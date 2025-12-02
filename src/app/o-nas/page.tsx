@@ -30,9 +30,9 @@ export default function AboutPage() {
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
-                ['8', 'lékařů'],
-                ['3', 'zdravotní sestry'],
-                ['3', 'Clinical Research'],
+                [doctors.length, 'lékařů'],
+                [nurses.length, 'zdravotní sestry'],
+                [research.length, 'Clinical Research'],
               ].map(([value, label]) => (
                 <div key={label} className="rounded-2xl border border-brand-gray bg-brand-gray/70 p-4 text-center">
                   <p className="text-3xl font-semibold text-brand-navy">{value}</p>
@@ -46,7 +46,7 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl font-semibold text-brand-navy">Náš tým</h2>
               <p className="mt-2 text-sm text-brand-slate">
-                Tvoří jej 14 odborníků: lékaři s praxí na fakultních klinikách, zkušené sestry a Clinical Research Department.
+                Tvoří jej {doctors.length + nurses.length + research.length} odborníků: lékaři s praxí na fakultních klinikách, zkušené sestry a Clinical Research Department.
               </p>
               <div className="mt-6 space-y-4">
                 <div>

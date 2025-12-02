@@ -1,56 +1,18 @@
-'use client'
-
 import Link from 'next/link'
-import { useStaff } from '@/hooks/useStaff'
-import { SkeletonList } from '@/components/SkeletonLoader'
-
-export default function TeamPage() {
-  const { data: staff = [], isLoading, error } = useStaff()
-
-  if (isLoading) {
-    return (
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          <header className="mx-auto max-w-4xl rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
-            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Náš tým</p>
-            <h1 className="mt-4 text-4xl font-semibold text-brand-navy">14 odborníků připravených řešit váš případ</h1>
-            <p className="mt-4 text-base text-brand-slate">
-              8 lékařů, 3 zkušené sestry a 3 členové Clinical Research Department – všichni s praxí z předních kardiologických center.
-            </p>
-          </header>
-          <div className="mt-12">
-            <SkeletonList />
-          </div>
-        </div>
-      </main>
-    )
-  }
-
-  if (error) {
-    return (
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-xl rounded-3xl border border-red-200 bg-red-50 p-8 text-center text-sm text-red-700">
-            {error instanceof Error ? error.message : 'Nastala chyba při načítání dat'}
-          </div>
-        </div>
-      </main>
-    )
-  }
+import { staffMembers, StaffMember } from '@/data/staff'
 
   // Categorize staff members
-  const doctors = staff.filter(member =>
-    member.title.toLowerCase().includes('kardiolog') ||
-    member.title.toLowerCase().includes('arytmolog')
+  const doctors = staffMembers.filter(member =>
+    member.type === "doctor"
   )
-  const nurses = staff.filter(member =>
-    member.title.toLowerCase().includes('sestra')
+  const nurses = staffMembers.filter(member =>
+    member.type === "nurse"
   )
-  const research = staff.filter(member =>
-    member.title.includes('Clinical Research Department')
+  const research = staffMembers.filter(member =>
+    member.type === "research"
   )
 
-  const renderStaffGrid = (members: typeof staff) => (
+  const renderStaffGrid = (members: StaffMember[]) => (
     <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {members.map((member) => (
         <Link
@@ -84,23 +46,21 @@ export default function TeamPage() {
     </div>
   )
 
+export default function TeamPage() {
   return (
     <main className="py-16">
       <div className="container mx-auto px-4">
         <header className="mx-auto max-w-4xl rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
           <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Náš tým</p>
-          <h1 className="mt-4 text-4xl font-semibold text-brand-navy">14 odborníků připravených řešit váš případ</h1>
+          <h1 className="mt-4 text-4xl font-semibold text-brand-navy">{doctors.length + nurses.length + research.length} odborníků připravených řešit váš případ</h1>
           <p className="mt-4 text-base text-brand-slate">
-            8 lékařů, 3 zkušené sestry a 3 členové Clinical Research Department – všichni s praxí z předních kardiologických center.
+            {`${doctors.length} lékařů, ${nurses.length} zkušené sestry a ${research.length} členové Clinical Research Department – všichni s praxí z předních kardiologických center.`}
           </p>
         </header>
 
-        {staff.length === 0 ? (
+        {staffMembers.length === 0 ? (
           <div className="mt-12 rounded-3xl border border-dashed border-brand-gray bg-white/80 p-10 text-center text-sm text-brand-slate">
             <p>Zatím nejsou k dispozici žádné informace o týmu.</p>
-            <p className="mt-3 text-xs">
-              Poznámka: Přidejte zaměstnance v Supabase databázi (tabulka &quot;staff&quot;).
-            </p>
           </div>
         ) : (
           <div className="mt-12 space-y-12">

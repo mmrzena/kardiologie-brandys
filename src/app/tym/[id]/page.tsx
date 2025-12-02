@@ -1,44 +1,18 @@
-'use client'
-
-import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useStaffById } from '@/hooks/useStaff'
-import { SkeletonDetail } from '@/components/SkeletonLoader'
+import { notFound } from 'next/navigation'
+import { getStaffMember } from '@/data/staff'
 
-export default function StaffDetailPage() {
-  const params = useParams()
-  const { data: staff, isLoading, error } = useStaffById(params.id as string)
-
-  if (isLoading) {
-    return (
-      <main className="min-h-screen py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <Link href="/tym" className="text-brand-red hover:text-brand-red-dark transition mb-6 inline-block">
-              ← Zpět na tým
-            </Link>
-            <SkeletonDetail />
-          </div>
-        </div>
-      </main>
-    )
+interface StaffDetailPageProps {
+  params: {
+    id: string
   }
+}
 
-  if (error || !staff) {
-    return (
-      <main className="min-h-screen py-16">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-red-600 mb-4">
-              {error instanceof Error ? error.message : 'Zaměstnanec nenalezen'}
-            </p>
-            <Link href="/tym" className="text-brand-red hover:text-brand-red-dark transition">
-              ← Zpět na tým
-            </Link>
-          </div>
-        </div>
-      </main>
-    )
+export default function StaffDetailPage({ params }: StaffDetailPageProps) {
+  const staff = getStaffMember(params.id)
+
+  if (!staff) {
+    notFound()
   }
 
   return (

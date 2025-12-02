@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -22,12 +23,7 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="group flex flex-col">
-            <span className="text-xs uppercase tracking-[0.4em] text-brand-teal font-semibold">
-              Kardiologie
-            </span>
-            <span className="text-xl font-semibold text-brand-navy group-hover:text-brand-blue transition">
-              Brandýs nad Labem
-            </span>
+            <Image src={'/logo_KardiologieBrandys.png'} alt="Kardiologie Brandýs" width={120} height={60} />
           </Link>
 
           {/* Desktop menu */}
