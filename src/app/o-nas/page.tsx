@@ -47,21 +47,6 @@ export default function AboutPage() {
               adrese Nádražní 1317/5 v Brandýse nad Labem a dlouhodobě spolupracujeme s předními
               českými pracovišti.
             </p>
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {[
-                [doctors.length + doctorArotmologists.length, 'lékařů'],
-                [nurses.length, 'zdravotní sestry'],
-                [researches.length, 'Clinical Research'],
-              ].map(([value, label]) => (
-                <div
-                  key={label}
-                  className="rounded-2xl border border-brand-gray bg-brand-gray/70 p-4 text-center"
-                >
-                  <p className="text-3xl font-semibold text-brand-navy">{value}</p>
-                  <p className="text-sm text-brand-slate">{label}</p>
-                </div>
-              ))}
-            </div>
           </section>
 
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
