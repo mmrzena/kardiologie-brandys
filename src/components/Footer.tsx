@@ -25,14 +25,14 @@ export default function Footer() {
               špičkových klinikách. Vaše srdce sledujeme s kombinací moderních technologií a
               osobního přístupu.
             </p>
-            <div className="mt-6 gap-3 text-sm text-gray-200 flex">
+            <div className="mt-6 gap-3 text-sm text-gray-200 flex flex-wrap">
               {insurers.map((insurer) => (
                 <a
                   key={insurer.code}
                   href={insurer.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-brand-teal/60"
+                  className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-brand-teal/60 sm:w-auto"
                 >
                   <span className="font-semibold text-white">{insurer.name}</span>
                 </a>
