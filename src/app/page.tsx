@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
+import { doctors, nurses } from '@/data/staff'
+import { insurers } from '@/lib/insurers'
 
 const services = [
   {
@@ -47,7 +49,7 @@ const roadmap = [
 const highlights = [
   {
     title: 'Spolupráce s pojišťovnami',
-    detail: 'VZP, VOZP, ČPZP, OZP, ZPŠ, ZPMV',
+    detail: insurers.map((insurer) => insurer.name).join(', '),
   },
   {
     title: 'Specializované programy',
@@ -55,7 +57,7 @@ const highlights = [
   },
   {
     title: 'Multioborový tým',
-    detail: '8 lékařů, 3 sestry, Clinical Research Department',
+    detail: `${doctors.length} lékařů, ${nurses.length} sestry, Clinical Research Department`,
   },
 ]
 
@@ -105,12 +107,8 @@ export default function Home() {
 
             <div className="grid grid-cols-2 gap-4 text-left md:grid-cols-3">
               <div className="rounded-2xl border border-white/20 bg-white/5 p-4">
-                <p className="text-3xl font-semibold">8</p>
+                <p className="text-3xl font-semibold">{doctors.length}</p>
                 <p className="text-sm text-white/80">lékařů</p>
-              </div>
-              <div className="rounded-2xl border border-white/20 bg-white/5 p-4">
-                <p className="text-3xl font-semibold">15+</p>
-                <p className="text-sm text-white/80">let péče</p>
               </div>
               <div className="rounded-2xl border border-white/20 bg-white/5 p-4">
                 <p className="text-3xl font-semibold">2000+</p>

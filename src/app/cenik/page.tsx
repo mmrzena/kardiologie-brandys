@@ -82,6 +82,9 @@ export default function PricingPage() {
                 Některá vyšetření jsou hrazena pro pacienty pojišťoven VZP, VOZP, ČPZP, OZP, ZPŠ a
                 ZPMV.
               </p>
+              <p className="mt-3 text-xs uppercase tracking-[0.2em] text-brand-red">
+                Uvedené ceny platí pro výkony mimo úhradu zdravotní pojišťovny (samoplátci).
+              </p>
             </div>
             <InsuranceLogos className="mt-6" compact showLink />
           </section>

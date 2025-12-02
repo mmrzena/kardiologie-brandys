@@ -21,7 +21,7 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <Link
-            href="/tym"
+            href="/o-nas#nas-tym"
             className="text-brand-red hover:text-brand-red-dark transition mb-6 inline-block"
           >
             ← Zpět na tým

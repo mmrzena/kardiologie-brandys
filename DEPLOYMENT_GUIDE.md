@@ -120,7 +120,7 @@ After deployment completes:
 1. Go to your Supabase dashboard
 2. Click "Table Editor" → "staff"
 3. Add a test staff member
-4. Visit `your-url.vercel.app/tym`
+4. Visit `your-url.vercel.app/o-nas#nas-tym`
 5. You should see the staff member
 
 ### 4.2 Test Contact Form

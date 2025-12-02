@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
@@ -12,7 +11,6 @@ export default function Navigation() {
   const links = [
     { href: '/', label: 'Domů' },
     { href: '/o-nas', label: 'O nás' },
-    { href: '/tym', label: 'Náš tým' },
     { href: '/sluzby', label: 'Služby' },
     { href: '/cenik', label: 'Ceník' },
     { href: '/kontakt', label: 'Kontakt' },
@@ -22,19 +20,19 @@ export default function Navigation() {
     <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/80 backdrop-blur-xl shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="group flex flex-col">
-            <Image
-              src={'/logo_KardiologieBrandys.png'}
-              alt="Kardiologie Brandýs"
-              width={120}
-              height={60}
-            />
+          <Link
+            href="/"
+            className="flex flex-col text-xs font-semibold uppercase tracking-[0.25em] text-brand-navy transition hover:text-brand-red"
+          >
+            <span className="text-[0.65rem] text-brand-teal">Kardiologie</span>
+            <span className="text-base tracking-[0.15em]">Brandýs nad Labem</span>
           </Link>
 
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-4">
             {links.map((link) => {
-              const isActive = pathname === link.href
+              const baseHref = link.href.split('#')[0]
+              const isActive = pathname === baseHref
 
               return (
                 <Link
@@ -64,7 +62,7 @@ export default function Navigation() {
               href="/kontakt"
               className="inline-flex items-center gap-2 rounded-full bg-brand-red px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
             >
-              Objednat konzultaci
+              Objednat
               <span aria-hidden>↗</span>
             </Link>
           </div>
@@ -101,26 +99,31 @@ export default function Navigation() {
         {isMenuOpen && (
           <div className="md:hidden pb-4">
             <div className="flex flex-col rounded-2xl border border-white/60 bg-white/90 p-4 shadow-lg shadow-slate-200/60">
-              {links.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`rounded-xl px-3 py-3 text-sm font-semibold transition ${
-                    pathname === link.href
-                      ? 'bg-brand-gray text-brand-navy'
-                      : 'text-brand-slate hover:bg-brand-gray'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {links.map((link) => {
+                const baseHref = link.href.split('#')[0]
+                const isActive = pathname === baseHref
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`rounded-xl px-3 py-3 text-sm font-semibold transition ${
+                      isActive
+                        ? 'bg-brand-gray text-brand-navy'
+                        : 'text-brand-slate hover:bg-brand-gray'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
               <Link
                 href="/kontakt"
                 onClick={() => setIsMenuOpen(false)}
                 className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-4 py-3 text-sm font-semibold text-white shadow-md shadow-brand-red/30"
               >
-                Objednat konzultaci
+                Objednat
               </Link>
             </div>
           </div>

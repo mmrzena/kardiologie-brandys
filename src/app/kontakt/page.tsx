@@ -16,6 +16,7 @@ export default function ContactPage() {
     name: '',
     email: '',
     phone: '',
+    topic: 'Vyšetření',
     message: '',
   })
 
@@ -26,12 +27,14 @@ export default function ContactPage() {
 
     mutation.mutate(formData, {
       onSuccess: () => {
-        setFormData({ name: '', email: '', phone: '', message: '' })
+        setFormData({ name: '', email: '', phone: '', topic: 'Vyšetření', message: '' })
       },
     })
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -153,7 +156,7 @@ export default function ContactPage() {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-red focus:outline-none"
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
                 <div>
@@ -167,7 +170,7 @@ export default function ContactPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-red focus:outline-none"
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
                 <div>
@@ -180,8 +183,25 @@ export default function ContactPage() {
                     type="tel"
                     value={formData.phone}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-red focus:outline-none"
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
+                </div>
+                <div>
+                  <label htmlFor="topic" className="text-sm font-semibold text-brand-navy">
+                    Typ požadavku *
+                  </label>
+                  <select
+                    id="topic"
+                    name="topic"
+                    required
+                    value={formData.topic}
+                    onChange={handleChange}
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                  >
+                    <option value="Vyšetření">Vyšetření</option>
+                    <option value="Poradna">Poradna</option>
+                    <option value="Sportovci">Sportovci</option>
+                  </select>
                 </div>
                 <div>
                   <label htmlFor="message" className="text-sm font-semibold text-brand-navy">
@@ -194,7 +214,7 @@ export default function ContactPage() {
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-red focus:outline-none"
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
                 <button
