@@ -62,14 +62,14 @@ export default function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/kontakt"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:bg-white/90"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Objednat na vyšetření
                 <ArrowUpRightIcon />
               </Link>
               <Link
                 href="/kontakt"
-                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-xl shadow-black/20 transition hover:bg-white/90"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Žádost o recept
                 <ArrowUpRightIcon />

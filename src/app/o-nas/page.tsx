@@ -35,8 +35,8 @@ export default function AboutPage() {
   return (
     <main className="py-16">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl space-y-12">
-          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
+        <div className="mx-auto max-w-6xl space-y-12">
+          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl text-center">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">O ambulanci</p>
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
               Profesionální péče od roku 2009
