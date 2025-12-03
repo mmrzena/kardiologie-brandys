@@ -23,10 +23,13 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-20">
           <Link
             href="/"
-            className="flex flex-col text-xs font-semibold uppercase tracking-[0.25em] text-brand-navy transition hover:text-brand-red"
+            className="group flex flex-col items-start text-xs font-semibold uppercase tracking-[0.25em] text-brand-navy transition hover:text-brand-red"
           >
             <span className="text-[0.65rem] text-brand-teal">Kardiologie</span>
-            <span className="text-base tracking-[0.15em]">Brandýs nad Labem</span>
+            <span className="text-base tracking-[0.15em] leading-tight">Brandýs nad Labem</span>
+            <span className="text-[0.6rem] font-semibold tracking-[0.08em] text-brand-slate normal-case leading-tight group-hover:text-brand-navy">
+              Medicus Services s.r.o.
+            </span>
           </Link>
 
           {/* Desktop menu */}
