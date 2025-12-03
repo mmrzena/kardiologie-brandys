@@ -61,7 +61,7 @@ function ContactPageContent() {
   useEffect(() => {
     if (!topicFromQuery) return
     if (formCardRef.current) {
-      formCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      formCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
     setShouldHighlightForm(true)
     const timeout = setTimeout(() => setShouldHighlightForm(false), 900)
@@ -96,7 +96,7 @@ function ContactPageContent() {
   return (
     <main className="py-16">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl space-y-12">
+        <div className="mx-auto max-w-6xl space-y-12">
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Kontakt</p>
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
@@ -180,7 +180,7 @@ function ContactPageContent() {
             <div
               ref={formCardRef}
               className={`rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl transition duration-500 ${
-                shouldHighlightForm ? 'animate-form-pop ring-2 ring-brand-teal/40' : ''
+                shouldHighlightForm ? 'animate-form-pop ring-2 ring-brand-teal/10' : ''
               }`}
             >
               <h2 className="text-2xl font-semibold text-brand-navy">Napište nám</h2>

@@ -69,7 +69,7 @@ export default function PricingPage() {
   return (
     <main className="py-16">
       <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-5xl space-y-12">
+        <div className="mx-auto max-w-6xl space-y-12">
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 text-center shadow-2xl">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Ceník</p>
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">

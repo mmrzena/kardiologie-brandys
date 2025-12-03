@@ -50,7 +50,7 @@ export default function AboutPage() {
           </section>
 
           <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
-            <div className="mx-auto max-w-3xl text-center">
+            <div className="mx-auto max-w-6xl text-center">
               <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
                 Fotogalerie ordinace
               </p>
