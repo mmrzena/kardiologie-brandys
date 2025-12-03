@@ -6,6 +6,10 @@ import Footer from '@/components/Footer'
 import QueryProvider from '@/providers/QueryProvider'
 
 const inter = Inter({ subsets: ['latin'] })
+const siteUrl = new URL('https://kardiologiebrandys.cz')
+const siteTitle = 'Kardiologie Brandýs nad Labem | Medicus Services s.r.o.'
+const siteDescription =
+  'Medicus Services s.r.o. – kardiologická ambulance v Brandýse nad Labem. Moderní vyšetření, diagnostika a specializovaná arytmologická péče pro dospělé i sportovce.'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -13,10 +17,47 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Kardiologie Brandýs - Kardiologická ambulance',
-  description:
-    'Kardiologická ambulance v Brandýse nad Labem. Moderní kardiologická péče, vyšetření a diagnostika srdečních onemocnění.',
-  keywords: 'kardiologie, Brandýs nad Labem, kardiolog, srdce, EKG, echokardiografie',
+  metadataBase: siteUrl,
+  title: {
+    default: siteTitle,
+    template: `%s | Kardiologie Brandýs`,
+  },
+  description: siteDescription,
+  applicationName: 'Kardiologie Brandýs',
+  keywords: [
+    'kardiologie Brandýs nad Labem',
+    'Medicus Services s.r.o.',
+    'kardiologická ambulance',
+    'arytmologie',
+    'echokardiografie',
+    'sportovní prohlídky',
+    'kardiologie Praha východ',
+  ],
+  authors: [{ name: 'Medicus Services s.r.o.' }],
+  creator: 'Medicus Services s.r.o.',
+  publisher: 'Medicus Services s.r.o.',
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'cs_CZ',
+    url: siteUrl,
+    title: siteTitle,
+    description: siteDescription,
+    siteName: 'Kardiologie Brandýs',
+    images: ['/images/ambulance/KARDIO_AMBULANCE-04.jpg'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteTitle,
+    description: siteDescription,
+    images: ['/images/ambulance/KARDIO_AMBULANCE-04.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
