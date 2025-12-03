@@ -13,7 +13,7 @@ const services = [
     description: 'Specializovaná poradna pod vedením prof. MUDr. Pavla Osmančíka, Ph.D.',
   },
   {
-    title: 'Sportovní kardiologie',
+    title: 'Vyšetření sportovců',
     description:
       'Preventivní balíčky pro vrcholové i amatérské sportovce, screening náhlých příhod.',
   },
@@ -168,21 +168,32 @@ export default function Home() {
             {services.map((service) => (
               <div
                 key={service.title}
-                className="group rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 "
+                className="group flex flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 "
               >
                 <h3 className="mt-4 text-xl font-semibold text-brand-navy">{service.title}</h3>
                 <p className="mt-2 text-sm text-brand-slate leading-relaxed">
                   {service.description}
                 </p>
-                {service.title === 'Sportovní kardiologie' && (
-                  <Link
-                    href="/kontakt?topic=sportovci"
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-red px-4 py-2 text-xs font-semibold text-white shadow-md shadow-brand-red/20 transition hover:bg-brand-red-dark"
-                  >
-                    Rezervovat termín
-                    <ArrowUpRightIcon className="h-3 w-3" />
-                  </Link>
-                )}
+                <div className="mt-auto flex flex-wrap gap-3 pt-4">
+                  {service.title === 'Vyšetření sportovců' && (
+                    <Link
+                      href="/kontakt?topic=sportovci"
+                      className="inline-flex items-center gap-2 rounded-full bg-brand-red px-4 py-2 text-xs font-semibold text-white shadow-md shadow-brand-red/20 transition hover:bg-brand-red-dark"
+                    >
+                      Rezervovat termín
+                      <ArrowUpRightIcon className="h-3 w-3" />
+                    </Link>
+                  )}
+                  {service.title === 'Klinické studie' && (
+                    <Link
+                      href={`/sluzby/klinicke-studie`}
+                      className="inline-flex items-center gap-2 text-xs  py-2 font-semibold text-brand-navy transition hover:text-brand-red"
+                    >
+                      Detail služby
+                      <ArrowUpRightIcon className="h-3 w-3" />
+                    </Link>
+                  )}
+                </div>
               </div>
             ))}
           </div>

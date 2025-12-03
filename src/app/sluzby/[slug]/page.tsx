@@ -41,7 +41,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
       <div className="container mx-auto px-4">
         <Link
           href="/sluzby"
-          className="inline-flex items-center text-sm font-semibold text-brand-navy transition hover:translate-x-[-4px]"
+          className="inline-flex items-center text-sm font-semibold text-brand-navy transition hover:text-brand-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-red"
         >
           <svg
             className="mr-2 h-4 w-4"

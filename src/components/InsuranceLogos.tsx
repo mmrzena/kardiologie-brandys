@@ -83,7 +83,7 @@ export default function InsuranceLogos({
               compact ? 'sm:flex-row sm:items-center sm:text-left' : ''
             } ${
               insurer.link
-                ? 'transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-red'
+                ? 'transition hover:shadow-md hover:border-brand-red/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-red'
                 : ''
             }`}
             {...cardProps}

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 
+import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { services } from '@/data/services'
 
 export default function ServicesPage() {
@@ -22,35 +23,26 @@ export default function ServicesPage() {
 
           <section className="grid gap-6 md:grid-cols-2">
             {services.map((service) => (
-              <Link
+              <div
                 key={service.slug}
-                href={`/sluzby/${service.slug}`}
-                className="flex h-full flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60 hover:border-brand-navy/20"
+                className="flex h-full flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60"
               >
-                <div className="flex-1">
+                <div>
                   <h2 className="mt-3 text-2xl font-semibold text-brand-navy">{service.title}</h2>
                   <p className="mt-3 text-sm text-brand-slate leading-relaxed">
                     {service.description}
                   </p>
                 </div>
-                <span className="mt-6 inline-flex items-center text-sm font-semibold text-brand-navy">
-                  Detail služby
-                  <svg
-                    className="ml-2 h-4 w-4"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div className="mt-auto flex flex-wrap gap-3 pt-4">
+                  <Link
+                    href={`/sluzby/${service.slug}`}
+                    className="inline-flex items-center gap-2 text-xs font-semibold text-brand-navy transition hover:text-brand-red"
                   >
-                    <path
-                      d="M5 3l5 5-5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </Link>
+                    Detail služby
+                    <ArrowUpRightIcon className="h-3 w-3" />
+                  </Link>
+                </div>
+              </div>
             ))}
           </section>
 

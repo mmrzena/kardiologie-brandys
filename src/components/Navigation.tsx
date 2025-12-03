@@ -39,7 +39,7 @@ export default function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative px-3 py-2 text-sm font-medium transition ${
+                  className={`relative px-3 py-2 text-sm font-medium transition whitespace-nowrap ${
                     isActive ? 'text-brand-navy' : 'text-brand-slate hover:text-brand-navy'
                   }`}
                 >
@@ -55,7 +55,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center gap-4">
             <a
               href="tel:+420326396790"
-              className="text-sm font-medium text-brand-slate hover:text-brand-navy transition"
+              className="text-sm font-medium text-brand-slate hover:text-brand-navy transition whitespace-nowrap"
             >
               +420 326 396 790
             </a>
@@ -109,7 +109,7 @@ export default function Navigation() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`rounded-xl px-3 py-3 text-sm font-semibold transition ${
+                    className={`rounded-xl px-3 py-3 text-sm font-semibold transition whitespace-nowrap ${
                       isActive
                         ? 'bg-brand-gray text-brand-navy'
                         : 'text-brand-slate hover:bg-brand-gray'

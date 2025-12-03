@@ -39,6 +39,7 @@ function ContactPageContent() {
   const searchParams = useSearchParams()
   const topicFromQuery = normalizeTopicParam(searchParams.get('topic'))
   const formCardRef = useRef<HTMLDivElement | null>(null)
+  const FORM_SCROLL_OFFSET = 80 // keep form clear of the sticky header when scrolling
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -50,6 +51,15 @@ function ContactPageContent() {
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
 
   const mutation = useContactForm()
+  const validationMessages: Record<string, { missing: string; mismatch?: string }> = {
+    topic: { missing: 'Vyberte prosím typ požadavku.' },
+    name: { missing: 'Vyplňte prosím jméno a příjmení.' },
+    email: {
+      missing: 'Vyplňte prosím e-mail.',
+      mismatch: 'Zadejte platný e-mail ve tvaru jmeno@example.com.',
+    },
+    message: { missing: 'Napište prosím zprávu.' },
+  }
 
   useEffect(() => {
     if (topicFromQuery && topicFromQuery !== appliedPrefill) {
@@ -59,13 +69,25 @@ function ContactPageContent() {
   }, [topicFromQuery, appliedPrefill])
 
   useEffect(() => {
-    if (!topicFromQuery) return
-    if (formCardRef.current) {
-      formCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    }
-    setShouldHighlightForm(true)
+    if (!topicFromQuery || !formCardRef.current) return
+
+    const handle = requestAnimationFrame(() => {
+      const offsetTop = formCardRef.current
+        ? formCardRef.current.getBoundingClientRect().top + window.scrollY - FORM_SCROLL_OFFSET
+        : 0
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
+      const topicSelect = formCardRef.current?.querySelector<HTMLSelectElement>('#topic')
+      if (topicSelect) {
+        topicSelect.focus({ preventScroll: true })
+      }
+      setShouldHighlightForm(true)
+    })
+
     const timeout = setTimeout(() => setShouldHighlightForm(false), 900)
-    return () => clearTimeout(timeout)
+    return () => {
+      cancelAnimationFrame(handle)
+      clearTimeout(timeout)
+    }
   }, [topicFromQuery])
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -91,6 +113,33 @@ function ContactPageContent() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const applyValidityMessage = (
+    target: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+  ) => {
+    const config = validationMessages[target.name]
+    if (!config) return
+    target.setCustomValidity('')
+    if (target.validity.valueMissing) {
+      target.setCustomValidity(config.missing)
+    } else if (target.validity.typeMismatch && config.mismatch) {
+      target.setCustomValidity(config.mismatch)
+    }
+  }
+
+  const handleInvalid = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    applyValidityMessage(
+      e.currentTarget as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+    )
+  }
+
+  const handleValidityInput = (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    applyValidityMessage(e.currentTarget)
   }
 
   return (
@@ -180,7 +229,7 @@ function ContactPageContent() {
             <div
               ref={formCardRef}
               className={`rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl transition duration-500 ${
-                shouldHighlightForm ? 'animate-form-pop ring-2 ring-brand-teal/10' : ''
+                shouldHighlightForm ? 'animate-form-pop ring ring-brand-teal/15' : ''
               }`}
             >
               <h2 className="text-2xl font-semibold text-brand-navy">Napište nám</h2>
@@ -202,7 +251,7 @@ function ContactPageContent() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+              <form onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
                 <div>
                   <label htmlFor="topic" className="text-sm font-semibold text-brand-navy">
                     Typ požadavku *
@@ -213,6 +262,8 @@ function ContactPageContent() {
                     required
                     value={formData.topic}
                     onChange={handleChange}
+                    onInvalid={handleInvalid}
+                    onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   >
                     {TOPIC_OPTIONS.map((option) => (
@@ -232,6 +283,8 @@ function ContactPageContent() {
                     required
                     value={formData.name}
                     onChange={handleChange}
+                    onInvalid={handleInvalid}
+                    onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
@@ -246,6 +299,8 @@ function ContactPageContent() {
                     required
                     value={formData.email}
                     onChange={handleChange}
+                    onInvalid={handleInvalid}
+                    onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
@@ -259,6 +314,7 @@ function ContactPageContent() {
                     type="tel"
                     value={formData.phone}
                     onChange={handleChange}
+                    onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
@@ -273,6 +329,8 @@ function ContactPageContent() {
                     required
                     value={formData.message}
                     onChange={handleChange}
+                    onInvalid={handleInvalid}
+                    onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
