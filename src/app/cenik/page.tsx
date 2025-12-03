@@ -136,7 +136,7 @@ export default function PricingPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
-                href="/kontakt"
+                href="/kontakt?topic=ostatní"
                 className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg"
               >
                 Kontaktujte nás

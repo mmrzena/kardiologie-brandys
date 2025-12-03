@@ -61,7 +61,7 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/kontakt"
+                href="/kontakt?topic=vyšetření"
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Objednat na vyšetření
@@ -174,6 +174,15 @@ export default function Home() {
                 <p className="mt-2 text-sm text-brand-slate leading-relaxed">
                   {service.description}
                 </p>
+                {service.title === 'Sportovní kardiologie' && (
+                  <Link
+                    href="/kontakt?topic=sportovci"
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-brand-red px-4 py-2 text-xs font-semibold text-white shadow-md shadow-brand-red/20 transition hover:bg-brand-red-dark"
+                  >
+                    Rezervovat termín
+                    <ArrowUpRightIcon className="h-3 w-3" />
+                  </Link>
+                )}
               </div>
             ))}
           </div>
@@ -199,7 +208,7 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-4 md:justify-end">
                 <Link
-                  href="/kontakt"
+                  href="/kontakt?topic=poradna"
                   className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
                 >
                   Napište nám

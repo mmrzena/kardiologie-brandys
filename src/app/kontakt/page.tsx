@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 
@@ -9,6 +9,7 @@ const TOPIC_OPTIONS = [
   { value: 'Poradna', label: 'Poradna' },
   { value: 'Sportovci', label: 'Sportovci' },
   { value: 'Recept', label: 'Žádost o recept' },
+  { value: 'Ostatní', label: 'Ostatní' },
 ] as const
 
 const normalizeTopicParam = (value: string | null) => {
@@ -27,8 +28,17 @@ const openingHours = [
 ]
 
 export default function ContactPage() {
+  return (
+    <Suspense fallback={<div className="py-16" />}>
+      <ContactPageContent />
+    </Suspense>
+  )
+}
+
+function ContactPageContent() {
   const searchParams = useSearchParams()
   const topicFromQuery = normalizeTopicParam(searchParams.get('topic'))
+  const formCardRef = useRef<HTMLDivElement | null>(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -37,6 +47,7 @@ export default function ContactPage() {
     message: '',
   })
   const [appliedPrefill, setAppliedPrefill] = useState<string | null>(topicFromQuery ?? null)
+  const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
 
   const mutation = useContactForm()
 
@@ -46,6 +57,16 @@ export default function ContactPage() {
       setAppliedPrefill(topicFromQuery)
     }
   }, [topicFromQuery, appliedPrefill])
+
+  useEffect(() => {
+    if (!topicFromQuery) return
+    if (formCardRef.current) {
+      formCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+    setShouldHighlightForm(true)
+    const timeout = setTimeout(() => setShouldHighlightForm(false), 900)
+    return () => clearTimeout(timeout)
+  }, [topicFromQuery])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -156,7 +177,12 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl">
+            <div
+              ref={formCardRef}
+              className={`rounded-3xl border border-brand-gray bg-white/95 p-8 shadow-xl transition duration-500 ${
+                shouldHighlightForm ? 'animate-form-pop ring-2 ring-brand-teal/40' : ''
+              }`}
+            >
               <h2 className="text-2xl font-semibold text-brand-navy">Napište nám</h2>
               <p className="mt-2 text-sm text-brand-slate">
                 Vyplňte formulář, ozveme se vám s potvrzením termínu nebo doplňujícími dotazy.
@@ -177,6 +203,25 @@ export default function ContactPage() {
               )}
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                <div>
+                  <label htmlFor="topic" className="text-sm font-semibold text-brand-navy">
+                    Typ požadavku *
+                  </label>
+                  <select
+                    id="topic"
+                    name="topic"
+                    required
+                    value={formData.topic}
+                    onChange={handleChange}
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                  >
+                    {TOPIC_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div>
                   <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
                     Jméno a příjmení *
@@ -216,25 +261,6 @@ export default function ContactPage() {
                     onChange={handleChange}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
-                </div>
-                <div>
-                  <label htmlFor="topic" className="text-sm font-semibold text-brand-navy">
-                    Typ požadavku *
-                  </label>
-                  <select
-                    id="topic"
-                    name="topic"
-                    required
-                    value={formData.topic}
-                    onChange={handleChange}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
-                  >
-                    {TOPIC_OPTIONS.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
                 </div>
                 <div>
                   <label htmlFor="message" className="text-sm font-semibold text-brand-navy">

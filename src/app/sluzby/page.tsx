@@ -57,12 +57,11 @@ export default function ServicesPage() {
           <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue to-brand-blue-dark p-10 text-white shadow-2xl">
             <h2 className="text-3xl font-semibold">Potřebujete poradit s výběrem vyšetření?</h2>
             <p className="mt-3 text-white/80">
-              Zavolejte, nebo nám napište – připravíme balíček vyšetření během jednoho pracovního
-              dne.
+              Zavolejte, nebo nám napište. Rádi vám pomůžeme vybrat vyšetření přesně pro vás.
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
-                href="/kontakt"
+                href="/kontakt?topic=vyšetření"
                 className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg"
               >
                 Kontaktujte nás

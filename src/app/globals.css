@@ -48,3 +48,21 @@ body::before {
     background: rgba(244, 63, 94, 0.15);
   }
 }
+
+@keyframes form-pop {
+  0% {
+    transform: scale(0.97);
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@layer utilities {
+  .animate-form-pop {
+    animation: form-pop 0.6s ease;
+  }
+}

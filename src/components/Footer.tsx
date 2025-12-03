@@ -105,12 +105,10 @@ export default function Footer() {
               <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
                 Potřebujete termín?
               </p>
-              <h4 className="text-xl font-semibold mt-2">
-                Napište nám, odpovídáme do 1 pracovního dne
-              </h4>
+              <h4 className="text-xl font-semibold mt-2">Napište nám</h4>
             </div>
             <Link
-              href="/kontakt"
+              href="/kontakt?topic=vyšetření"
               className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20"
             >
               Spojit se s ambulancí

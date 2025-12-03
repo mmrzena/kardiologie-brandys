@@ -60,7 +60,7 @@ export default function Navigation() {
               +420 326 396 790
             </a>
             <Link
-              href="/kontakt"
+              href="/kontakt?topic=vyšetření"
               className="inline-flex items-center gap-2 rounded-full bg-brand-red px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
             >
               Objednat
@@ -120,7 +120,7 @@ export default function Navigation() {
                 )
               })}
               <Link
-                href="/kontakt"
+                href="/kontakt?topic=vyšetření"
                 onClick={() => setIsMenuOpen(false)}
                 className="mt-4 inline-flex items-center justify-center rounded-full bg-brand-red px-4 py-3 text-sm font-semibold text-white shadow-md shadow-brand-red/30 transition hover:bg-brand-red-dark"
               >
