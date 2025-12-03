@@ -4,11 +4,12 @@ Modern website for cardiology practice built with Next.js, Supabase, and Vercel.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 13 (App Router), React, TypeScript, Tailwind CSS
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes (Serverless Functions)
 - **Database**: Supabase (PostgreSQL)
 - **Email**: Nodemailer
 - **Deployment**: Vercel
+- **State/Fetching**: @tanstack/react-query
 
 ## Features
 
@@ -21,6 +22,10 @@ Modern website for cardiology practice built with Next.js, Supabase, and Vercel.
 - ✅ SEO optimized
 
 ## Setup Instructions
+
+### 0. Prerequisites
+
+- Node.js 18.18+ (Next.js 16 and React 19 require at least Node 18)
 
 ### 1. Install Dependencies
 
@@ -101,19 +106,21 @@ kardiologie-brandys/
 ├── src/
 │   ├── app/
 │   │   ├── api/              # API routes (serverless functions)
-│   │   │   ├── contact/      # Contact form endpoint
-│   │   │   └── staff/        # Staff endpoints
-│   │   ├── about/            # About page
-│   │   ├── contact/          # Contact page
-│   │   ├── services/         # Services page
-│   │   ├── team/             # Staff directory
-│   │   │   └── [id]/         # Staff detail page
-│   │   ├── layout.tsx        # Root layout
+│   │   │   └── contact/      # Contact form endpoint
+│   │   ├── cenik/            # Pricing page
+│   │   ├── kontakt/          # Contact page with form
+│   │   ├── o-nas/            # About page
+│   │   ├── sluzby/           # Services overview
+│   │   ├── tym/              # Team directory
+│   │   ├── layout.tsx        # Root layout (providers, nav/footer)
 │   │   └── page.tsx          # Homepage
 │   ├── components/
 │   │   └── Navigation.tsx    # Navigation component
-│   └── lib/
-│       └── supabase.ts       # Supabase client
+│   ├── hooks/
+│   │   └── useContact.ts     # Contact form mutation hook
+│   ├── providers/
+│   │   └── QueryProvider.tsx # React Query provider wrapper
+│   └── data/                 # Static content
 ├── .env.local.example        # Environment variables template
 ├── supabase-schema.sql       # Database schema
 └── vercel.json               # Vercel configuration
@@ -146,12 +153,12 @@ The project uses two tables:
 
 ## Future Enhancements
 
-- Add mobile menu
 - Add admin panel for content management
 - Integrate with appointment booking system
 - Add blog/news section
 - Add image gallery
 - Implement full CMS (Sanity.io or Strapi)
+- Add automated testing/monitoring
 
 ## Support
 
