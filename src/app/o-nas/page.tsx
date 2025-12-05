@@ -41,11 +41,13 @@ export default function AboutPage() {
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
               Profesionální péče od roku 2009
             </h1>
-            <p className="mt-6 text-lg text-brand-slate">
+            <p className="mt-6 text-base text-brand-slate">
               Soukromá ambulance MUDr. Jiřího Krupičky poskytuje komplexní kardiologický servis od
-              ambulantních diagnostických vyšetření až po specializovanou arytmologii. Sídlíme na
-              adrese Nádražní 1317/5 v Brandýse nad Labem a dlouhodobě spolupracujeme s předními
-              českými pracovišti.
+              ambulantních diagnostických vyšetření až po specializovanou arytmologii.
+            </p>
+            <p className="text-base text-brand-slate">
+              Sídlíme na adrese Nádražní 1317/5 v Brandýse nad Labem a dlouhodobě spolupracujeme s
+              předními českými pracovišti.
             </p>
           </section>
 

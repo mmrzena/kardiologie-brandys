@@ -152,11 +152,9 @@ function ContactPageContent() {
               Jsme k dispozici každý pracovní den
             </h1>
             <p className="mt-4 text-base text-brand-slate">
-              Zavolejte nám na +420 326 396 790 nebo +420 604 415 479. Odpovídáme na zprávy do 1
-              pracovního dne.
+              Zavolejte nám na +420 326 396 790 nebo +420 604 415 479.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold text-brand-navy">
-              <span className="rounded-full bg-brand-gray/80 px-4 py-1">Bezpečné prostředí</span>
               <span className="rounded-full bg-brand-gray/80 px-4 py-1">Bezbariérový přístup</span>
               <span className="rounded-full bg-brand-gray/80 px-4 py-1">Parkování u budovy</span>
             </div>

@@ -19,7 +19,7 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
   return (
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <Link
             href="/o-nas#nas-tym"
             className="text-brand-red hover:text-brand-red-dark transition mb-6 inline-block"
@@ -48,12 +48,7 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
                 <h1 className="text-3xl font-bold mb-2">{staff.name}</h1>
                 <p className="text-xl text-brand-red font-medium mb-4">{staff.title}</p>
 
-                {staff.bio && (
-                  <div className="mb-4">
-                    <h2 className="font-semibold text-gray-700 mb-2">O mně:</h2>
-                    <p className="text-gray-600 whitespace-pre-line">{staff.bio}</p>
-                  </div>
-                )}
+                {staff.bio && <p className="text-gray-600 whitespace-pre-line mb-4">{staff.bio}</p>}
 
                 <div className="border-t pt-4 mt-6">
                   {staff.email && (
