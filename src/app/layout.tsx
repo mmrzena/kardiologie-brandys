@@ -7,9 +7,9 @@ import QueryProvider from '@/providers/QueryProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 const siteUrl = new URL('https://kardiologiebrandys.cz')
-const siteTitle = 'Kardiologie Brandýs nad Labem | Medicus Services s.r.o.'
+const siteTitle = 'Kardiologie Brandýs nad Labem | MEDICUS SERVICES s.r.o.'
 const siteDescription =
-  'Medicus Services s.r.o. – kardiologická ambulance v Brandýse nad Labem. Moderní vyšetření, diagnostika a specializovaná arytmologická péče pro dospělé i sportovce.'
+  'MEDICUS SERVICES s.r.o. – kardiologická ambulance v Brandýse nad Labem. Moderní vyšetření, diagnostika a specializovaná arytmologická péče pro dospělé i sportovce.'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -26,16 +26,16 @@ export const metadata: Metadata = {
   applicationName: 'Kardiologie Brandýs',
   keywords: [
     'kardiologie Brandýs nad Labem',
-    'Medicus Services s.r.o.',
+    'MEDICUS SERVICES s.r.o.',
     'kardiologická ambulance',
     'arytmologie',
     'echokardiografie',
     'sportovní prohlídky',
     'kardiologie Praha východ',
   ],
-  authors: [{ name: 'Medicus Services s.r.o.' }],
-  creator: 'Medicus Services s.r.o.',
-  publisher: 'Medicus Services s.r.o.',
+  authors: [{ name: 'MEDICUS SERVICES s.r.o.' }],
+  creator: 'MEDICUS SERVICES s.r.o.',
+  publisher: 'MEDICUS SERVICES s.r.o.',
   alternates: {
     canonical: '/',
   },

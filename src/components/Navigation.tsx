@@ -28,7 +28,7 @@ export default function Navigation() {
             <span className="text-[0.65rem] text-brand-teal">Kardiologie</span>
             <span className="text-base tracking-[0.15em] leading-tight">Brandýs nad Labem</span>
             <span className="text-[0.6rem] font-semibold tracking-[0.08em] text-brand-slate normal-case leading-tight group-hover:text-brand-navy">
-              Medicus Services s.r.o.
+              MEDICUS SERVICES s.r.o.
             </span>
           </Link>
 
