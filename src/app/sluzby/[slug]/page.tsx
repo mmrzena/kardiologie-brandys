@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
 import { services } from '@/data/services'
+import { BackLink } from '@/components/BackLink'
 
 type ServiceDetailProps = {
   params: Promise<{
@@ -40,28 +40,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <Link
-            href="/sluzby"
-            className="inline-flex items-center text-sm font-semibold text-brand-navy transition hover:text-brand-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-red"
-          >
-            <svg
-              className="mr-2 h-4 w-4"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 13L5 8l5-5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <BackLink href="/sluzby" className="mb-6">
             Zpět na všechny služby
-          </Link>
+          </BackLink>
 
-          <p className="mt-6 text-xs uppercase tracking-[0.4em] text-brand-teal">
+          <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">
             {service.categories.join(' • ')}
           </p>
           <h1 className="mt-4 text-4xl font-semibold text-brand-navy">{service.title}</h1>

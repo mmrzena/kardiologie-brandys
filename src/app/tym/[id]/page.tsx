@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getStaffMember } from '@/data/staff'
+import { BackLink } from '@/components/BackLink'
 
 interface StaffDetailPageProps {
   params: Promise<{
@@ -20,12 +20,9 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <Link
-            href="/o-nas#nas-tym"
-            className="text-brand-red hover:text-brand-red-dark transition mb-6 inline-block"
-          >
-            ← Zpět na tým
-          </Link>
+          <BackLink href="/o-nas#nas-tym" className="mb-6">
+            Zpět na tým
+          </BackLink>
 
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="md:flex">
