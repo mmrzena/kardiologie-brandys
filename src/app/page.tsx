@@ -75,6 +75,13 @@ export default function Home() {
                 <ArrowUpRightIcon />
               </Link>
               <Link
+                href="/kontakt?topic=ostatní"
+                className="inline-flex items-center gap-2 rounded-full bg-brand-teal px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-teal/30 transition hover:bg-brand-teal/90"
+              >
+                Dotaz k návštěvě
+                <ArrowUpRightIcon />
+              </Link>
+              <Link
                 href="/sluzby"
                 className="inline-flex items-center gap-2 rounded-full border border-white/40 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >

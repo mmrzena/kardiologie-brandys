@@ -54,13 +54,13 @@ export default function ServicesPage() {
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
                 href="/kontakt?topic=vyšetření"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg"
+                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg transition hover:bg-white/90"
               >
                 Kontaktujte nás
               </Link>
               <Link
                 href="/cenik"
-                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white"
+                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 Zobrazit ceník
               </Link>

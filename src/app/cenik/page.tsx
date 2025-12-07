@@ -137,13 +137,13 @@ export default function PricingPage() {
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
                 href="/kontakt?topic=ostatní"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg"
+                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg transition hover:bg-white/90"
               >
                 Kontaktujte nás
               </Link>
               <a
                 href="tel:+420326396790"
-                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white"
+                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
               >
                 +420 326 396 790
               </a>

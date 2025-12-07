@@ -109,7 +109,7 @@ export default function Footer() {
             </div>
             <Link
               href="/kontakt?topic=vyšetření"
-              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20"
+              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
             >
               Spojit se s ambulancí
             </Link>

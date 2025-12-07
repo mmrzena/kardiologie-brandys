@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import AmbulanceSlideshow from '@/components/AmbulanceSlideshow'
 import { StaffMember, doctorArotmologists, doctors, nurses, researches } from '@/data/staff'
+import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 
 const renderStaffGrid = (members: StaffMember[]) => (
   <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -164,7 +165,7 @@ export default function AboutPage() {
                 <div className="rounded-2xl border border-brand-gray/80 bg-brand-gray/50 p-4 text-sm text-brand-navy">
                   <p>
                     <strong>Tel.:</strong>{' '}
-                    <a href="tel:+420702195166" className="hover:text-brand-red">
+                    <a href="tel:+420702195166" className="transition hover:text-brand-red">
                       +420 702 195 166
                     </a>
                   </p>
@@ -172,7 +173,7 @@ export default function AboutPage() {
                     <strong>Email:</strong>{' '}
                     <a
                       href="mailto:karolina.krupickova@kardiologiebrandys.cz"
-                      className="hover:text-brand-red"
+                      className="transition hover:text-brand-red"
                     >
                       karolina.krupickova@kardiologiebrandys.cz
                     </a>
@@ -201,7 +202,7 @@ export default function AboutPage() {
                   className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
                 >
                   Prohlédnout služby
-                  <span aria-hidden="true">→</span>
+                  <ArrowUpRightIcon />
                 </Link>
               </div>
             </div>
