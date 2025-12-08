@@ -11,7 +11,7 @@ export default function Navigation() {
 
   const links = [
     { href: '/', label: 'Domů' },
-    { href: '/o-nas', label: 'O nás' },
+    { href: '/ordinace', label: 'Ordinace' },
     { href: '/sluzby', label: 'Služby' },
     { href: '/cenik', label: 'Ceník' },
     { href: '/kontakt', label: 'Kontakt' },

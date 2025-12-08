@@ -3,7 +3,7 @@ import { insurers } from '@/lib/insurers'
 
 const navigation = [
   { label: 'Domů', href: '/' },
-  { label: 'O nás', href: '/o-nas' },
+  { label: 'Ordinace', href: '/ordinace' },
   { label: 'Služby', href: '/sluzby' },
   { label: 'Ceník', href: '/cenik' },
   { label: 'Kontakt', href: '/kontakt' },

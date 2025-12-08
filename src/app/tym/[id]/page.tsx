@@ -20,7 +20,7 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <BackLink href="/o-nas#nas-tym" className="mb-6">
+          <BackLink href="/ordinace#nas-tym" className="mb-6">
             Zpět na tým
           </BackLink>
 

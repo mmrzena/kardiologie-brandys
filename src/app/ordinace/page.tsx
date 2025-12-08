@@ -30,7 +30,7 @@ const renderStaffGrid = (members: StaffMember[]) => (
   </div>
 )
 
-export default function AboutPage() {
+export default function OrdinacePage() {
   const totalMembers = doctors.length + nurses.length + researches.length
 
   return (
