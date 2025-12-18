@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
+import { TOPIC } from '@/data/topics'
 
 type PricingItem = {
   name: string
@@ -160,7 +161,7 @@ export default function PricingPage() {
             <h2 className="text-3xl font-semibold">Máte dotaz k ceníku?</h2>
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
-                href="/kontakt?topic=ostatní"
+                href={`/kontakt?topic=${TOPIC.OTHER}`}
                 className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg transition hover:bg-white/90"
               >
                 Kontaktujte nás

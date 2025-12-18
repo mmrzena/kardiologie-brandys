@@ -4,6 +4,7 @@ import Link from 'next/link'
 
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { services } from '@/data/services'
+import { TOPIC } from '@/data/topics'
 
 export default function ServicesPage() {
   return (
@@ -48,7 +49,7 @@ export default function ServicesPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-4">
               <Link
-                href="/kontakt?topic=vyšetření"
+                href={`/kontakt?topic=${TOPIC.OBJEDNANI}`}
                 className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg transition hover:bg-white/90"
               >
                 Kontaktujte nás

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import InsuranceLogos from '@/components/InsuranceLogos'
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { announcements } from '@/data/announcements'
+import { TOPIC } from '@/data/topics'
 
 const services = [
   {
@@ -65,14 +66,14 @@ export default function Home() {
 
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/kontakt?topic=vyšetření"
+                href={`/kontakt?topic=${TOPIC.OBJEDNANI}`}
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Objednat na vyšetření
                 <ArrowUpRightIcon />
               </Link>
               <Link
-                href="/kontakt?topic=recept"
+                href={`/kontakt?topic=${TOPIC.RECEPT}`}
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Žádost o recept
@@ -204,7 +205,7 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-4 md:justify-end">
                 <Link
-                  href="/kontakt?topic=poradna"
+                  href={`/kontakt?topic=${TOPIC.PORADNA}`}
                   className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
                 >
                   Napište nám

@@ -3,14 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
-
-const TOPIC_OPTIONS = [
-  { value: 'Vyšetření', label: 'Objednání nebo změna termínu' },
-  { value: 'Poradna', label: 'Kardiologická poradna' },
-  { value: 'Sportovci', label: 'Sportovci' },
-  { value: 'Recept', label: 'Žádost o recept' },
-  { value: 'Ostatní', label: 'Ostatní' },
-] as const
+import { TOPIC_OPTIONS } from '@/data/topics'
 
 const normalizeTopicParam = (value: string | null) => {
   if (!value) return null

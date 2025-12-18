@@ -1,10 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
+import { TOPIC_OPTIONS, TOPIC } from '@/data/topics'
 
-// Poradna - jikru@volny.cz
-// Sportovi - karolina.krupickova@gmail.com
-// ostatni veci - kardiologie.brandys@seznam.cz
+// Email routing by topic (configured via environment variables):
+// EMAIL_PORADNA - for poradna topic
+// EMAIL_SPORTOVCI - for sportovci topic
+// EMAIL_DEFAULT - for objednani, recept, ostatni topics (fallback)
+
+function getRecipientEmail(topic: string): string {
+  switch (topic) {
+    case TOPIC.PORADNA:
+      return (
+        process.env.EMAIL_PORADNA || process.env.EMAIL_DEFAULT || 'kardiologie.brandys@seznam.cz'
+      )
+    case TOPIC.SPORTOVCI:
+      return (
+        process.env.EMAIL_SPORTOVCI || process.env.EMAIL_DEFAULT || 'kardiologie.brandys@seznam.cz'
+      )
+    case TOPIC.OBJEDNANI:
+    case TOPIC.RECEPT:
+    case TOPIC.OTHER:
+    default:
+      return process.env.EMAIL_DEFAULT || 'kardiologie.brandys@seznam.cz'
+  }
+}
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
@@ -14,10 +34,10 @@ const contactSchema = z.object({
   message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
 })
 
-function logEmail(validatedData: z.infer<typeof contactSchema>) {
+function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: string) {
   console.log('\n==================== EMAIL (DEV MODE) ====================')
   console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
-  console.log('To:', process.env.EMAIL_TO || 'doctor@kardiologiebrandys.cz')
+  console.log('To:', recipientEmail)
   console.log('Reply-To:', validatedData.email)
   console.log('Subject:', `(${validatedData.topic}) Nová zpráva z webu - ${validatedData.name}`)
   console.log('-----------------------------------------------------------')
@@ -37,15 +57,17 @@ export async function POST(request: NextRequest) {
     // Validate input
     const validatedData = contactSchema.parse(body)
 
+    // Get recipient email based on topic
+    const recipientEmail = getRecipientEmail(validatedData.topic)
+
     const useMockEmail =
       process.env.NEXT_PUBLIC_USE_MOCK_DB === 'true' ||
       !process.env.EMAIL_HOST ||
       !process.env.EMAIL_USER ||
-      !process.env.EMAIL_PASSWORD ||
-      !process.env.EMAIL_TO
+      !process.env.EMAIL_PASSWORD
 
     if (useMockEmail) {
-      logEmail(validatedData)
+      logEmail(validatedData, recipientEmail)
     } else {
       try {
         const transporter = nodemailer.createTransport({
@@ -58,17 +80,21 @@ export async function POST(request: NextRequest) {
           },
         })
 
+        const topicLabel =
+          TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
+          validatedData.topic
+
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
-          to: process.env.EMAIL_TO,
+          to: recipientEmail,
           replyTo: validatedData.email,
-          subject: `(${validatedData.topic}) Nová zpráva z webu - ${validatedData.name}`,
+          subject: `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`,
           html: `
             <h2>Nová zpráva z kontaktního formuláře</h2>
             <p><strong>Jméno:</strong> ${validatedData.name}</p>
             <p><strong>Email:</strong> ${validatedData.email}</p>
             ${validatedData.phone ? `<p><strong>Telefon:</strong> ${validatedData.phone}</p>` : ''}
-            <p><strong>Téma:</strong> ${validatedData.topic}</p>
+            <p><strong>Téma:</strong> ${topicLabel}</p>
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
           `,
@@ -78,7 +104,7 @@ Nová zpráva z kontaktního formuláře
 Jméno: ${validatedData.name}
 Email: ${validatedData.email}
 ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
-Téma: ${validatedData.topic}
+Téma: ${topicLabel}
 Zpráva:
 ${validatedData.message}
           `,
