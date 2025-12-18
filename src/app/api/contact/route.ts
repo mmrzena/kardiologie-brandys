@@ -129,7 +129,7 @@ ${validatedData.message}
 
         // Send confirmation email to user
         await transporter.sendMail({
-          from: recipientEmail,
+          from: process.env.EMAIL_USER,
           to: validatedData.email,
           replyTo: recipientEmail,
           subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
