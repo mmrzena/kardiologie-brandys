@@ -20,9 +20,7 @@ export default function Footer() {
             </p>
             <h3 className="text-2xl font-semibold mb-4">Kardiologie Brandýs</h3>
             <p className="text-sm text-gray-300 leading-relaxed mb-6">
-              Precizní diagnostika, specializovaná arytmologická poradna a tým lékařů s praxí na
-              špičkových klinikách. Vaše srdce sledujeme s kombinací moderních technologií a
-              osobního přístupu.
+              Více než 30 let zkušeností, moderní vybavení a aktuální lékařské postupy
             </p>
             <div className="mt-6 gap-3 text-sm text-gray-200 flex flex-wrap">
               {insurers.map((insurer) => (
@@ -44,7 +42,7 @@ export default function Footer() {
             <div className="space-y-3 text-sm text-gray-300">
               <p>Nádražní 1317/5, 250 01 Brandýs nad Labem</p>
               <div>
-                <p className="text-white font-medium">Objednávky</p>
+                <p className="text-white font-medium">Pevná linka</p>
                 <a className="hover:text-brand-teal transition" href="tel:+420326396790">
                   +420 326 396 790
                 </a>
@@ -96,23 +94,6 @@ export default function Footer() {
                 <dd>7:30–15:00</dd>
               </div>
             </dl>
-          </div>
-        </div>
-
-        <div className="mt-12 rounded-3xl border border-white/20 bg-white/5 p-6 backdrop-blur">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.4em] text-brand-teal/80">
-                Potřebujete termín?
-              </p>
-              <h4 className="text-xl font-semibold mt-2">Napište nám</h4>
-            </div>
-            <Link
-              href="/kontakt?topic=vyšetření"
-              className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
-            >
-              Spojit se s ambulancí
-            </Link>
           </div>
         </div>
 

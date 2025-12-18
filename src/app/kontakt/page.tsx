@@ -5,8 +5,8 @@ import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 
 const TOPIC_OPTIONS = [
-  { value: 'Vyšetření', label: 'Vyšetření' },
-  { value: 'Poradna', label: 'Poradna' },
+  { value: 'Vyšetření', label: 'Objednání nebo změna termínu' },
+  { value: 'Poradna', label: 'Kardiologická poradna' },
   { value: 'Sportovci', label: 'Sportovci' },
   { value: 'Recept', label: 'Žádost o recept' },
   { value: 'Ostatní', label: 'Ostatní' },
@@ -170,7 +170,7 @@ function ContactPageContent() {
                     <p>Nádražní 1317/5, 250 01 Brandýs nad Labem</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-brand-navy">Telefon – objednávky</p>
+                    <p className="font-semibold text-brand-navy">Pevná linka</p>
                     <a
                       href="tel:+420326396790"
                       className="text-brand-navy hover:text-brand-red transition"
@@ -195,10 +195,6 @@ function ContactPageContent() {
                     >
                       kardiologie.brandys@seznam.cz
                     </a>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-brand-navy">Fax</p>
-                    <p>+420 326 312 684</p>
                   </div>
                   <div>
                     <p className="font-semibold text-brand-navy">IČO</p>

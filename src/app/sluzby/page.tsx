@@ -23,26 +23,21 @@ export default function ServicesPage() {
 
           <section className="grid gap-6 md:grid-cols-2">
             {services.map((service) => (
-              <div
+              <Link
                 key={service.slug}
-                className="flex h-full flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60"
+                href={`/sluzby/${service.slug}`}
+                className="group flex h-full flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/60 transition-all hover:shadow-xl hover:shadow-brand-gray/70 hover:border-brand-teal/40"
               >
-                <div>
-                  <h2 className="mt-3 text-2xl font-semibold text-brand-navy">{service.title}</h2>
-                  <p className="mt-3 text-sm text-brand-slate leading-relaxed">
-                    {service.description}
-                  </p>
+                <div className="flex items-start justify-between">
+                  <h2 className="mt-3 text-2xl font-semibold text-brand-navy group-hover:text-brand-teal transition-colors">
+                    {service.title}
+                  </h2>
+                  <ArrowUpRightIcon className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity text-brand-teal" />
                 </div>
-                <div className="mt-auto flex flex-wrap gap-3 pt-4">
-                  <Link
-                    href={`/sluzby/${service.slug}`}
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-brand-navy transition hover:text-brand-red"
-                  >
-                    Detail služby
-                    <ArrowUpRightIcon className="h-3 w-3" />
-                  </Link>
-                </div>
-              </div>
+                <p className="mt-3 text-sm text-brand-slate leading-relaxed">
+                  {service.description}
+                </p>
+              </Link>
             ))}
           </section>
 

@@ -13,7 +13,7 @@ export const announcements: Announcement[] = [
     message:
       'Ve středu 10. dubna bude ordinace z technických důvodů uzavřena. V urgentních případech využijte prosím cardiocentrum FN Motol.',
     startDate: '2024-04-08',
-    endDate: '2026-04-11',
+    endDate: '2025-04-11',
     link: '/kontakt',
     linkLabel: 'Zobrazit kontakty',
   },

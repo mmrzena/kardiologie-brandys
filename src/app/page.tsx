@@ -5,21 +5,27 @@ import { announcements } from '@/data/announcements'
 
 const services = [
   {
-    title: 'Komplexní diagnostika',
-    description: 'Echokardiografie, ergometrie, Holter EKG i 24h monitorace tlaku v jednom zázemí.',
+    title: 'Komplexní diagnostika a péče',
+    description:
+      'Našim pacientům zajišťujeme kardiologickou péči od vstupního vyšetření po pravidelné dlouhodobé kontroly.',
+    to: '/sluzby',
   },
   {
     title: 'Arytmologie',
-    description: 'Specializovaná poradna pod vedením prof. MUDr. Pavla Osmančíka, Ph.D.',
+    description:
+      'Specializovaná poradna a kontroly kardiostimulátorů pod vedením prof. MUDr. Pavla Osmančíka, Ph.D.',
+    to: '/sluzby/arytmologie',
   },
   {
     title: 'Vyšetření sportovců',
-    description:
-      'Preventivní balíčky pro vrcholové i amatérské sportovce, screening náhlých příhod.',
+    description: 'Preventivní screeningové vyšetření pro profesionální i amatérské sportovce.',
+    to: '/sluzby/vysetreni-sportovcu',
   },
   {
     title: 'Klinické studie',
-    description: 'Možnost zapojení do klinických studií inovativních léčebných postupů.',
+    description:
+      'Možnost zapojení do klinických studií, které umožňují pacientům přístup k inovativní léčbě pod odborným dohledem.',
+    to: '/sluzby/klinicke-studie',
   },
 ]
 
@@ -54,9 +60,7 @@ export default function Home() {
               </h1>
             </div>
             <p className="text-lg text-white/80">
-              O ambulanci se stará tým MUDr. Jiřího Krupičky. Navazujeme na standardy fakultních
-              nemocnic a přinášíme specializovanou arytmologickou poradnu, vyšetření sportovců i
-              klinický výzkum.
+              Více než 30 let zkušeností, moderní vybavení a aktuální lékařské postupy
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -72,13 +76,6 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg shadow-black/20 transition hover:bg-white/90"
               >
                 Žádost o recept
-                <ArrowUpRightIcon />
-              </Link>
-              <Link
-                href="/kontakt?topic=ostatní"
-                className="inline-flex items-center gap-2 rounded-full bg-brand-teal px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-teal/30 transition hover:bg-brand-teal/90"
-              >
-                Dotaz k návštěvě
                 <ArrowUpRightIcon />
               </Link>
               <Link
@@ -106,7 +103,7 @@ export default function Home() {
                   ['Pondělí', '7:00–17:00 • Arytmologie 17:00–19:30'],
                   ['Úterý', '7:00–16:00'],
                   ['Středa', '8:00–16:00'],
-                  ['Čtvrtek', '8:00–15:00 • Sportovci 15:30'],
+                  ['Čtvrtek', '8:00–15:00 • Sportovci od 15:30'],
                   ['Pátek', '7:30–15:00'],
                 ].map(([day, info]) => (
                   <div
@@ -164,44 +161,25 @@ export default function Home() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
-            <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Specializace</p>
-            <h2 className="text-3xl font-semibold mt-3 text-brand-navy">Na co se zaměřujeme</h2>
-            <p className="mt-3 text-base text-brand-slate max-w-2xl mx-auto">
-              Vycházíme z trendů moderních kardiologických klinik: kombinujeme diagnostické centrum,
-              edukaci pacientů i precizní navazující péči.
-            </p>
+            <h2 className="text-3xl font-semibold mt-3 text-brand-navy">Naše služby</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {services.map((service) => (
-              <div
+              <Link
                 key={service.title}
-                className="group flex flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 "
+                href={service.to || '/sluzby'}
+                className="group flex flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 transition-all hover:shadow-xl hover:shadow-brand-gray/60 hover:border-brand-teal/40"
               >
-                <h3 className="mt-4 text-xl font-semibold text-brand-navy">{service.title}</h3>
+                <div className="flex items-start justify-between">
+                  <h3 className="mt-4 text-xl font-semibold text-brand-navy group-hover:text-brand-teal transition-colors">
+                    {service.title}
+                  </h3>
+                  <ArrowUpRightIcon className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-teal" />
+                </div>
                 <p className="mt-2 text-sm text-brand-slate leading-relaxed">
                   {service.description}
                 </p>
-                <div className="mt-auto flex flex-wrap gap-3 pt-4">
-                  {service.title === 'Vyšetření sportovců' && (
-                    <Link
-                      href="/kontakt?topic=sportovci"
-                      className="inline-flex items-center gap-2 rounded-full bg-brand-red px-4 py-2 text-xs font-semibold text-white shadow-md shadow-brand-red/20 transition hover:bg-brand-red-dark"
-                    >
-                      Rezervovat termín
-                      <ArrowUpRightIcon className="h-3 w-3" />
-                    </Link>
-                  )}
-                  {service.title === 'Klinické studie' && (
-                    <Link
-                      href={`/sluzby/klinicke-studie`}
-                      className="inline-flex items-center gap-2 text-xs  py-2 font-semibold text-brand-navy transition hover:text-brand-red"
-                    >
-                      Detail služby
-                      <ArrowUpRightIcon className="h-3 w-3" />
-                    </Link>
-                  )}
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -219,9 +197,9 @@ export default function Home() {
                   Kardiologická poradna
                 </h2>
                 <p className="mt-4 text-brand-slate">
-                  On-line poradna je pro každého, kdo má otázky nebo pochybnosti o svém zdravotním
-                  stavu, léčbě či doporučených zákrocích. Pomůžeme vám porozumět diagnóze, lékům i
-                  možnostem další péče.
+                  Nejste naším pacientem a máte otázky nebo pochybnosti o svém zdravotním stavu,
+                  léčbě či doporučených zákrocích? On-line poradna vám pomůže porozumět diagnóze,
+                  lékům i možnostem další péče.
                 </p>
               </div>
               <div className="flex flex-wrap gap-4 md:justify-end">
@@ -251,7 +229,7 @@ export default function Home() {
                 href="/cenik"
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-gray px-5 py-2 text-sm font-semibold text-brand-navy transition hover:border-brand-navy hover:bg-brand-gray/60"
               >
-                Detailní ceník
+                Ceník služeb nehrazených pojišťovnou
                 <ArrowUpRightIcon />
               </Link>
             </div>

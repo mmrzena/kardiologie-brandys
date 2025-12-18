@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
 
+// Poradna - jikru@volny.cz
+// Sportovi - karolina.krupickova@gmail.com
+// ostatni veci - kardiologie.brandys@seznam.cz
+
 const contactSchema = z.object({
   name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
   email: z.string().email('Neplatná emailová adresa'),
