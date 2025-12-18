@@ -196,57 +196,66 @@ export const services: Service[] = [
     detail: [
       {
         paragraphs: [
-          'Kardiologická a interní ambulance MEDICUS SERVICES s.r.o. v Brandýse nad Labem je jedním z řady center, která se ve spolupráci s farmaceutickým průmyslem, technologickými společnostmi a vědeckými institucemi podílí na realizaci klinických studií.',
-          'MUDr. Jiří Krupička, PhD. má jakožto hlavní zkoušející více než dvacetileté zkušenosti se studijními programy v oblasti kardiologie a vnitřního lékařství. Od roku 2010 se naše centrum podílelo na více než patnácti studiích.',
+          'Kardiologická a interní ambulance MEDICUS SERVICES s.r.o. v Brandýse nad Labem je jedním z řady center po celém světě, která se ve spolupráci s farmaceutickým průmyslem, technologickými společnostmi a vědeckými institucemi podílejí na realizaci klinických studií.',
+          'MUDr. Jiří Krupička, PhD. má jakožto hlavní zkoušející více než dvacetileté zkušenosti se studijními programy zaměřenými na výzkum v oblasti kardiologie a vnitřního lékařství. Dříve takto působil ve Fakultní nemocnici Královské Vinohrady a v Nemocnici Na Homolce a dnes se díky němu a jeho studijnímu týmu Kardiologická ambulance MEDICUS SERVICES s.r.o. v Brandýse nad Labem řadí k významným studijním centrům v České republice. Od roku 2010 se naše centrum podílelo na více než 25 studiích.',
         ],
       },
       {
         title: 'Co jsou to klinické studie?',
         paragraphs: [
-          'Klinické studie jsou nedílnou součástí moderní medicíny. Léčivé přípravky a technologie, které prošly předchozím vývojem a testováním, se pod dohledem lékařů začínají podávat prvním pacientům z řad veřejnosti.',
-          'Pacienti jsou do studií vybíráni na základě přísných kritérií – věku, diagnózy, medikace či laboratorních výsledků. Účast nabízí lékař, který vyhodnotí, že studie pacientovi přinese přínos.',
+          'Klinické studie jsou nedílnou součástí moderní medicíny. Jedná se o proces, kdy se léčivé přípravky či nové technologie, které se při předchozím několikaletém vývoji a testování prokázaly jako bezpečné a účinné, začínají za pečlivého dozoru lékařů a dalších odborníků podávat prvním pacientům z řad veřejnosti.',
+          'Pacienti jsou do klinických studií vybíráni na základě přísných vstupních a vylučovacích kritérií, která přesně definují např. stáří, pohlaví, diagnózu, přidružené choroby, užívanou medikaci či laboratorní výsledky. Účast ve studii nabízí lékař, který zná pacientův zdravotní stav a vyhodnotil, že účast v klinické studii by pacientovi mohla přinést zlepšení jeho zdravotního stavu a pokrok v jeho léčbě.',
         ],
       },
       {
-        title: 'Jak probíhají?',
+        title: 'Čím se zabývají klinické studie v oboru kardiologie?',
         paragraphs: [
-          'Průběh studie je dán protokolem odpovídajícím typu projektu. Pacient je o všem informován při první návštěvě a podepisuje informovaný souhlas, jehož kopii si odnáší domů.',
-          'O pacienta se stará lékař, studijní sestra i koordinátorka a jsou mu partnery po celou dobu projektu. Účast je dobrovolná a pacient ji může kdykoli ukončit.',
+          'Klinické studie, kterých se naše pracoviště účastní, se zabývají vývojem léčiv v široké škále indikací, jako je například prevence a léčba srdečního selhání, léčba vysokého krevního tlaku, léčba aterosklerózy a dalších projevů poruchy metabolismu tuků nebo antikoagulace („ředění krve") při některých poruchách srdečního rytmu. V několika posledních letech u nás probíhají také studie, jejichž cílem je průkaz účinnosti a bezpečnosti moderních léčiv, určených k léčbě obezity a zdravotních komplikací s obezitou spojených. Vzhledem k ambulantnímu charakteru našeho pracoviště se neúčastníme studií v oblasti tzv. intervenční kardiologie, jako je např. léčba akutního infarktu myokardu nebo vývoj nových přístrojů na kontrolu srdečního rytmu, tzv. pacemakerů.',
         ],
       },
       {
-        title: 'Co pacientovi přinese účast?',
+        title: 'Jak studie probíhají?',
         paragraphs: [
-          'Hlavním přínosem je přístup k nejmodernější léčbě hrazené sponzorem projektu. Léčba má hodnotu desítek až stovek tisíc korun a pacient se k ní dostane o několik let dříve než běžně.',
-          'Součástí je nadstandardní lékařský dohled a proplácení cestovného. Pacient tak získá intenzivní péči bez dalších nákladů.',
+          'Průběh se vždy odvíjí podle předem jasně daného plánu, který odpovídá požadavkům a typu dané studie. O podstatě studie a jejím průběhu je pacient vždy informován při své první návštěvě, na které zároveň podepisuje informovaný souhlas, kde je daná studie podrobně popsána. Stejnopis informovaného souhlasu si pacient odnáší domů.',
+          'Kromě lékaře se o pacienta stará také studijní sestra spolu se studijní koordinátorkou. Po celou dobu studie jsou pro pacienta partnery, na které se může kdykoli obrátit.',
+          'Účast ve studii je zcela dobrovolná. Pokud pacient účast ve studii odmítne, zůstává nadále v naší ambulanci, jak tomu bylo doposud. I v průběhu studie se může pacient rozhodnout ukončit svoje další pokračování ve studii.',
         ],
       },
       {
-        title: 'Naruší účast stávající léčbu?',
+        title: 'Co pacientovi přinese účast ve studii?',
         paragraphs: [
-          'Ne. Klinická studie znamená nadstavbu stávající léčby. Nejde o přerušení ani zásadní změnu terapie, ale o doplněk, který může zdravotní stav dále zlepšit.',
-          'Pacient pokračuje v pravidelných kontrolách u všech svých lékařů a studie nenahrazuje péči jiných specialistů.',
+          'V první řadě samozřejmě očekávané zlepšení zdravotního stavu díky možnosti být léčen nejmodernější dostupnou léčbou, která je po celou dobu hrazená sponzorem projektu. Hodnota užívané léčby se obvykle pohybuje v rámci desítek až stovek tisíc korun. Pacient v klinické studii se dostává k dané medikaci o několik let dříve, než „běžný" pacient, který lék může dostat až po jeho schválení a stanovení úhrady zdravotními pojišťovnami. Přínosem účasti ve studii je také nadstandardní lékařský dohled po celou dobu studie.',
+          'Účast neznamená pro pacienta žádný finanční náklad, jelikož cestovné je průběžně propláceno.',
+        ],
+      },
+      {
+        title: 'Naruší účast ve studii stávající léčbu?',
+        paragraphs: [
+          'Ne. Účast v klinické studii pro pacienta znamená nadstavbu jeho stávající léčby. Nejedná se o změnu či přerušení současné léčby, ale pouze o doplněk, který má ještě zlepšit zdravotní stav za pomoci nové medikace a nových odborných poznatků.',
+          'Pacient dále dochází na pravidelné kontroly ke všem svým lékařům tak, jak byl doposud zvyklý. Účast ve studii v žádném případě nenahrazuje léčbu u jiných specialistů ani u nás v ambulanci.',
         ],
       },
       {
         title: 'Existují nějaká rizika?',
         paragraphs: [
-          'Bezpečnost a zdraví pacienta je vždy na prvním místě. Pacient je v pravidelném kontaktu s ambulancí, absolvuje časté laboratorní kontroly a jakmile lékař vyhodnotí, že léčba není vhodná, medikaci upraví nebo účast ukončí.',
-          'Studie probíhají podle standardů GCP a dohlíží na ně zadavatel, státní i mezinárodní autority a etické komise.',
+          'Bezpečnost a zdraví pacienta je vždy na prvním místě. Po celou dobu studie je pacient pod nadstandardním lékařským dohledem, v pravidelném kontaktu s ambulancí. Laboratorní kontroly, které jsou nadstandardně časté, jsou rozsahem sledovaných parametrů velmi široké. V okamžiku, kdy lékař vyhodnotí, že léčba není pro pacienta nadále vhodná, dochází k úpravě medikace či ukončení účasti ve studii.',
+          'Klinické studie probíhají podle jasně definovaných celosvětových standardů (jsou nazývány GCP = Good Clinical Practice neboli správná klinická praxe) a na celém procesu se podílí pouze vyškolení odborníci. Zadavatel studie a kontrolní autority (Státní ústav pro kontrolu léčiv v ČR, EMA v Evropě a FDA v USA) vždy pečlivě dohlíží na dodržování všech postupů. Provádění studie je též kontrolováno etickou komisí před a v průběhu studie. Těmito opatřeními se míra rizika zcela minimalizuje, byť jisté bezpečnostní riziko, které je ovšem spojené s jakoukoliv diagnostickou či léčebnou procedurou nebo podáním (i již schváleného) léčiva, pochopitelně zůstává.',
         ],
       },
       {
-        title: 'Je možné účast ukončit?',
+        title: 'Je možné účast ukončit předčasně?',
         paragraphs: [
-          'Účast lze kdykoli ukončit bez udání důvodu. Pacient zůstává v péči ambulance a je nadále léčen standardní cestou.',
+          'Účast ve studii je zcela dobrovolná, můžete ji tak kdykoli ukončit bez udání důvodu. V takovém případě samozřejmě nadále zůstáváte pacientem naší ambulance a jste léčeni standardní cestou.',
         ],
       },
       {
-        title: 'Jaké jsou výsledky?',
+        title: 'Jaké jsou výsledky takovýchto projektů?',
         paragraphs: [
-          'Výsledkem klinických studií bývá uvedení nových léčiv či technologií na trh, případně rozšíření indikací stávajících terapií.',
-          'U observačních studií vznikají cenná data, která se dál využívají při vývoji nových léčiv, postupů či přístrojů. Přehled probíhajících studií najdete na stránkách SÚKL.',
-          'Máte zájem o účast nebo se chcete na něco zeptat? Napište na studie@kardiologiebrandys.cz nebo volejte 326 320 112.',
+          'Výsledkem klinických studií obvykle bývá uvedení daného léčiva na trh, tedy jeho zpřístupnění široké veřejnosti. Může se ale také jednat o výzkum již standardně používaného léčiva v nové indikaci.',
+          'V případě observačních studií, kdy se zpravidla jedná pouze o sběr dat, jsou pak výsledkem důležité informace, které se dále využívají ve farmacii při vývoji nových léčiv a postupů.',
+          'Stejné postupy se týkají vývoje přístrojů, lékařského instrumentaria a podobně.',
+          'Na stránkách Státního úřadu pro kontrolu léčiv si můžete vyhledat všechny probíhající i ukončené studie.',
+          'Nenašli jste odpovědi na své otázky? Máte zájem o účast v klinické studii a zajímá Vás, jestli jste vhodným kandidátem? Napište nám na studie@kardiologiebrandys.cz nebo volejte 326 320 112.',
         ],
       },
     ],

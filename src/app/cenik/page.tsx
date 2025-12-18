@@ -99,11 +99,13 @@ export default function PricingPage() {
               Platnost od 1. 1. 2025
             </p>
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">Ceník</h1>
-            <div className="mt-6 rounded-3xl border border-dashed border-brand-gray/70 bg-brand-gray/60 p-6 text-sm text-brand-navy">
+            <div className="mt-6 space-y-3 rounded-3xl border border-dashed border-brand-gray/70 bg-brand-gray/60 p-6 text-sm text-brand-navy">
               <p className="font-semibold">Pojišťovny</p>
               <p className="text-brand-slate">
                 Máme smlouvy s uvedenými zdravotními pojišťovnami, které hradí péči pojištěným
                 pacientům, kteří k nám přichází s žádankou či na doporučení jiného specialisty.
+              </p>
+              <p className="text-brand-slate">
                 Vyšetření dle ceníku hradí pouze nepojištění pacienti, případně ti, kteří se chtějí
                 nechat vyšetřit bez předchozí kardiologické indikace (bez žádanky či doporučení
                 jiného specialisty).
