@@ -35,18 +35,34 @@ const contactSchema = z.object({
 })
 
 function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: string) {
-  console.log('\n==================== EMAIL (DEV MODE) ====================')
+  const topicLabel =
+    TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
+    validatedData.topic
+
+  console.log('\n=============== EMAIL TO CLINIC (DEV MODE) ===============')
   console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
   console.log('To:', recipientEmail)
   console.log('Reply-To:', validatedData.email)
-  console.log('Subject:', `(${validatedData.topic}) Nová zpráva z webu - ${validatedData.name}`)
+  console.log('Subject:', `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`)
   console.log('-----------------------------------------------------------')
   console.log('Jméno:', validatedData.name)
   console.log('Email:', validatedData.email)
   if (validatedData.phone) console.log('Telefon:', validatedData.phone)
-  console.log('Téma:', validatedData.topic)
+  console.log('Téma:', topicLabel)
   console.log('\nZpráva:')
   console.log(validatedData.message)
+  console.log('===========================================================\n')
+
+  console.log('\n=========== CONFIRMATION EMAIL TO USER (DEV MODE) =========')
+  console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
+  console.log('To:', validatedData.email)
+  console.log('Subject: Potvrzení přijetí zprávy - Kardiologie Brandýs')
+  console.log('-----------------------------------------------------------')
+  console.log(`Dobrý den ${validatedData.name},`)
+  console.log('děkujeme za odeslání zprávy.')
+  console.log('\nShrnutí:')
+  console.log('Téma:', topicLabel)
+  console.log('Zpráva:', validatedData.message)
   console.log('===========================================================\n')
 }
 
@@ -84,6 +100,7 @@ export async function POST(request: NextRequest) {
           TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
           validatedData.topic
 
+        // Send email to clinic
         await transporter.sendMail({
           from: process.env.EMAIL_USER,
           to: recipientEmail,
@@ -107,6 +124,54 @@ ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
 Téma: ${topicLabel}
 Zpráva:
 ${validatedData.message}
+          `,
+        })
+
+        // Send confirmation email to user
+        await transporter.sendMail({
+          from: recipientEmail,
+          to: validatedData.email,
+          replyTo: recipientEmail,
+          subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
+          html: `
+            <h2>Děkujeme za vaši zprávu</h2>
+            <p>Dobrý den ${validatedData.name},</p>
+            <p>děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.</p>
+
+            <h3>Shrnutí vaší zprávy:</h3>
+            <p><strong>Téma:</strong> ${topicLabel}</p>
+            <p><strong>Zpráva:</strong></p>
+            <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
+
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+
+            <p style="font-size: 14px; color: #6b7280;">
+              <strong>Kardiologická ambulance MEDICUS SERVICES s.r.o.</strong><br>
+              Nádražní 1317/5, 250 01 Brandýs nad Labem<br>
+              Telefon: <a href="tel:+420326396790">+420 326 396 790</a><br>
+              Email: kardiologie.brandys@seznam.cz<br>
+              Web: <a href="https://kardiologiebrandys.cz">kardiologiebrandys.cz</a>
+            </p>
+          `,
+          text: `
+Děkujeme za vaši zprávu
+
+Dobrý den ${validatedData.name},
+
+děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.
+
+Shrnutí vaší zprávy:
+Téma: ${topicLabel}
+Zpráva:
+${validatedData.message}
+
+---
+
+Kardiologická ambulance MEDICUS SERVICES s.r.o.
+Nádražní 1317/5, 250 01 Brandýs nad Labem
+Telefon: +420 326 396 790
+Email: kardiologie.brandys@seznam.cz
+Web: kardiologiebrandys.cz
           `,
         })
       } catch (emailError) {
