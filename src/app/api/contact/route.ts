@@ -156,7 +156,7 @@ ${validatedData.message}
           text: `
 Děkujeme za vaši zprávu
 
-Dobrý den ${validatedData.name},
+Dobrý den,
 
 děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.
 
