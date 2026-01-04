@@ -26,14 +26,10 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
 
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="md:flex">
-              {staff.photo_url ? (
+              {staff.src ? (
                 <div className="md:w-1/3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={staff.photo_url}
-                    alt={staff.name}
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={staff.src} alt={staff.name} className="w-full h-full object-cover" />
                 </div>
               ) : (
                 <div className="md:w-1/3 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center min-h-[300px]">

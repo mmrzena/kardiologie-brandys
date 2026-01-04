@@ -11,10 +11,10 @@ const renderStaffGrid = (members: StaffMember[], renderTitle: boolean = false) =
         href={`/tym/${member.id}`}
         className="overflow-hidden rounded-3xl border border-brand-gray bg-white shadow-lg transition hover:border-brand-red/40 hover:shadow-xl"
       >
-        {member.photo_url ? (
+        {member.src ? (
           <div className="h-52 bg-gray-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={member.photo_url} alt={member.name} className="h-full w-full object-cover" />
+            <img src={member.src} alt={member.name} className="h-full w-full object-cover" />
           </div>
         ) : (
           <div className="flex h-52 items-center justify-center bg-gradient-to-br from-brand-blue/20 to-brand-teal/20 text-5xl">
