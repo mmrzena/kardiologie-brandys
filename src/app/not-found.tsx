@@ -15,11 +15,10 @@ export default function NotFound() {
             Stránka nenalezena
           </p>
           <h1 className="text-4xl font-semibold text-brand-navy sm:text-5xl">
-            Omlouváme se, tato adresa už neexistuje.
+            Omlouváme se, tato stránka neexistuje.
           </h1>
           <p className="text-lg text-brand-slate">
-            Některé starší stránky už neexistují. Pomůžeme vám dostat se zpět k důležitým informacím
-            o ambulanci, službách a kontaktu.
+            Některé starší odkazy už neexistují nebo byly přesunuty.
           </p>
 
           <div className="flex flex-wrap gap-3">
@@ -29,18 +28,6 @@ export default function NotFound() {
             >
               Zpět na úvod
               <ArrowUpRightIcon />
-            </Link>
-            <Link
-              href="/sluzby"
-              className="inline-flex items-center gap-2 rounded-full border border-brand-gray px-6 py-3 text-sm font-semibold text-brand-navy transition hover:border-brand-teal/50 hover:bg-white/80"
-            >
-              Přehled služeb
-            </Link>
-            <Link
-              href="/kontakt"
-              className="inline-flex items-center gap-2 rounded-full border border-brand-gray px-6 py-3 text-sm font-semibold text-brand-navy transition hover:border-brand-red/40 hover:bg-white/80"
-            >
-              Kontaktujte nás
             </Link>
           </div>
         </div>
