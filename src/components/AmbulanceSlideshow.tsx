@@ -137,7 +137,7 @@ export default function AmbulanceSlideshow() {
                 event.stopPropagation()
                 goTo(activeIndex - 1)
               }}
-              className="rounded-full bg-black/40 p-4 text-white backdrop-blur transition hover:bg-black/60"
+              className="rounded-full bg-white/30 p-4 text-white transition hover:bg-white/60"
             >
               {'<'}
             </button>
@@ -148,7 +148,7 @@ export default function AmbulanceSlideshow() {
                 event.stopPropagation()
                 goTo(activeIndex + 1)
               }}
-              className="rounded-full bg-black/40 p-4 text-white backdrop-blur transition hover:bg-black/60"
+              className="rounded-full bg-white/30 p-4 text-white transition hover:bg-white/60"
             >
               {'>'}
             </button>
