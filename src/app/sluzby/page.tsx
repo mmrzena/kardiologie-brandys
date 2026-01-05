@@ -1,10 +1,15 @@
-'use client'
-
 import Link from 'next/link'
+import type { Metadata } from 'next'
 
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { services } from '@/data/services'
 import { TOPIC } from '@/data/topics'
+
+export const metadata: Metadata = {
+  title: 'Naše služby',
+  description:
+    'Komplexní kardiologická péče v Brandýse nad Labem: EKG, echokardiografie, zátěžové testy, arytmologie, vyšetření sportovců a klinické studie.',
+}
 
 export default function ServicesPage() {
   return (

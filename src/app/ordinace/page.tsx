@@ -1,7 +1,14 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import AmbulanceSlideshow from '@/components/AmbulanceSlideshow'
 import { StaffMember, doctors, nurses, researches } from '@/data/staff'
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
+
+export const metadata: Metadata = {
+  title: 'O ambulanci',
+  description:
+    'Kardiologická ambulance MUDr. Jiřího Krupičky v Brandýse nad Labem. Profesionální tým lékařů a sester, moderní vybavení a více než 30 let zkušeností.',
+}
 
 const renderStaffGrid = (members: StaffMember[], renderTitle: boolean = false) => (
   <div className="mx-auto grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

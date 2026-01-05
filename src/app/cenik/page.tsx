@@ -1,6 +1,13 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import InsuranceLogos from '@/components/InsuranceLogos'
 import { TOPIC } from '@/data/topics'
+
+export const metadata: Metadata = {
+  title: 'Ceník',
+  description:
+    'Ceník kardiologických služeb nehrazených pojišťovnou: echokardiografie, zátěžové testy, vyšetření sportovců, holter EKG, monitorace tlaku.',
+}
 
 type PricingItem = {
   name: string
