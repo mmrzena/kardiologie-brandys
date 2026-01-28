@@ -107,7 +107,9 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
                     <p
                       key={`${service.slug}-${index}-paragraph-${paragraphIndex}`}
                       className={`text-sm leading-relaxed text-brand-slate ${
-                        paragraphIndex === 0 && !section.title ? 'text-base text-brand-navy' : 'mt-4'
+                        paragraphIndex === 0 && !section.title
+                          ? 'text-base text-brand-navy'
+                          : 'mt-4'
                       }`}
                     >
                       {parts.map((part, partIndex) => {
@@ -148,6 +150,27 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
               </section>
             ))}
           </div>
+
+          {service.slug === 'vysetreni-sportovcu' && (
+            <section className="mt-10 rounded-3xl border border-brand-gray bg-gradient-to-br from-brand-teal/5 via-white to-brand-blue/5 p-8 shadow-xl shadow-brand-gray/60">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.35em] text-brand-teal">Dotazník</p>
+                  <h2 className="mt-3 text-3xl font-semibold text-brand-navy">Srdce sportovce</h2>
+                  <p className="mt-3 text-sm text-brand-slate">
+                    Pro urychlení vyšetření si můžete stáhnout a předem vyplnit dotazník.
+                  </p>
+                </div>
+                <a
+                  href="/Dotaznik_Srdce-Sportovce.pdf"
+                  download
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
+                >
+                  Stáhnout dotazník
+                </a>
+              </div>
+            </section>
+          )}
         </div>
       </div>
     </main>

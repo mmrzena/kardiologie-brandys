@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
-import { TOPIC_OPTIONS } from '@/data/topics'
+import { TOPIC, TOPIC_OPTIONS } from '@/data/topics'
 
 const normalizeTopicParam = (value: string | null) => {
   if (!value) return null
@@ -38,15 +38,24 @@ function ContactPageContent() {
     email: '',
     phone: '',
     topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
+    birthYear: '',
     message: '',
   })
   const [appliedPrefill, setAppliedPrefill] = useState<string | null>(topicFromQuery ?? null)
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
 
   const mutation = useContactForm()
-  const validationMessages: Record<string, { missing: string; mismatch?: string }> = {
+  const validationMessages: Record<
+    string,
+    { missing: string; mismatch?: string; tooHigh?: string; tooLow?: string }
+  > = {
     topic: { missing: 'Vyberte prosím typ požadavku.' },
     name: { missing: 'Vyplňte prosím jméno a příjmení.' },
+    birthYear: {
+      missing: 'Vyplňte prosím rok narození.',
+      tooHigh: `Zadejte prosím rok nejvýše ${new Date().getFullYear()}.`,
+      tooLow: 'Zadejte prosím rok 1900 nebo vyšší.',
+    },
     email: {
       missing: 'Vyplňte prosím e-mail.',
       mismatch: 'Zadejte platný e-mail ve tvaru jmeno@example.com.',
@@ -93,6 +102,7 @@ function ContactPageContent() {
           email: '',
           phone: '',
           topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
+          birthYear: '',
           message: '',
         })
       },
@@ -116,6 +126,10 @@ function ContactPageContent() {
     target.setCustomValidity('')
     if (target.validity.valueMissing) {
       target.setCustomValidity(config.missing)
+    } else if (target.validity.rangeOverflow && config.tooHigh) {
+      target.setCustomValidity(config.tooHigh)
+    } else if (target.validity.rangeUnderflow && config.tooLow) {
+      target.setCustomValidity(config.tooLow)
     } else if (target.validity.typeMismatch && config.mismatch) {
       target.setCustomValidity(config.mismatch)
     }
@@ -163,22 +177,38 @@ function ContactPageContent() {
                     <p>Nádražní 1317/5, 250 01 Brandýs nad Labem</p>
                   </div>
                   <div>
-                    <p className="font-semibold text-brand-navy">Pevná linka</p>
-                    <a
-                      href="tel:+420326396790"
-                      className="text-brand-navy hover:text-brand-red transition"
-                    >
-                      +420 326 396 790
-                    </a>
+                    <p className="font-semibold text-brand-navy">Ordinace</p>
+                    <div className="mt-2 space-y-1 text-sm">
+                      <a
+                        href="tel:+420326396790"
+                        className="block text-brand-navy hover:text-brand-red transition"
+                      >
+                        Pevná linka: +420 326 396 790
+                      </a>
+                      <a
+                        href="tel:+420604415479"
+                        className="block text-brand-navy hover:text-brand-red transition"
+                      >
+                        Mobil: +420 604 415 479
+                      </a>
+                    </div>
                   </div>
                   <div>
-                    <p className="font-semibold text-brand-navy">Mobil</p>
-                    <a
-                      href="tel:+420604415479"
-                      className="text-brand-navy hover:text-brand-red transition"
-                    >
-                      +420 604 415 479
-                    </a>
+                    <p className="font-semibold text-brand-navy">Klinické studie</p>
+                    <div className="mt-2 space-y-1 text-sm">
+                      <a
+                        href="tel:+420326320112"
+                        className="block text-brand-navy hover:text-brand-red transition"
+                      >
+                        Pevná linka: +420 326 320 112
+                      </a>
+                      <a
+                        href="tel:+420725113508"
+                        className="block text-brand-navy hover:text-brand-red transition"
+                      >
+                        Mobil: +420 725 113 508
+                      </a>
+                    </div>
                   </div>
                   <div>
                     <p className="font-semibold text-brand-navy">Email</p>
@@ -275,6 +305,27 @@ function ContactPageContent() {
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
+                {(formData.topic === TOPIC.OBJEDNANI || formData.topic === TOPIC.RECEPT) && (
+                  <div>
+                    <label htmlFor="birthYear" className="text-sm font-semibold text-brand-navy">
+                      Rok narození *
+                    </label>
+                    <input
+                      id="birthYear"
+                      name="birthYear"
+                      type="number"
+                      inputMode="numeric"
+                      min="1900"
+                      max={new Date().getFullYear()}
+                      required
+                      value={formData.birthYear}
+                      onChange={handleChange}
+                      onInvalid={handleInvalid}
+                      onInput={handleValidityInput}
+                      className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                    />
+                  </div>
+                )}
                 <div>
                   <label htmlFor="email" className="text-sm font-semibold text-brand-navy">
                     Email *

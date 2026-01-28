@@ -26,13 +26,25 @@ function getRecipientEmail(topic: string): string {
   }
 }
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
-  email: z.string().email('Neplatná emailová adresa'),
-  phone: z.string().optional().or(z.literal('')),
-  topic: z.string().min(2, 'Vyberte prosím typ požadavku'),
-  message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
-})
+const contactSchema = z
+  .object({
+    name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
+    email: z.string().email('Neplatná emailová adresa'),
+    phone: z.string().optional().or(z.literal('')),
+    birthYear: z.string().optional().or(z.literal('')),
+    topic: z.string().min(2, 'Vyberte prosím typ požadavku'),
+    message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
+  })
+  .superRefine((data, ctx) => {
+    const needsBirthYear = data.topic === TOPIC.OBJEDNANI || data.topic === TOPIC.RECEPT
+    if (needsBirthYear && !data.birthYear) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Vyplňte prosím rok narození',
+        path: ['birthYear'],
+      })
+    }
+  })
 
 function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: string) {
   const topicLabel =
@@ -48,6 +60,7 @@ function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: 
   console.log('Jméno:', validatedData.name)
   console.log('Email:', validatedData.email)
   if (validatedData.phone) console.log('Telefon:', validatedData.phone)
+  if (validatedData.birthYear) console.log('Rok narození:', validatedData.birthYear)
   console.log('Téma:', topicLabel)
   console.log('\nZpráva:')
   console.log(validatedData.message)
@@ -111,6 +124,11 @@ export async function POST(request: NextRequest) {
             <p><strong>Jméno:</strong> ${validatedData.name}</p>
             <p><strong>Email:</strong> ${validatedData.email}</p>
             ${validatedData.phone ? `<p><strong>Telefon:</strong> ${validatedData.phone}</p>` : ''}
+            ${
+              validatedData.birthYear
+                ? `<p><strong>Rok narození:</strong> ${validatedData.birthYear}</p>`
+                : ''
+            }
             <p><strong>Téma:</strong> ${topicLabel}</p>
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
@@ -121,6 +139,7 @@ Nová zpráva z kontaktního formuláře
 Jméno: ${validatedData.name}
 Email: ${validatedData.email}
 ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
+${validatedData.birthYear ? `Rok narození: ${validatedData.birthYear}` : ''}
 Téma: ${topicLabel}
 Zpráva:
 ${validatedData.message}
@@ -135,7 +154,7 @@ ${validatedData.message}
           subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
           html: `
             <h2>Děkujeme za vaši zprávu</h2>
-            <p>Dobrý den ${validatedData.name},</p>
+            <p>Dobrý den,</p>
             <p>děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.</p>
 
             <h3>Shrnutí vaší zprávy:</h3>

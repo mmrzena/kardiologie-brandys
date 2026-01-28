@@ -46,27 +46,6 @@ export default function ServicesPage() {
               </Link>
             ))}
           </section>
-
-          <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue to-brand-blue-dark p-10 text-white shadow-2xl">
-            <h2 className="text-3xl font-semibold">Potřebujete poradit s výběrem vyšetření?</h2>
-            <p className="mt-3 text-white/80">
-              Zavolejte, nebo nám napište. Rádi vám pomůžeme vybrat vyšetření přesně pro vás.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-4">
-              <Link
-                href={`/kontakt?topic=${TOPIC.OBJEDNANI}`}
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-navy shadow-lg transition hover:bg-white/90"
-              >
-                Kontaktujte nás
-              </Link>
-              <Link
-                href="/cenik"
-                className="rounded-full border border-white/70 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                Zobrazit ceník
-              </Link>
-            </div>
-          </section>
         </div>
       </div>
     </main>

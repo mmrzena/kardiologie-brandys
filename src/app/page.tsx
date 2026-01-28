@@ -20,6 +20,7 @@ const services = [
   {
     title: 'Vyšetření sportovců',
     description: 'Preventivní screeningové vyšetření pro profesionální i amatérské sportovce.',
+    note: 'Dotazník ke stažení',
     to: '/sluzby/vysetreni-sportovcu',
   },
   {
@@ -180,6 +181,9 @@ export default function Home() {
                 <p className="mt-2 text-sm text-brand-slate leading-relaxed">
                   {service.description}
                 </p>
+                {service.note && (
+                  <p className="mt-3 text-xs font-semibold text-brand-slate">{service.note}</p>
+                )}
               </Link>
             ))}
           </div>
@@ -205,7 +209,7 @@ export default function Home() {
               </div>
               <div className="flex flex-wrap gap-4 md:justify-end">
                 <Link
-                  href={`/kontakt?topic=${TOPIC.PORADNA}`}
+                  href="/poradna"
                   className="inline-flex items-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
                 >
                   Napište nám

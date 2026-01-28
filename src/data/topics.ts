@@ -7,8 +7,7 @@ export const TOPIC = {
 } as const
 
 export const TOPIC_OPTIONS = [
-  { value: TOPIC.OBJEDNANI, label: 'Objednání nebo změna termínu' },
-  { value: TOPIC.PORADNA, label: 'Kardiologická poradna' },
+  { value: TOPIC.OBJEDNANI, label: 'Objednání, změna nebo zrušení termínu' },
   { value: TOPIC.SPORTOVCI, label: 'Sportovci' },
   { value: TOPIC.RECEPT, label: 'Žádost o recept' },
   { value: TOPIC.OTHER, label: 'Ostatní' },

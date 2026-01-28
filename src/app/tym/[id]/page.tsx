@@ -66,6 +66,17 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
                       </a>
                     </div>
                   )}
+                  {staff.type === 'research' && (
+                    <div className="mt-2">
+                      <span className="font-semibold text-gray-700">Mobil: </span>
+                      <a
+                        href="tel:+420604415479"
+                        className="text-brand-blue hover:text-brand-blue-dark transition"
+                      >
+                        +420 604 415 479
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
