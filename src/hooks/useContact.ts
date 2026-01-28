@@ -33,10 +33,15 @@ export function useContactForm() {
 
       if (!response.ok) {
         let errorMessage = 'Nepodařilo se odeslat zprávu'
-        try {
-          const error = await response.json()
-          errorMessage = error.error || errorMessage
-        } catch {
+        const contentType = response.headers.get('content-type') || ''
+        if (contentType.includes('application/json')) {
+          try {
+            const error = await response.json()
+            errorMessage = error.error || errorMessage
+          } catch {
+            // fall through to generic message
+          }
+        } else {
           const text = await response.text()
           if (response.status === 413 || text.includes('Request Entity Too Large')) {
             errorMessage = 'Soubor je příliš velký. Maximální velikost je 5 MB na soubor.'
