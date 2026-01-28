@@ -6,6 +6,7 @@ interface ContactFormData {
   phone?: string
   topic: string
   message: string
+  birthYear?: string
 }
 
 interface ContactResponse {
@@ -13,15 +14,21 @@ interface ContactResponse {
   data: unknown
 }
 
+type ContactPayload = ContactFormData | FormData
+
+const isFormData = (value: ContactPayload): value is FormData => value instanceof FormData
+
 export function useContactForm() {
   return useMutation({
-    mutationFn: async (formData: ContactFormData): Promise<ContactResponse> => {
+    mutationFn: async (formData: ContactPayload): Promise<ContactResponse> => {
       const response = await fetch('/api/contact', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        headers: isFormData(formData)
+          ? undefined
+          : {
+              'Content-Type': 'application/json',
+            },
+        body: isFormData(formData) ? formData : JSON.stringify(formData),
       })
 
       if (!response.ok) {

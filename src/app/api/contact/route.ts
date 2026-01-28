@@ -46,7 +46,20 @@ const contactSchema = z
     }
   })
 
-function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: string) {
+const allowedAttachmentTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
+const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024
+
+type AttachmentPayload = {
+  filename: string
+  contentType: string
+  content: Buffer
+}
+
+function logEmail(
+  validatedData: z.infer<typeof contactSchema>,
+  recipientEmail: string,
+  attachments: AttachmentPayload[] = [],
+) {
   const topicLabel =
     TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
     validatedData.topic
@@ -64,6 +77,12 @@ function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: 
   console.log('Téma:', topicLabel)
   console.log('\nZpráva:')
   console.log(validatedData.message)
+  if (attachments.length > 0) {
+    console.log(
+      'Přílohy:',
+      attachments.map((file) => `${file.filename} (${file.contentType})`).join(', '),
+    )
+  }
   console.log('===========================================================\n')
 
   console.log('\n=========== CONFIRMATION EMAIL TO USER (DEV MODE) =========')
@@ -81,10 +100,51 @@ function logEmail(validatedData: z.infer<typeof contactSchema>, recipientEmail: 
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    const contentType = request.headers.get('content-type') || ''
+    const isMultipart = contentType.includes('multipart/form-data')
+
+    const body = isMultipart ? null : await request.json()
+    const form = isMultipart ? await request.formData() : null
+
+    const parsedBody = isMultipart
+      ? {
+          name: String(form?.get('name') ?? ''),
+          email: String(form?.get('email') ?? ''),
+          phone: String(form?.get('phone') ?? ''),
+          birthYear: String(form?.get('birthYear') ?? ''),
+          topic: String(form?.get('topic') ?? ''),
+          message: String(form?.get('message') ?? ''),
+        }
+      : body
 
     // Validate input
-    const validatedData = contactSchema.parse(body)
+    const validatedData = contactSchema.parse(parsedBody)
+
+  let attachments: AttachmentPayload[] = []
+  if (isMultipart) {
+    const files = form?.getAll('attachments') ?? []
+    for (const entry of files) {
+      if (!(entry instanceof File) || entry.size === 0) continue
+      if (!allowedAttachmentTypes.has(entry.type)) {
+        return NextResponse.json(
+          { error: 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.' },
+          { status: 400 },
+        )
+      }
+      if (entry.size > MAX_ATTACHMENT_SIZE) {
+        return NextResponse.json(
+          { error: 'Maximální velikost jednoho souboru je 5 MB.' },
+          { status: 400 },
+        )
+      }
+      const buffer = Buffer.from(await entry.arrayBuffer())
+      attachments.push({
+        filename: entry.name,
+        contentType: entry.type,
+        content: buffer,
+      })
+    }
+  }
 
     // Get recipient email based on topic
     const recipientEmail = getRecipientEmail(validatedData.topic)
@@ -96,7 +156,7 @@ export async function POST(request: NextRequest) {
       !process.env.EMAIL_PASSWORD
 
     if (useMockEmail) {
-      logEmail(validatedData, recipientEmail)
+      logEmail(validatedData, recipientEmail, attachments)
     } else {
       try {
         const transporter = nodemailer.createTransport({
@@ -129,6 +189,13 @@ export async function POST(request: NextRequest) {
                 ? `<p><strong>Rok narození:</strong> ${validatedData.birthYear}</p>`
                 : ''
             }
+            ${
+              attachments.length > 0
+                ? `<p><strong>Přílohy:</strong> ${attachments
+                    .map((file) => file.filename)
+                    .join(', ')}</p>`
+                : ''
+            }
             <p><strong>Téma:</strong> ${topicLabel}</p>
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
@@ -140,10 +207,19 @@ Jméno: ${validatedData.name}
 Email: ${validatedData.email}
 ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
 ${validatedData.birthYear ? `Rok narození: ${validatedData.birthYear}` : ''}
+${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Téma: ${topicLabel}
 Zpráva:
 ${validatedData.message}
           `,
+          attachments:
+            attachments.length > 0
+              ? attachments.map((file) => ({
+                  filename: file.filename,
+                  content: file.content,
+                  contentType: file.contentType,
+                }))
+              : undefined,
         })
 
         // Send confirmation email to user
@@ -159,6 +235,13 @@ ${validatedData.message}
 
             <h3>Shrnutí vaší zprávy:</h3>
             <p><strong>Téma:</strong> ${topicLabel}</p>
+            ${
+              attachments.length > 0
+                ? `<p><strong>Přílohy:</strong> ${attachments
+                    .map((file) => file.filename)
+                    .join(', ')}</p>`
+                : ''
+            }
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
 
@@ -181,6 +264,7 @@ děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formulá�
 
 Shrnutí vaší zprávy:
 Téma: ${topicLabel}
+${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Zpráva:
 ${validatedData.message}
 

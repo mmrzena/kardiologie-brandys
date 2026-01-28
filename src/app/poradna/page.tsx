@@ -14,6 +14,9 @@ export default function PoradnaPage() {
     topic: TOPIC.PORADNA,
     message: '',
   })
+  const [formKey, setFormKey] = useState(0)
+  const [attachments, setAttachments] = useState<File[]>([])
+  const [attachmentError, setAttachmentError] = useState<string | null>(null)
   const mutation = useContactForm()
 
   const validationMessages: Record<string, { missing: string; mismatch?: string }> = {
@@ -28,7 +31,15 @@ export default function PoradnaPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    mutation.mutate(formData, {
+    const payload = new FormData()
+    payload.append('name', formData.name)
+    payload.append('email', formData.email)
+    payload.append('phone', formData.phone)
+    payload.append('topic', formData.topic)
+    payload.append('message', formData.message)
+    attachments.forEach((file) => payload.append('attachments', file))
+
+    mutation.mutate(payload, {
       onSuccess: () => {
         setFormData({
           name: '',
@@ -37,6 +48,9 @@ export default function PoradnaPage() {
           topic: TOPIC.PORADNA,
           message: '',
         })
+        setAttachments([])
+        setAttachmentError(null)
+        setFormKey((prev) => prev + 1)
       },
     })
   }
@@ -46,6 +60,37 @@ export default function PoradnaPage() {
       ...formData,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const MAX_FILE_SIZE = 5 * 1024 * 1024
+  const allowedTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? [])
+    if (files.length === 0) return
+
+    const nextFiles: File[] = []
+    let error: string | null = null
+
+    for (const file of files) {
+      if (!allowedTypes.has(file.type)) {
+        error = 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.'
+        continue
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        error = 'Maximální velikost jednoho souboru je 5 MB.'
+        continue
+      }
+      nextFiles.push(file)
+    }
+
+    setAttachments((prev) => [...prev, ...nextFiles])
+    setAttachmentError(error)
+    e.target.value = ''
+  }
+
+  const handleRemoveAttachment = (index: number) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== index))
   }
 
   const applyValidityMessage = (target: HTMLInputElement | HTMLTextAreaElement) => {
@@ -138,7 +183,12 @@ export default function PoradnaPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
+              <form
+                key={formKey}
+                onSubmit={handleSubmit}
+                className="mt-6 space-y-4"
+                lang="cs"
+              >
                 <div>
                   <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
                     Jméno a příjmení *
@@ -199,6 +249,45 @@ export default function PoradnaPage() {
                     onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
+                </div>
+                <div>
+                  <label htmlFor="attachment" className="text-sm font-semibold text-brand-navy">
+                    Přílohy (PDF, PNG, JPG)
+                  </label>
+                  <input
+                    id="attachment"
+                    name="attachments"
+                    type="file"
+                    multiple
+                    accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"
+                    onChange={handleFileChange}
+                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                  />
+                  <p className="mt-2 text-xs text-brand-slate">
+                    Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG. Max. 5 MB na soubor.
+                  </p>
+                  {attachmentError && (
+                    <p className="mt-2 text-xs text-brand-red">{attachmentError}</p>
+                  )}
+                  {attachments.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      {attachments.map((file, index) => (
+                        <div
+                          key={`${file.name}-${file.lastModified}-${index}`}
+                          className="flex items-center justify-between rounded-xl border border-brand-gray/60 bg-brand-gray/40 px-3 py-2 text-xs text-brand-navy"
+                        >
+                          <span className="truncate">{file.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveAttachment(index)}
+                            className="text-brand-red hover:text-brand-red-dark transition"
+                          >
+                            Odebrat
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button
                   type="submit"
