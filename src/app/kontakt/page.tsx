@@ -40,6 +40,8 @@ function ContactPageContent() {
     topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
     birthYear: '',
     message: '',
+    website: '',
+    startedAt: Date.now().toString(),
   })
   const [appliedPrefill, setAppliedPrefill] = useState<string | null>(topicFromQuery ?? null)
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
@@ -104,6 +106,8 @@ function ContactPageContent() {
           topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
           birthYear: '',
           message: '',
+          website: '',
+          startedAt: Date.now().toString(),
         })
       },
     })
@@ -269,6 +273,19 @@ function ContactPageContent() {
               )}
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
+                <div className="sr-only" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+                <input type="hidden" name="startedAt" value={formData.startedAt} readOnly />
                 <div>
                   <label htmlFor="topic" className="text-sm font-semibold text-brand-navy">
                     Typ požadavku *

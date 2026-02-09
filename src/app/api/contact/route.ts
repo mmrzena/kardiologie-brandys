@@ -34,6 +34,8 @@ const contactSchema = z
     birthYear: z.string().optional().or(z.literal('')),
     topic: z.string().min(2, 'Vyberte prosím typ požadavku'),
     message: z.string().min(10, 'Zpráva musí mít alespoň 10 znaků'),
+    website: z.string().optional().or(z.literal('')),
+    startedAt: z.string().min(1, 'Neplatný požadavek'),
   })
   .superRefine((data, ctx) => {
     const needsBirthYear = data.topic === TOPIC.OBJEDNANI || data.topic === TOPIC.RECEPT
@@ -44,15 +46,65 @@ const contactSchema = z
         path: ['birthYear'],
       })
     }
+    if (data.website && data.website.trim().length > 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Neplatný požadavek',
+        path: ['website'],
+      })
+    }
   })
+
+const MIN_FORM_FILL_TIME_MS = 10_000
+const MAX_FUTURE_SKEW_MS = 5 * 60 * 1000
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const RATE_LIMIT_MAX_PER_IP = 5
+const RATE_LIMIT_EMAIL_WINDOW_MS = 60 * 60 * 1000
+const RATE_LIMIT_MAX_PER_EMAIL = 3
 
 const allowedAttachmentTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024
+const MAX_ATTACHMENTS = 5
 
 type AttachmentPayload = {
   filename: string
   contentType: string
   content: Buffer
+}
+
+type RateLimitState = {
+  count: number
+  resetAt: number
+}
+
+const ipRateLimit = new Map<string, RateLimitState>()
+const emailRateLimit = new Map<string, RateLimitState>()
+
+function checkRateLimit(
+  map: Map<string, RateLimitState>,
+  key: string,
+  limit: number,
+  windowMs: number,
+  now: number,
+) {
+  const entry = map.get(key)
+  if (!entry || now > entry.resetAt) {
+    map.set(key, { count: 1, resetAt: now + windowMs })
+    return { allowed: true, resetAt: now + windowMs }
+  }
+  if (entry.count >= limit) {
+    return { allowed: false, resetAt: entry.resetAt }
+  }
+  entry.count += 1
+  return { allowed: true, resetAt: entry.resetAt }
+}
+
+function getClientIp(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  if (forwarded) return forwarded.split(',')[0]?.trim() ?? 'unknown'
+  const realIp = request.headers.get('x-real-ip')
+  if (realIp) return realIp.trim()
+  return 'unknown'
 }
 
 function logEmail(
@@ -114,37 +166,103 @@ export async function POST(request: NextRequest) {
           birthYear: String(form?.get('birthYear') ?? ''),
           topic: String(form?.get('topic') ?? ''),
           message: String(form?.get('message') ?? ''),
+          website: String(form?.get('website') ?? ''),
+          startedAt: String(form?.get('startedAt') ?? ''),
         }
       : body
 
     // Validate input
     const validatedData = contactSchema.parse(parsedBody)
 
-  let attachments: AttachmentPayload[] = []
-  if (isMultipart) {
-    const files = form?.getAll('attachments') ?? []
-    for (const entry of files) {
-      if (!(entry instanceof File) || entry.size === 0) continue
-      if (!allowedAttachmentTypes.has(entry.type)) {
-        return NextResponse.json(
-          { error: 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.' },
-          { status: 400 },
-        )
-      }
-      if (entry.size > MAX_ATTACHMENT_SIZE) {
-        return NextResponse.json(
-          { error: 'Maximální velikost jednoho souboru je 5 MB.' },
-          { status: 400 },
-        )
-      }
-      const buffer = Buffer.from(await entry.arrayBuffer())
-      attachments.push({
-        filename: entry.name,
-        contentType: entry.type,
-        content: buffer,
-      })
+    const now = Date.now()
+    const startedAtMs = Number(validatedData.startedAt)
+    if (!Number.isFinite(startedAtMs)) {
+      return NextResponse.json({ error: 'Neplatný požadavek' }, { status: 400 })
     }
-  }
+    const elapsedMs = now - startedAtMs
+    if (elapsedMs < -MAX_FUTURE_SKEW_MS) {
+      return NextResponse.json({ error: 'Neplatný požadavek' }, { status: 400 })
+    }
+    if (elapsedMs >= 0 && elapsedMs < MIN_FORM_FILL_TIME_MS) {
+      return NextResponse.json(
+        { error: 'Zprávu se nepodařilo odeslat. Zkuste to prosím znovu.' },
+        { status: 400 },
+      )
+    }
+
+    const clientIp = getClientIp(request)
+    if (clientIp !== 'unknown') {
+      const ipLimit = checkRateLimit(
+        ipRateLimit,
+        clientIp,
+        RATE_LIMIT_MAX_PER_IP,
+        RATE_LIMIT_WINDOW_MS,
+        now,
+      )
+      if (!ipLimit.allowed) {
+        return NextResponse.json(
+          { error: 'Příliš mnoho požadavků. Zkuste to prosím později.' },
+          {
+            status: 429,
+            headers: {
+              'Retry-After': Math.ceil((ipLimit.resetAt - now) / 1000).toString(),
+            },
+          },
+        )
+      }
+    }
+
+    const emailKey = validatedData.email.trim().toLowerCase()
+    const emailLimit = checkRateLimit(
+      emailRateLimit,
+      emailKey,
+      RATE_LIMIT_MAX_PER_EMAIL,
+      RATE_LIMIT_EMAIL_WINDOW_MS,
+      now,
+    )
+    if (!emailLimit.allowed) {
+      return NextResponse.json(
+        { error: 'Příliš mnoho požadavků. Zkuste to prosím později.' },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((emailLimit.resetAt - now) / 1000).toString(),
+          },
+        },
+      )
+    }
+
+    let attachments: AttachmentPayload[] = []
+    if (isMultipart) {
+      const files = form?.getAll('attachments') ?? []
+      if (files.length > MAX_ATTACHMENTS) {
+        return NextResponse.json(
+          { error: `Maximální počet příloh je ${MAX_ATTACHMENTS}.` },
+          { status: 400 },
+        )
+      }
+      for (const entry of files) {
+        if (!(entry instanceof File) || entry.size === 0) continue
+        if (!allowedAttachmentTypes.has(entry.type)) {
+          return NextResponse.json(
+            { error: 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.' },
+            { status: 400 },
+          )
+        }
+        if (entry.size > MAX_ATTACHMENT_SIZE) {
+          return NextResponse.json(
+            { error: 'Maximální velikost jednoho souboru je 5 MB.' },
+            { status: 400 },
+          )
+        }
+        const buffer = Buffer.from(await entry.arrayBuffer())
+        attachments.push({
+          filename: entry.name,
+          contentType: entry.type,
+          content: buffer,
+        })
+      }
+    }
 
     // Get recipient email based on topic
     const recipientEmail = getRecipientEmail(validatedData.topic)

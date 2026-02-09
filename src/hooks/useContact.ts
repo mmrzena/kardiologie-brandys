@@ -7,6 +7,8 @@ interface ContactFormData {
   topic: string
   message: string
   birthYear?: string
+  website?: string
+  startedAt: string
 }
 
 interface ContactResponse {

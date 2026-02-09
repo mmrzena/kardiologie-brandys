@@ -13,6 +13,8 @@ export default function PoradnaPage() {
     phone: '',
     topic: TOPIC.PORADNA,
     message: '',
+    website: '',
+    startedAt: Date.now().toString(),
   })
   const [formKey, setFormKey] = useState(0)
   const [attachments, setAttachments] = useState<File[]>([])
@@ -37,6 +39,8 @@ export default function PoradnaPage() {
     payload.append('phone', formData.phone)
     payload.append('topic', formData.topic)
     payload.append('message', formData.message)
+    payload.append('website', formData.website)
+    payload.append('startedAt', formData.startedAt)
     attachments.forEach((file) => payload.append('attachments', file))
 
     mutation.mutate(payload, {
@@ -47,6 +51,8 @@ export default function PoradnaPage() {
           phone: '',
           topic: TOPIC.PORADNA,
           message: '',
+          website: '',
+          startedAt: Date.now().toString(),
         })
         setAttachments([])
         setAttachmentError(null)
@@ -63,22 +69,35 @@ export default function PoradnaPage() {
   }
 
   const MAX_FILE_SIZE = 5 * 1024 * 1024
+  const MAX_ATTACHMENTS = 5
   const allowedTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? [])
     if (files.length === 0) return
 
+    const currentCount = attachments.length
+    if (currentCount >= MAX_ATTACHMENTS) {
+      setAttachmentError(`Maximální počet příloh je ${MAX_ATTACHMENTS}.`)
+      e.target.value = ''
+      return
+    }
+
+    const remainingSlots = MAX_ATTACHMENTS - currentCount
     const nextFiles: File[] = []
     let error: string | null = null
 
     for (const file of files) {
+      if (nextFiles.length >= remainingSlots) {
+        if (!error) error = `Maximální počet příloh je ${MAX_ATTACHMENTS}.`
+        break
+      }
       if (!allowedTypes.has(file.type)) {
-        error = 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.'
+        if (!error) error = 'Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG.'
         continue
       }
       if (file.size > MAX_FILE_SIZE) {
-        error = 'Maximální velikost jednoho souboru je 5 MB.'
+        if (!error) error = 'Maximální velikost jednoho souboru je 5 MB.'
         continue
       }
       nextFiles.push(file)
@@ -189,6 +208,19 @@ export default function PoradnaPage() {
                 className="mt-6 space-y-4"
                 lang="cs"
               >
+                <div className="sr-only" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+                <input type="hidden" name="startedAt" value={formData.startedAt} readOnly />
                 <div>
                   <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
                     Jméno a příjmení *
@@ -265,6 +297,7 @@ export default function PoradnaPage() {
                   />
                   <p className="mt-2 text-xs text-brand-slate">
                     Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG. Max. 5 MB na soubor.
+                    Max. 5 příloh.
                   </p>
                   {attachmentError && (
                     <p className="mt-2 text-xs text-brand-red">{attachmentError}</p>
