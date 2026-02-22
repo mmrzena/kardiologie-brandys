@@ -20,9 +20,9 @@ const BASE_RULES: TokenRule[] = [
 
 const SPORTOVCI_HIGHLIGHTS = [
   'EKG s popisem + dotazník',
-  'ECHO (ultrazvuk srdce) + EKG + dotazník',
+  'Echokardiografie (ultrazvuk srdce) + EKG + dotazník',
   'Ergometrie (zátěžový test)',
-  'Komplet (ECHO + Ergometrie + EKG + dotazník)',
+  'Komplet (Echokardiografie + Ergometrie + EKG + dotazník)',
 ]
 
 function escapeRegExp(value: string) {

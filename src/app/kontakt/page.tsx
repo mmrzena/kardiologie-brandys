@@ -35,10 +35,10 @@ const openingHours = [
 ]
 
 const SPORTOVCI_SERVICE_OPTIONS = [
-  'Dotazník + echokardiografie + EKG',
-  'Komplet (dotazník + ECHO + EKG + ergometrie)',
-  'EKG + popis + dotazník',
+  'EKG s popisem + dotazník',
   'Ergometrie (bicyklová, zátěžové EKG)',
+  'Echokardiografie + EKG + dotazník',
+  'Komplet (echokardiografie + ergometrie + dotazník)',
 ]
 const SPORTOVCI_DISCLAIMER_OPTION = 'EKG + popis + dotazník'
 

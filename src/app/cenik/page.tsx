@@ -80,7 +80,7 @@ const pricingSections: PricingSection[] = [
     description: 'Program prevence náhlé smrti a sledování výkonu',
     items: [
       { name: 'Dotazník + echokardiografie + EKG', price: '1 200 Kč' },
-      { name: 'Komplet (dotazník + ECHO + EKG + ergometrie)', price: '2 000 Kč' },
+      { name: 'Komplet (dotazník + echokardiografie + EKG + ergometrie)', price: '2 000 Kč' },
       { name: 'EKG + popis + dotazník', price: '300 Kč' },
     ],
   },
