@@ -4,15 +4,20 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 import { TOPIC, TOPIC_OPTIONS } from '@/data/topics'
+import {
+  SPORTOVCI_SERVICES,
+  SPORTOVCI_SERVICE_DISCLAIMER_VALUE,
+} from '@/data/sportovciServices'
 
 type TopicValue = (typeof TOPIC_OPTIONS)[number]['value']
+type SportovciServiceValue = (typeof SPORTOVCI_SERVICES)[number]['value']
 
 type ContactFormState = {
   name: string
   email: string
   phone: string
   topic: TopicValue
-  sportovciService: string
+  sportovciService: SportovciServiceValue | ''
   birthYear: string
   message: string
   website: string
@@ -34,14 +39,6 @@ const openingHours = [
   { day: 'Pátek', hours: '7:30–15:00' },
 ]
 
-const SPORTOVCI_SERVICE_OPTIONS = [
-  'EKG s popisem + dotazník',
-  'Ergometrie (bicyklová, zátěžové EKG)',
-  'Echokardiografie + EKG + dotazník',
-  'Komplet (echokardiografie + ergometrie + dotazník)',
-]
-const SPORTOVCI_DISCLAIMER_OPTION = 'EKG + popis + dotazník'
-
 export default function ContactPage() {
   return (
     <Suspense fallback={<div className="py-16" />}>
@@ -60,7 +57,7 @@ function ContactPageContent() {
     email: '',
     phone: '',
     topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
-    sportovciService: topicFromQuery === TOPIC.SPORTOVCI ? SPORTOVCI_SERVICE_OPTIONS[0] : '',
+    sportovciService: '',
     birthYear: '',
     message: '',
     website: '',
@@ -68,6 +65,9 @@ function ContactPageContent() {
   })
   const [appliedPrefill, setAppliedPrefill] = useState<TopicValue | null>(topicFromQuery ?? null)
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
+  const shouldShowSportovciBanner =
+    formData.topic === TOPIC.SPORTOVCI &&
+    formData.sportovciService === SPORTOVCI_SERVICE_DISCLAIMER_VALUE
 
   const mutation = useContactForm()
   const validationMessages: Record<
@@ -94,10 +94,7 @@ function ContactPageContent() {
       setFormData((prev) => ({
         ...prev,
         topic: topicFromQuery,
-        sportovciService:
-          topicFromQuery === TOPIC.SPORTOVCI
-            ? prev.sportovciService || SPORTOVCI_SERVICE_OPTIONS[0]
-            : '',
+        sportovciService: topicFromQuery === TOPIC.SPORTOVCI ? prev.sportovciService : '',
       }))
       setAppliedPrefill(topicFromQuery)
     }
@@ -135,7 +132,7 @@ function ContactPageContent() {
           email: '',
           phone: '',
           topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
-          sportovciService: topicFromQuery === TOPIC.SPORTOVCI ? SPORTOVCI_SERVICE_OPTIONS[0] : '',
+          sportovciService: '',
           birthYear: '',
           message: '',
           website: '',
@@ -159,9 +156,7 @@ function ContactPageContent() {
         ...prev,
         topic: nextTopic,
         sportovciService:
-          nextTopic === TOPIC.SPORTOVCI
-            ? prev.sportovciService || SPORTOVCI_SERVICE_OPTIONS[0]
-            : '',
+          nextTopic === TOPIC.SPORTOVCI ? prev.sportovciService : '',
       }
     })
   }
@@ -302,21 +297,27 @@ function ContactPageContent() {
                 Vyplňte formulář, ozveme se vám s potvrzením termínu nebo doplňujícími dotazy.
               </p>
 
-              {formData.topic === TOPIC.SPORTOVCI &&
-                formData.sportovciService === SPORTOVCI_DISCLAIMER_OPTION && (
-                  <div className="mt-6 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 p-5 text-sm text-brand-navy shadow-sm">
-                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-teal">
-                      Informace
-                    </p>
-                    <p className="mt-3 text-base font-semibold text-brand-navy">
-                      Pokud potřebujete EKG s popisem a dotazníkem, není nutné se objednávat.
-                    </p>
-                    <p className="mt-2 text-sm text-brand-slate">
-                      Přijdete kdykoliv během ordinačních hodin, nejpozději však hodinu před jejich
-                      koncem.
-                    </p>
-                  </div>
-                )}
+              <div
+                aria-hidden={!shouldShowSportovciBanner}
+                className={`grid overflow-hidden rounded-2xl border text-sm text-brand-navy transition-all ease-out ${
+                  shouldShowSportovciBanner
+                    ? 'mt-6 grid-rows-[1fr] border-brand-teal/30 bg-brand-teal/10 opacity-100 shadow-sm duration-200'
+                    : 'mt-0 grid-rows-[0fr] border-transparent bg-transparent opacity-0 shadow-none duration-120'
+                }`}
+              >
+                <div className="min-h-0 overflow-hidden px-5 py-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-teal">
+                    Informace
+                  </p>
+                  <p className="mt-3 text-base font-semibold text-brand-navy">
+                    Pokud potřebujete EKG s popisem a dotazníkem, není nutné se objednávat.
+                  </p>
+                  <p className="mt-2 text-sm text-brand-slate">
+                    Přijdete kdykoliv během ordinačních hodin, nejpozději však hodinu před jejich
+                    koncem.
+                  </p>
+                </div>
+              </div>
 
               <form onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
                 <div className="sr-only" aria-hidden="true">
@@ -371,9 +372,10 @@ function ContactPageContent() {
                       onInput={handleValidityInput}
                       className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                     >
-                      {SPORTOVCI_SERVICE_OPTIONS.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
+                      <option value="">Vyberte vyšetření</option>
+                      {SPORTOVCI_SERVICES.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
                         </option>
                       ))}
                     </select>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
 import { TOPIC_OPTIONS, TOPIC } from '@/data/topics'
+import { SPORTOVCI_SERVICES, getSportovciServiceLabel } from '@/data/sportovciServices'
 
 // Email routing by topic (configured via environment variables):
 // EMAIL_PORADNA - for poradna topic
@@ -47,7 +48,10 @@ const contactSchema = z
         path: ['birthYear'],
       })
     }
-    if (data.topic === TOPIC.SPORTOVCI && !data.sportovciService) {
+    if (
+      data.topic === TOPIC.SPORTOVCI &&
+      (!data.sportovciService || !SPORTOVCI_SERVICE_VALUES.has(data.sportovciService))
+    ) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Vyberte prosím typ vyšetření',
@@ -73,6 +77,7 @@ const RATE_LIMIT_MAX_PER_EMAIL = 3
 const allowedAttachmentTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024
 const MAX_ATTACHMENTS = 5
+const SPORTOVCI_SERVICE_VALUES = new Set(SPORTOVCI_SERVICES.map((option) => option.value))
 
 type AttachmentPayload = {
   filename: string
@@ -123,6 +128,9 @@ function logEmail(
   const topicLabel =
     TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
     validatedData.topic
+  const sportovciServiceLabel = validatedData.sportovciService
+    ? getSportovciServiceLabel(validatedData.sportovciService)
+    : ''
 
   console.log('\n=============== EMAIL TO CLINIC (DEV MODE) ===============')
   console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
@@ -134,9 +142,8 @@ function logEmail(
   console.log('Email:', validatedData.email)
   if (validatedData.phone) console.log('Telefon:', validatedData.phone)
   if (validatedData.birthYear) console.log('Rok narození:', validatedData.birthYear)
-  if (validatedData.sportovciService)
-    console.log('Vyšetření sportovců:', validatedData.sportovciService)
   console.log('Téma:', topicLabel)
+  if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
   console.log('\nZpráva:')
   console.log(validatedData.message)
   if (attachments.length > 0) {
@@ -156,8 +163,7 @@ function logEmail(
   console.log('děkujeme za odeslání zprávy.')
   console.log('\nShrnutí:')
   console.log('Téma:', topicLabel)
-  if (validatedData.sportovciService)
-    console.log('Vyšetření sportovců:', validatedData.sportovciService)
+  if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
   console.log('Zpráva:', validatedData.message)
   console.log('===========================================================\n')
 }
@@ -303,6 +309,9 @@ export async function POST(request: NextRequest) {
         const topicLabel =
           TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
           validatedData.topic
+        const sportovciServiceLabel = validatedData.sportovciService
+          ? getSportovciServiceLabel(validatedData.sportovciService)
+          : ''
 
         // Send email to clinic
         await transporter.sendMail({
@@ -330,7 +339,7 @@ export async function POST(request: NextRequest) {
             <p><strong>Téma:</strong> ${topicLabel}</p>
             ${
               validatedData.sportovciService
-                ? `<p><strong>Vyšetření sportovců:</strong> ${validatedData.sportovciService}</p>`
+                ? `<p><strong>Vyšetření sportovců:</strong> ${sportovciServiceLabel}</p>`
                 : ''
             }
             <p><strong>Zpráva:</strong></p>
@@ -345,7 +354,7 @@ ${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
 ${validatedData.birthYear ? `Rok narození: ${validatedData.birthYear}` : ''}
 ${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Téma: ${topicLabel}
-${validatedData.sportovciService ? `Vyšetření sportovců: ${validatedData.sportovciService}` : ''}
+${validatedData.sportovciService ? `Vyšetření sportovců: ${sportovciServiceLabel}` : ''}
 Zpráva:
 ${validatedData.message}
           `,
@@ -374,7 +383,7 @@ ${validatedData.message}
             <p><strong>Téma:</strong> ${topicLabel}</p>
             ${
               validatedData.sportovciService
-                ? `<p><strong>Vyšetření sportovců:</strong> ${validatedData.sportovciService}</p>`
+                ? `<p><strong>Vyšetření sportovců:</strong> ${sportovciServiceLabel}</p>`
                 : ''
             }
             ${
@@ -406,7 +415,7 @@ děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formulá�
 
 Shrnutí vaší zprávy:
 Téma: ${topicLabel}
-${validatedData.sportovciService ? `Vyšetření sportovců: ${validatedData.sportovciService}` : ''}
+${validatedData.sportovciService ? `Vyšetření sportovců: ${sportovciServiceLabel}` : ''}
 ${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Zpráva:
 ${validatedData.message}
