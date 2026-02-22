@@ -188,26 +188,7 @@ export default function PoradnaPage() {
                 Odpovíme co nejdříve, zpravidla do několika pracovních dnů.
               </p>
 
-              {mutation.isSuccess && (
-                <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
-                  Vaše zpráva byla úspěšně odeslána. Odpovíme co nejdříve.
-                </div>
-              )}
-
-              {mutation.error && (
-                <div className="mt-6 rounded-2xl border border-brand-red bg-red-50 p-4 text-sm text-brand-red">
-                  {mutation.error instanceof Error
-                    ? mutation.error.message
-                    : 'Nastala chyba při odesílání zprávy.'}
-                </div>
-              )}
-
-              <form
-                key={formKey}
-                onSubmit={handleSubmit}
-                className="mt-6 space-y-4"
-                lang="cs"
-              >
+              <form key={formKey} onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
                 <div className="sr-only" aria-hidden="true">
                   <label htmlFor="website">Website</label>
                   <input
@@ -296,8 +277,8 @@ export default function PoradnaPage() {
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                   <p className="mt-2 text-xs text-brand-slate">
-                    Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG. Max. 5 MB na soubor.
-                    Max. 5 příloh.
+                    Povoleny jsou pouze soubory PDF nebo obrázky PNG/JPG. Max. 5 MB na soubor. Max.
+                    5 příloh.
                   </p>
                   {attachmentError && (
                     <p className="mt-2 text-xs text-brand-red">{attachmentError}</p>
@@ -322,6 +303,19 @@ export default function PoradnaPage() {
                     </div>
                   )}
                 </div>
+                {mutation.isSuccess && (
+                  <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+                    Vaše zpráva byla úspěšně odeslána. Odpovíme co nejdříve.
+                  </div>
+                )}
+
+                {mutation.error && (
+                  <div className="mt-6 rounded-2xl border border-brand-red bg-red-50 p-4 text-sm text-brand-red">
+                    {mutation.error instanceof Error
+                      ? mutation.error.message
+                      : 'Nastala chyba při odesílání zprávy.'}
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={mutation.isPending}

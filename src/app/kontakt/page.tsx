@@ -302,20 +302,6 @@ function ContactPageContent() {
                 Vyplňte formulář, ozveme se vám s potvrzením termínu nebo doplňujícími dotazy.
               </p>
 
-              {mutation.isSuccess && (
-                <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
-                  Vaše zpráva byla úspěšně odeslána. Odpovíme co nejdříve.
-                </div>
-              )}
-
-              {mutation.error && (
-                <div className="mt-6 rounded-2xl border border-brand-red bg-red-50 p-4 text-sm text-brand-red">
-                  {mutation.error instanceof Error
-                    ? mutation.error.message
-                    : 'Nastala chyba při odesílání zprávy.'}
-                </div>
-              )}
-
               {formData.topic === TOPIC.SPORTOVCI &&
                 formData.sportovciService === SPORTOVCI_DISCLAIMER_OPTION && (
                   <div className="mt-6 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 p-5 text-sm text-brand-navy shadow-sm">
@@ -475,6 +461,19 @@ function ContactPageContent() {
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
                 </div>
+                {mutation.isSuccess && (
+                  <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+                    Vaše zpráva byla úspěšně odeslána. Odpovíme co nejdříve.
+                  </div>
+                )}
+
+                {mutation.error && (
+                  <div className="mt-6 rounded-2xl border border-brand-red bg-red-50 p-4 text-sm text-brand-red">
+                    {mutation.error instanceof Error
+                      ? mutation.error.message
+                      : 'Nastala chyba při odesílání zprávy.'}
+                  </div>
+                )}
                 <button
                   type="submit"
                   disabled={mutation.isPending}
