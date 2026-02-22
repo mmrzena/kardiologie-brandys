@@ -124,16 +124,20 @@ export const services: Service[] = [
   {
     slug: 'vysetreni-sportovcu',
     title: 'Vyšetření sportovců',
-    description: 'Screening náhlé smrti, komplexní balíčky se zaměřením na výkon a regeneraci.',
+    description: 'Preventivní kardiologické vyšetření pro sportovce.',
     categories: ['Sport & prevence'],
     detail: [
       {
         paragraphs: [
-          'V rámci předcházení náhlé smrti sportovců provádíme EKG a echokardiografické vyšetření spolu s vyplněním specializovaného dotazníku zaměřeného na detekci rizik náhlé smrti. Možné je také absolvovat zátěžový test.',
-          'Sportovcům se v ambulanci věnujeme každý čtvrtek od 15:30 a díky víkendovým termínům jsme schopni vyšetřit celé sportovní kluby přímo v jejich zázemí.',
-          'Spolupracujeme také s řadou týmů, které využívají možností mobilního vyšetření – více o sportovních vyšetřeních najdete na www.srdcesportovce.cz.',
-          'Preventivní kardiologické vyšetření sportovců není hrazeno zdravotní pojišťovnou, ale pojišťovny přispívají v rámci bonusových programů. Konkrétní příspěvky zjistíte v sekci Ceník.',
-          'Pokud potřebujete pouze EKG s popisem, není nutné se objednávat. Přijďte kdykoli v ordinačních hodinách, maximálně však 30 minut před jejich koncem.',
+          'Skryté srdeční vady nebolí, nemusí je provázet žádné příznaky, nejsou odhalitelné klasickým sportovním vyšetřením a pro sportovce všech věkových kategorií jsou nezanedbatelným rizikem.',
+          'V rámci předcházení náhlé smrti sportovců nabízíme možnost preventivních kardiologických vyšetření.',
+          'EKG s popisem + dotazník – není nutné se objednávat. Přijďte kdykoli v ordinačních hodinách, maximálně však 30 minut před jejich koncem.',
+          'ECHO (ultrazvuk srdce) + EKG + dotazník',
+          'Ergometrie (zátěžový test)',
+          'Komplet (ECHO + Ergometrie + EKG + dotazník)',
+          'Sportovcům se v ambulanci věnujeme každý čtvrtek od 15:30.',
+          'Preventivní kardiologické vyšetření sportovců není hrazeno zdravotní pojišťovnou, některé pojišťovny ale přispívají v rámci bonusových programů. Aktuální možnosti příspěvků zjistíte u své pojišťovny.',
+          'Potřebujete vyšetřit celý tým? Díky přenosnému vybavení jsme schopni dorazit za vámi do vašeho zázemí. Více o této možnosti se dozvíte na www.srdcesportovce.cz',
         ],
       },
     ],

@@ -4,46 +4,154 @@ import type { Metadata } from 'next'
 import { services } from '@/data/services'
 import { BackLink } from '@/components/BackLink'
 
-// Helper function to auto-link emails and phone numbers in text
-function linkifyText(text: string) {
-  const parts: Array<{ type: 'text' | 'email' | 'phone'; content: string }> = []
+type TokenType = 'text' | 'email' | 'phone' | 'url' | 'link' | 'strong'
+type Token = { type: TokenType; value: string; href?: string }
+type TokenRule = {
+  type: Exclude<TokenType, 'text'>
+  regex: RegExp
+  href?: (value: string) => string
+}
 
-  // Regex patterns
-  const emailPattern = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g
-  const phonePattern = /(\d{3}\s?\d{3}\s?\d{3})/g
+const BASE_RULES: TokenRule[] = [
+  { type: 'email', regex: /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/g },
+  { type: 'phone', regex: /(\d{3}\s?\d{3}\s?\d{3})/g },
+  { type: 'url', regex: /\b((?:https?:\/\/)?(?:www\.)[^\s]+)\b/g },
+]
 
-  let lastIndex = 0
-  const matches: Array<{ type: 'email' | 'phone'; index: number; content: string }> = []
+const SPORTOVCI_HIGHLIGHTS = [
+  'EKG s popisem + dotazník',
+  'ECHO (ultrazvuk srdce) + EKG + dotazník',
+  'Ergometrie (zátěžový test)',
+  'Komplet (ECHO + Ergometrie + EKG + dotazník)',
+]
 
-  // Find all email matches
-  let match
-  while ((match = emailPattern.exec(text)) !== null) {
-    matches.push({ type: 'email', index: match.index, content: match[0] })
-  }
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
 
-  // Find all phone matches
-  while ((match = phonePattern.exec(text)) !== null) {
-    matches.push({ type: 'phone', index: match.index, content: match[0] })
-  }
+const SPORTOVCI_TOKEN_RULES: TokenRule[] = [
+  {
+    type: 'link',
+    regex: /není hrazeno zdravotní pojišťovnou/g,
+    href: () => '/cenik',
+  },
+  ...SPORTOVCI_HIGHLIGHTS.map((phrase) => ({
+    type: 'strong' as const,
+    regex: new RegExp(escapeRegExp(phrase), 'g'),
+  })),
+  ...BASE_RULES,
+]
 
-  // Sort matches by index
-  matches.sort((a, b) => a.index - b.index)
+const DEFAULT_TOKEN_RULES = BASE_RULES
 
-  // Build parts array
-  matches.forEach((match) => {
-    if (match.index > lastIndex) {
-      parts.push({ type: 'text', content: text.slice(lastIndex, match.index) })
+function tokenizeText(text: string, rules: TokenRule[]): Token[] {
+  const tokens: Token[] = []
+  let cursor = 0
+
+  while (cursor < text.length) {
+    let nextMatch: { index: number; value: string; rule: TokenRule } | null = null
+
+    for (const rule of rules) {
+      rule.regex.lastIndex = cursor
+      const match = rule.regex.exec(text)
+      if (!match) continue
+
+      const candidate = { index: match.index, value: match[0], rule }
+      if (
+        !nextMatch ||
+        candidate.index < nextMatch.index ||
+        (candidate.index === nextMatch.index && candidate.value.length > nextMatch.value.length)
+      ) {
+        nextMatch = candidate
+      }
     }
-    parts.push({ type: match.type, content: match.content })
-    lastIndex = match.index + match.content.length
-  })
 
-  // Add remaining text
-  if (lastIndex < text.length) {
-    parts.push({ type: 'text', content: text.slice(lastIndex) })
+    if (!nextMatch) {
+      tokens.push({ type: 'text', value: text.slice(cursor) })
+      break
+    }
+
+    if (nextMatch.index > cursor) {
+      tokens.push({ type: 'text', value: text.slice(cursor, nextMatch.index) })
+    }
+
+    if (nextMatch.rule.type === 'link') {
+      tokens.push({
+        type: 'link',
+        value: nextMatch.value,
+        href: nextMatch.rule.href?.(nextMatch.value),
+      })
+    } else {
+      tokens.push({ type: nextMatch.rule.type, value: nextMatch.value })
+    }
+
+    cursor = nextMatch.index + nextMatch.value.length
   }
 
-  return parts.length === 0 ? [{ type: 'text' as const, content: text }] : parts
+  return tokens.length === 0 ? [{ type: 'text', value: text }] : tokens
+}
+
+function renderTokens(tokens: Token[], keyPrefix: string) {
+  return tokens.map((token, index) => {
+    const key = `${keyPrefix}-token-${index}`
+
+    if (token.type === 'email') {
+      return (
+        <a
+          key={key}
+          href={`mailto:${token.value}`}
+          className="font-semibold text-brand-red hover:underline"
+        >
+          {token.value}
+        </a>
+      )
+    }
+
+    if (token.type === 'phone') {
+      return (
+        <a
+          key={key}
+          href={`tel:+420${token.value.replace(/\s/g, '')}`}
+          className="font-semibold text-brand-red hover:underline"
+        >
+          {token.value}
+        </a>
+      )
+    }
+
+    if (token.type === 'url') {
+      const href = token.value.startsWith('http') ? token.value : `https://${token.value}`
+      const openInNewTab = href.includes('srdcesportovce.cz')
+      return (
+        <a
+          key={key}
+          href={href}
+          className="font-semibold text-brand-red hover:underline"
+          {...(openInNewTab ? { target: '_blank', rel: 'noreferrer' } : {})}
+        >
+          {token.value}
+        </a>
+      )
+    }
+
+    if (token.type === 'link') {
+      return (
+        <a key={key} href={token.href} className="font-semibold text-brand-red hover:underline">
+          {token.value}
+        </a>
+      )
+    }
+
+    if (token.type === 'strong') {
+      return (
+        <strong key={key} className="font-semibold">
+          {token.value}
+        </strong>
+      )
+    }
+
+    return <span key={key}>{token.value}</span>
+  })
 }
 
 type ServiceDetailProps = {
@@ -78,6 +186,9 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
     notFound()
   }
 
+  const tokenRules =
+    service.slug === 'vysetreni-sportovcu' ? SPORTOVCI_TOKEN_RULES : DEFAULT_TOKEN_RULES
+
   return (
     <main className="min-h-screen py-16">
       <div className="container mx-auto px-4">
@@ -102,7 +213,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
                   <h2 className="text-2xl font-semibold text-brand-navy">{section.title}</h2>
                 )}
                 {section.paragraphs?.map((paragraph, paragraphIndex) => {
-                  const parts = linkifyText(paragraph)
+                  const tokens = tokenizeText(paragraph, tokenRules)
                   return (
                     <p
                       key={`${service.slug}-${index}-paragraph-${paragraphIndex}`}
@@ -112,31 +223,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
                           : 'mt-4'
                       }`}
                     >
-                      {parts.map((part, partIndex) => {
-                        if (part.type === 'email') {
-                          return (
-                            <a
-                              key={partIndex}
-                              href={`mailto:${part.content}`}
-                              className="font-semibold text-brand-red hover:underline"
-                            >
-                              {part.content}
-                            </a>
-                          )
-                        }
-                        if (part.type === 'phone') {
-                          return (
-                            <a
-                              key={partIndex}
-                              href={`tel:+420${part.content.replace(/\s/g, '')}`}
-                              className="font-semibold text-brand-red hover:underline"
-                            >
-                              {part.content}
-                            </a>
-                          )
-                        }
-                        return <span key={partIndex}>{part.content}</span>
-                      })}
+                      {renderTokens(tokens, `${service.slug}-${index}-${paragraphIndex}`)}
                     </p>
                   )
                 })}
