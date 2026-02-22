@@ -5,6 +5,7 @@ interface ContactFormData {
   email: string
   phone?: string
   topic: string
+  sportovciService?: string
   message: string
   birthYear?: string
   website?: string

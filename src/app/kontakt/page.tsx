@@ -5,7 +5,21 @@ import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 import { TOPIC, TOPIC_OPTIONS } from '@/data/topics'
 
-const normalizeTopicParam = (value: string | null) => {
+type TopicValue = (typeof TOPIC_OPTIONS)[number]['value']
+
+type ContactFormState = {
+  name: string
+  email: string
+  phone: string
+  topic: TopicValue
+  sportovciService: string
+  birthYear: string
+  message: string
+  website: string
+  startedAt: string
+}
+
+const normalizeTopicParam = (value: string | null): TopicValue | null => {
   if (!value) return null
   const lowerValue = value.toLowerCase()
   const match = TOPIC_OPTIONS.find((option) => option.value.toLowerCase() === lowerValue)
@@ -20,6 +34,14 @@ const openingHours = [
   { day: 'Pátek', hours: '7:30–15:00' },
 ]
 
+const SPORTOVCI_SERVICE_OPTIONS = [
+  'Dotazník + echokardiografie + EKG',
+  'Komplet (dotazník + ECHO + EKG + ergometrie)',
+  'EKG + popis + dotazník',
+  'Ergometrie (bicyklová, zátěžové EKG)',
+]
+const SPORTOVCI_DISCLAIMER_OPTION = 'EKG + popis + dotazník'
+
 export default function ContactPage() {
   return (
     <Suspense fallback={<div className="py-16" />}>
@@ -33,17 +55,18 @@ function ContactPageContent() {
   const topicFromQuery = normalizeTopicParam(searchParams.get('topic'))
   const formCardRef = useRef<HTMLDivElement | null>(null)
   const FORM_SCROLL_OFFSET = 80 // keep form clear of the sticky header when scrolling
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormState>({
     name: '',
     email: '',
     phone: '',
     topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
+    sportovciService: topicFromQuery === TOPIC.SPORTOVCI ? SPORTOVCI_SERVICE_OPTIONS[0] : '',
     birthYear: '',
     message: '',
     website: '',
     startedAt: Date.now().toString(),
   })
-  const [appliedPrefill, setAppliedPrefill] = useState<string | null>(topicFromQuery ?? null)
+  const [appliedPrefill, setAppliedPrefill] = useState<TopicValue | null>(topicFromQuery ?? null)
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
 
   const mutation = useContactForm()
@@ -52,6 +75,7 @@ function ContactPageContent() {
     { missing: string; mismatch?: string; tooHigh?: string; tooLow?: string }
   > = {
     topic: { missing: 'Vyberte prosím typ požadavku.' },
+    sportovciService: { missing: 'Vyberte prosím typ vyšetření.' },
     name: { missing: 'Vyplňte prosím jméno a příjmení.' },
     birthYear: {
       missing: 'Vyplňte prosím rok narození.',
@@ -67,7 +91,14 @@ function ContactPageContent() {
 
   useEffect(() => {
     if (topicFromQuery && topicFromQuery !== appliedPrefill) {
-      setFormData((prev) => ({ ...prev, topic: topicFromQuery }))
+      setFormData((prev) => ({
+        ...prev,
+        topic: topicFromQuery,
+        sportovciService:
+          topicFromQuery === TOPIC.SPORTOVCI
+            ? prev.sportovciService || SPORTOVCI_SERVICE_OPTIONS[0]
+            : '',
+      }))
       setAppliedPrefill(topicFromQuery)
     }
   }, [topicFromQuery, appliedPrefill])
@@ -104,6 +135,7 @@ function ContactPageContent() {
           email: '',
           phone: '',
           topic: topicFromQuery ?? TOPIC_OPTIONS[0].value,
+          sportovciService: topicFromQuery === TOPIC.SPORTOVCI ? SPORTOVCI_SERVICE_OPTIONS[0] : '',
           birthYear: '',
           message: '',
           website: '',
@@ -116,9 +148,21 @@ function ContactPageContent() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target
+    setFormData((prev) => {
+      if (name !== 'topic') {
+        return { ...prev, [name]: value }
+      }
+
+      const nextTopic = value as TopicValue
+      return {
+        ...prev,
+        topic: nextTopic,
+        sportovciService:
+          nextTopic === TOPIC.SPORTOVCI
+            ? prev.sportovciService || SPORTOVCI_SERVICE_OPTIONS[0]
+            : '',
+      }
     })
   }
 
@@ -272,6 +316,22 @@ function ContactPageContent() {
                 </div>
               )}
 
+              {formData.topic === TOPIC.SPORTOVCI &&
+                formData.sportovciService === SPORTOVCI_DISCLAIMER_OPTION && (
+                  <div className="mt-6 rounded-2xl border border-brand-teal/30 bg-brand-teal/10 p-5 text-sm text-brand-navy shadow-sm">
+                    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-teal">
+                      Informace
+                    </p>
+                    <p className="mt-3 text-base font-semibold text-brand-navy">
+                      Pokud potřebujete EKG s popisem a dotazníkem, není nutné se objednávat.
+                    </p>
+                    <p className="mt-2 text-sm text-brand-slate">
+                      Přijdete kdykoliv během ordinačních hodin, nejpozději však hodinu před jejich
+                      koncem.
+                    </p>
+                  </div>
+                )}
+
               <form onSubmit={handleSubmit} className="mt-6 space-y-4" lang="cs">
                 <div className="sr-only" aria-hidden="true">
                   <label htmlFor="website">Website</label>
@@ -307,6 +367,32 @@ function ContactPageContent() {
                     ))}
                   </select>
                 </div>
+                {formData.topic === TOPIC.SPORTOVCI && (
+                  <div>
+                    <label
+                      htmlFor="sportovciService"
+                      className="text-sm font-semibold text-brand-navy"
+                    >
+                      Typ vyšetření *
+                    </label>
+                    <select
+                      id="sportovciService"
+                      name="sportovciService"
+                      required
+                      value={formData.sportovciService}
+                      onChange={handleChange}
+                      onInvalid={handleInvalid}
+                      onInput={handleValidityInput}
+                      className="mt-2 w-full rounded-2xl border border-brand-gray/80 bg-white px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                    >
+                      {SPORTOVCI_SERVICE_OPTIONS.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
                 <div>
                   <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
                     Jméno a příjmení *

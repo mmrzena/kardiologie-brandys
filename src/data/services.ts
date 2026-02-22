@@ -47,7 +47,7 @@ export const services: Service[] = [
         paragraphs: [
           'Registrace elektrických potenciálů přenesených ze srdce na povrch těla umožňuje diagnostikovat řadu patologií: ischemické změny, poruchy srdečního rytmu aj.',
           'EKG se provádí v rámci kardiologických vyšetření, případně v rámci prevencí, před operacemi a u těhotných žen.',
-          'Pokud potřebujete pouze EKG s popisem, není nutné se objednávat. Přijďte kdykoli v ordinačních hodinách, maximálně však 30 minut před jejich koncem.',
+          'Pokud potřebujete pouze EKG s popisem, není nutné se objednávat. Přijďte kdykoli v ordinačních hodinách, maximálně však hodinu před jejich koncem.',
         ],
       },
     ],
