@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import AmbulanceSlideshow from '@/components/AmbulanceSlideshow'
 import { StaffMember, doctors, nurses, researches } from '@/data/staff'
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
+import StaffAvatar from '@/components/StaffAvatar'
 
 export const metadata: Metadata = {
   title: 'O ambulanci',
@@ -24,9 +25,7 @@ const renderStaffGrid = (members: StaffMember[], renderTitle: boolean = false) =
             <img src={member.src} alt={member.name} className="h-full w-full object-cover" />
           </div>
         ) : (
-          <div className="flex h-52 items-center justify-center bg-gradient-to-br from-brand-blue/20 to-brand-teal/20 text-5xl">
-            👤
-          </div>
+          <StaffAvatar id={member.id} name={member.name} className="h-52" />
         )}
         <div className="p-5 flex flex-col justify-between min-h-[100px]">
           <h2 className="text-lg font-semibold text-brand-navy">{member.name}</h2>
@@ -53,18 +52,6 @@ export default function OrdinacePage() {
               Soukromá ambulance MUDr. Jiřího Krupičky poskytuje komplexní kardiologický servis.
               Více než 30 let zkušeností, špičkové vybavení a moderní kardiologická péče.
             </p>
-          </section>
-
-          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
-            <div className="mx-auto max-w-6xl text-center">
-              <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Fotogalerie</p>
-              <h2 className="mt-4 text-3xl font-semibold text-brand-navy">
-                Prohlédněte si prostory ambulance
-              </h2>
-            </div>
-            <div className="mt-8">
-              <AmbulanceSlideshow />
-            </div>
           </section>
 
           <section
@@ -102,6 +89,18 @@ export default function OrdinacePage() {
                   {renderStaffGrid(researches)}
                 </div>
               )}
+            </div>
+          </section>
+
+          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
+            <div className="mx-auto max-w-6xl text-center">
+              <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Fotogalerie</p>
+              <h2 className="mt-4 text-3xl font-semibold text-brand-navy">
+                Prohlédněte si prostory ambulance
+              </h2>
+            </div>
+            <div className="mt-8">
+              <AmbulanceSlideshow />
             </div>
           </section>
 

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getStaffMember } from '@/data/staff'
 import { BackLink } from '@/components/BackLink'
+import StaffAvatar from '@/components/StaffAvatar'
 
 interface StaffDetailPageProps {
   params: Promise<{
@@ -32,9 +33,12 @@ export default async function StaffDetailPage({ params }: StaffDetailPageProps) 
                   <img src={staff.src} alt={staff.name} className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="md:w-1/3 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center min-h-[300px]">
-                  <div className="text-8xl text-blue-600">👤</div>
-                </div>
+                <StaffAvatar
+                  id={staff.id}
+                  name={staff.name}
+                  className="md:w-1/3 min-h-[300px]"
+                  size="lg"
+                />
               )}
 
               <div className="md:w-2/3 p-8">
