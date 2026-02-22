@@ -77,7 +77,9 @@ const RATE_LIMIT_MAX_PER_EMAIL = 3
 const allowedAttachmentTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024
 const MAX_ATTACHMENTS = 5
-const SPORTOVCI_SERVICE_VALUES = new Set(SPORTOVCI_SERVICES.map((option) => option.value))
+const SPORTOVCI_SERVICE_VALUES = new Set<string>(
+  SPORTOVCI_SERVICES.map((option) => option.value),
+)
 
 type AttachmentPayload = {
   filename: string
