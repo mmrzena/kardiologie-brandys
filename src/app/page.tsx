@@ -33,14 +33,11 @@ const services = [
 
 export default function Home() {
   const now = new Date()
-  const dateFormatter = new Intl.DateTimeFormat('cs-CZ', {
-    day: 'numeric',
-    month: 'long',
-  })
-  const formatDate = (value: string) => dateFormatter.format(new Date(value))
+  const parseStartDate = (value: string) => new Date(`${value}T00:00:00`)
+  const parseEndDate = (value: string) => new Date(`${value}T23:59:59.999`)
   const activeAnnouncements = announcements.filter((announcement) => {
-    const start = new Date(announcement.startDate)
-    const end = new Date(announcement.endDate)
+    const start = parseStartDate(announcement.startDate)
+    const end = parseEndDate(announcement.endDate)
     return now >= start && now <= end
   })
 
@@ -140,10 +137,6 @@ export default function Home() {
                   <p className="text-xs uppercase tracking-[0.4em] text-brand-red">Aktuálně</p>
                   <p className="mt-2 text-lg font-semibold">{announcement.title}</p>
                   <p className="text-sm text-brand-slate">{announcement.message}</p>
-                  <p className="mt-2 text-xs text-brand-slate/80">
-                    Platí od {formatDate(announcement.startDate)} do{' '}
-                    {formatDate(announcement.endDate)}.
-                  </p>
                 </div>
                 {announcement.link ? (
                   <Link

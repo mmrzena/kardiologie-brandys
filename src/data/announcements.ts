@@ -9,6 +9,13 @@ export type Announcement = {
 
 export const announcements: Announcement[] = [
   {
+    title: 'Změna ordinační doby ve středu 1. 4. 2026',
+    message:
+      'Z důvodu přerušení dodávky elektrické energie ordinujeme výjimečně v čase 14:00 - 18:00.',
+    startDate: '2026-03-24',
+    endDate: '2026-04-01',
+  },
+  {
     title: 'Ambulance uzavřena',
     message:
       'Ve středu 10. dubna bude ordinace z technických důvodů uzavřena. V urgentních případech využijte prosím cardiocentrum FN Motol.',
