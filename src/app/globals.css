@@ -62,5 +62,10 @@ body::before {
   .animate-form-pop {
     animation: form-pop 0.6s ease;
   }
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-form-pop {
+    animation: none;
+  }
 }
