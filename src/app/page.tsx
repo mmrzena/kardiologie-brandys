@@ -91,7 +91,7 @@ export default function Home() {
                           href="/kontakt"
                           className="inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition hover:text-white"
                         >
-                          Kontakty
+                          Kontaktní formulář
                           <ArrowUpRightIcon />
                         </Link>
                       </div>

@@ -11,7 +11,7 @@ export const announcements: Announcement[] = [
   {
     title: 'V pondělí 11.5. a úterý 12.5. neordinujeme',
     message:
-      'Ve dnech pondělí 11.5. a úterý 12.5. neordinujeme z důvodu účasti na Výročním sjezdu České kardiologické společnosti v Brně. Děkujeme za pochopení. Pro případné požadavky využijte náš kontaktní formulář.',
+      'Ve dnech pondělí 11.5. a úterý 12.5. neordinujeme z důvodu účasti na Výročním sjezdu České kardiologické společnosti v Brně. Děkujeme za pochopení. Pro všechny požadavky využijte náš kontaktní formulář.',
     startDate: '2026-05-07',
     endDate: '2026-05-12',
   },
