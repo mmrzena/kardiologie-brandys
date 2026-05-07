@@ -67,7 +67,7 @@ export default function Home() {
                           id="homepage-announcements-heading"
                           className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-brand-navy shadow-md shadow-black/10 sm:text-[0.68rem] sm:tracking-[0.22em]"
                         >
-                          <span className="h-2 w-2 rounded-full bg-brand-red" />
+                          <span className="h-2 w-2 rounded-full bg-brand-red animate-pulse" />
                           Aktuálně
                         </span>
                       </div>
