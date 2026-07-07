@@ -40,10 +40,10 @@ export default function OrdinacePage() {
   const totalMembers = doctors.length + nurses.length + researches.length
 
   return (
-    <main className="py-16">
+    <main className="py-10 md:py-16">
       <div className="container mx-auto px-4">
         <div className="mx-auto max-w-6xl space-y-12">
-          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl text-center">
+          <section className="rounded-[28px] border border-brand-gray bg-white/95 p-6 text-center shadow-2xl md:rounded-[32px] md:p-10">
             <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">O ambulanci</p>
             <h1 className="mt-4 text-4xl font-semibold text-brand-navy">
               Profesionální péče od roku 2009
@@ -56,7 +56,7 @@ export default function OrdinacePage() {
 
           <section
             id="nas-tym"
-            className="space-y-8 rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl"
+            className="space-y-8 rounded-[28px] border border-brand-gray bg-white/95 p-6 shadow-2xl md:rounded-[32px] md:p-10"
           >
             <div className="space-y-12">
               {doctors.length > 0 && (
@@ -92,7 +92,7 @@ export default function OrdinacePage() {
             </div>
           </section>
 
-          <section className="rounded-[32px] border border-brand-gray bg-white/95 p-10 shadow-2xl">
+          <section className="rounded-[28px] border border-brand-gray bg-white/95 p-6 shadow-2xl md:rounded-[32px] md:p-10">
             <div className="mx-auto max-w-6xl text-center">
               <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Fotogalerie</p>
               <h2 className="mt-4 text-3xl font-semibold text-brand-navy">
@@ -104,12 +104,12 @@ export default function OrdinacePage() {
             </div>
           </section>
 
-          <section className="rounded-[32px] border border-brand-gray bg-gradient-to-r from-brand-blue/5 via-white to-brand-teal/5 p-10 shadow-2xl">
-            <div className="grid gap-8 md:grid-cols-[1.2fr,0.8fr] md:items-center">
-              <div className="space-y-4">
+          <section className="overflow-hidden rounded-[28px] border border-brand-gray bg-gradient-to-r from-brand-blue/5 via-white to-brand-teal/5 p-5 shadow-2xl md:rounded-[32px] md:p-10">
+            <div className="grid min-w-0 gap-8 lg:grid-cols-[1.2fr,0.8fr] lg:items-center">
+              <div className="min-w-0 space-y-4">
                 <p className="text-xs uppercase tracking-[0.4em] text-brand-teal">Kariéra</p>
                 <h2 className="text-3xl font-semibold text-brand-navy">Hledáme nové kolegy</h2>
-                <div className="grid gap-3 md:grid-cols-2">
+                <div className="grid min-w-0 gap-3 sm:grid-cols-2">
                   {[
                     { title: 'Kardiolog', detail: 'Plný nebo zkrácený úvazek (od 8 h/týden)' },
                     { title: 'Internista', detail: 'Plný nebo zkrácený úvazek (od 8 h/týden)' },
@@ -129,7 +129,7 @@ export default function OrdinacePage() {
                   ))}
                 </div>
               </div>
-              <div className="space-y-4 rounded-3xl border border-brand-gray bg-white/90 p-6 shadow-lg">
+              <div className="min-w-0 space-y-4 rounded-3xl border border-brand-gray bg-white/90 p-5 shadow-lg md:p-6">
                 <h3 className="text-xl font-semibold text-brand-navy">Co nabízíme</h3>
                 <ul className="list-disc space-y-2 pl-5 text-sm text-brand-slate">
                   <li>Nadstandardní platové ohodnocení a odměny</li>
@@ -142,7 +142,7 @@ export default function OrdinacePage() {
                 <p className="text-sm text-brand-slate">
                   Vhodné i pro lékaře před atestací. Ozvěte se, rádi se potkáme osobně.
                 </p>
-                <div className="rounded-2xl border border-brand-gray/80 bg-brand-gray/50 p-4 text-sm text-brand-navy">
+                <div className="min-w-0 rounded-2xl border border-brand-gray/80 bg-brand-gray/50 p-4 text-sm text-brand-navy">
                   <p>
                     <strong>Tel.:</strong>{' '}
                     <a href="tel:+420702195166" className="transition hover:text-brand-red">
@@ -152,10 +152,10 @@ export default function OrdinacePage() {
                   <p className="mt-1">
                     <strong>Email:</strong>{' '}
                     <a
-                      href="mailto:karolina.krupickova@kardiologiebrandys.cz"
-                      className="transition hover:text-brand-red"
+                      href="mailto:karolina.krupickova@gmail.com"
+                      className="transition hover:text-brand-red [overflow-wrap:anywhere]"
                     >
-                      karolina.krupickova@kardiologiebrandys.cz
+                      karolina.krupickova@gmail.com
                     </a>
                   </p>
                 </div>
