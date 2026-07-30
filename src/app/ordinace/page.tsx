@@ -114,10 +114,6 @@ export default function OrdinacePage() {
                     { title: 'Kardiolog', detail: 'Plný nebo zkrácený úvazek (od 8 h/týden)' },
                     { title: 'Internista', detail: 'Plný nebo zkrácený úvazek (od 8 h/týden)' },
                     { title: 'Diabetolog', detail: 'Zkrácený úvazek (od 4 h/týden)' },
-                    {
-                      title: 'Zdravotní sestra',
-                      detail: 'Plný nebo zkrácený úvazek (od 8 h/týden)',
-                    },
                   ].map((role) => (
                     <div
                       key={role.title}

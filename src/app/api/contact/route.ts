@@ -27,6 +27,14 @@ function getRecipientEmail(topic: string): string {
   }
 }
 
+function getSenderEmail(): string {
+  return process.env.EMAIL_FROM || process.env.EMAIL_USER || 'web@kardiologiebrandys.cz'
+}
+
+function getSenderAddress(): string {
+  return `"Kardiologie Brandýs" <${getSenderEmail()}>`
+}
+
 const contactSchema = z
   .object({
     name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
@@ -135,7 +143,7 @@ function logEmail(
     : ''
 
   console.log('\n=============== EMAIL TO CLINIC (DEV MODE) ===============')
-  console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
+  console.log('From:', getSenderAddress())
   console.log('To:', recipientEmail)
   console.log('Reply-To:', validatedData.email)
   console.log('Subject:', `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`)
@@ -157,7 +165,7 @@ function logEmail(
   console.log('===========================================================\n')
 
   console.log('\n=========== CONFIRMATION EMAIL TO USER (DEV MODE) =========')
-  console.log('From:', process.env.EMAIL_USER || 'not-configured@example.com')
+  console.log('From:', getSenderAddress())
   console.log('To:', validatedData.email)
   console.log('Subject: Potvrzení přijetí zprávy - Kardiologie Brandýs')
   console.log('-----------------------------------------------------------')
@@ -317,7 +325,7 @@ export async function POST(request: NextRequest) {
 
         // Send email to clinic
         await transporter.sendMail({
-          from: process.env.EMAIL_USER,
+          from: getSenderAddress(),
           to: recipientEmail,
           replyTo: validatedData.email,
           subject: `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`,
@@ -372,7 +380,7 @@ ${validatedData.message}
 
         // Send confirmation email to user
         await transporter.sendMail({
-          from: process.env.EMAIL_USER,
+          from: getSenderAddress(),
           to: validatedData.email,
           replyTo: recipientEmail,
           subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
