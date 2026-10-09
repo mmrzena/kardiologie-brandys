@@ -91,6 +91,7 @@ function ContactPageContent() {
       missing: 'Vyplňte prosím e-mail.',
       mismatch: 'Zadejte platný e-mail ve tvaru jmeno@example.com.',
     },
+    phone: { missing: 'Vyplňte prosím telefon.' },
     message: { missing: 'Napište prosím zprávu.' },
   }
 
@@ -466,14 +467,16 @@ function ContactPageContent() {
                   </div>
                   <div>
                     <label htmlFor="phone" className="text-sm font-semibold text-brand-navy">
-                      Telefon
+                      Telefon *
                     </label>
                     <input
                       id="phone"
                       name="phone"
                       type="tel"
+                      required
                       value={formData.phone}
                       onChange={handleChange}
+                      onInvalid={handleInvalid}
                       onInput={handleValidityInput}
                       className={inputClassName}
                     />

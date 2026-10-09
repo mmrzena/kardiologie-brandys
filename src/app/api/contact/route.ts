@@ -46,7 +46,7 @@ const contactSchema = z
   .object({
     name: z.string().min(2, 'Jméno musí mít alespoň 2 znaky'),
     email: z.string().email('Neplatná emailová adresa'),
-    phone: z.string().optional().or(z.literal('')),
+    phone: z.string().trim().min(1, 'Vyplňte prosím telefon'),
     birthYear: z.string().optional().or(z.literal('')),
     topic: z.string().min(2, 'Vyberte prosím typ požadavku'),
     sportovciService: z.string().optional().or(z.literal('')),
@@ -181,7 +181,7 @@ function logEmail(
   console.log('-----------------------------------------------------------')
   console.log('Jméno:', validatedData.name)
   console.log('Email:', validatedData.email)
-  if (validatedData.phone) console.log('Telefon:', validatedData.phone)
+  console.log('Telefon:', validatedData.phone)
   if (validatedData.birthYear) console.log('Rok narození:', validatedData.birthYear)
   console.log('Téma:', topicLabel)
   if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
@@ -367,7 +367,7 @@ export async function POST(request: NextRequest) {
             <h2>Nová zpráva z kontaktního formuláře</h2>
             <p><strong>Jméno:</strong> ${validatedData.name}</p>
             <p><strong>Email:</strong> ${validatedData.email}</p>
-            ${validatedData.phone ? `<p><strong>Telefon:</strong> ${validatedData.phone}</p>` : ''}
+            <p><strong>Telefon:</strong> ${validatedData.phone}</p>
             ${
               validatedData.birthYear
                 ? `<p><strong>Rok narození:</strong> ${validatedData.birthYear}</p>`
@@ -394,7 +394,7 @@ Nová zpráva z kontaktního formuláře
 
 Jméno: ${validatedData.name}
 Email: ${validatedData.email}
-${validatedData.phone ? `Telefon: ${validatedData.phone}` : ''}
+Telefon: ${validatedData.phone}
 ${validatedData.birthYear ? `Rok narození: ${validatedData.birthYear}` : ''}
 ${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Téma: ${topicLabel}
@@ -451,6 +451,7 @@ ${validatedData.message}
               <strong>Kardiologická ambulance MEDICUS SERVICES s.r.o.</strong><br>
               Nádražní 1317/5, 250 01 Brandýs nad Labem<br>
               Telefon: <a href="tel:+420326396790">+420 326 396 790</a><br>
+              Sportovci: <a href="tel:+420326320112">+420 326 320 112</a><br>
               Email: kardiologie.brandys@seznam.cz<br>
               Web: <a href="https://kardiologiebrandys.cz">kardiologiebrandys.cz</a>
             </p>
@@ -474,6 +475,7 @@ ${dotaznikAttachment ? `\n${DOTAZNIK_NOTE_TEXT}\n` : ''}
 Kardiologická ambulance MEDICUS SERVICES s.r.o.
 Nádražní 1317/5, 250 01 Brandýs nad Labem
 Telefon: +420 326 396 790
+Sportovci: +420 326 320 112
 Email: kardiologie.brandys@seznam.cz
 Web: kardiologiebrandys.cz
           `,

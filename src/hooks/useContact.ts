@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 interface ContactFormData {
   name: string
   email: string
-  phone?: string
+  phone: string
   topic: string
   sportovciService?: string
   message: string

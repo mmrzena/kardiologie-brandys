@@ -27,6 +27,7 @@ export default function PoradnaPage() {
       missing: 'Vyplňte prosím e-mail.',
       mismatch: 'Zadejte platný e-mail ve tvaru jmeno@example.com.',
     },
+    phone: { missing: 'Vyplňte prosím telefon.' },
     message: { missing: 'Napište prosím zprávu.' },
   }
 
@@ -235,14 +236,16 @@ export default function PoradnaPage() {
                 </div>
                 <div>
                   <label htmlFor="phone" className="text-sm font-semibold text-brand-navy">
-                    Telefon
+                    Telefon *
                   </label>
                   <input
                     id="phone"
                     name="phone"
                     type="tel"
+                    required
                     value={formData.phone}
                     onChange={handleChange}
+                    onInvalid={handleInvalid}
                     onInput={handleValidityInput}
                     className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
                   />
