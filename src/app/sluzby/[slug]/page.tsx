@@ -2,14 +2,23 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
 import { services } from '@/data/services'
+import { DOTAZNIK_SPORTOVCE_HREF } from '@/data/dotaznik'
 import { BackLink } from '@/components/BackLink'
 
 type TokenType = 'text' | 'email' | 'phone' | 'url' | 'link' | 'strong'
-type Token = { type: TokenType; value: string; href?: string }
+type Token = {
+  type: TokenType
+  value: string
+  href?: string
+  download?: boolean
+  children?: Token[]
+}
 type TokenRule = {
   type: Exclude<TokenType, 'text'>
   regex: RegExp
   href?: (value: string) => string
+  download?: boolean
+  innerRules?: TokenRule[]
 }
 
 const BASE_RULES: TokenRule[] = [
@@ -29,15 +38,24 @@ function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+const DOTAZNIK_LINK_RULE: TokenRule = {
+  type: 'link',
+  regex: /dotazník\w*/gi,
+  href: () => DOTAZNIK_SPORTOVCE_HREF,
+  download: true,
+}
+
 const SPORTOVCI_TOKEN_RULES: TokenRule[] = [
   {
     type: 'link',
     regex: /není hrazeno zdravotní pojišťovnou/g,
     href: () => '/cenik',
   },
+  DOTAZNIK_LINK_RULE,
   ...SPORTOVCI_HIGHLIGHTS.map((phrase) => ({
     type: 'strong' as const,
     regex: new RegExp(escapeRegExp(phrase), 'g'),
+    innerRules: [DOTAZNIK_LINK_RULE],
   })),
   ...BASE_RULES,
 ]
@@ -75,15 +93,14 @@ function tokenizeText(text: string, rules: TokenRule[]): Token[] {
       tokens.push({ type: 'text', value: text.slice(cursor, nextMatch.index) })
     }
 
-    if (nextMatch.rule.type === 'link') {
-      tokens.push({
-        type: 'link',
-        value: nextMatch.value,
-        href: nextMatch.rule.href?.(nextMatch.value),
-      })
-    } else {
-      tokens.push({ type: nextMatch.rule.type, value: nextMatch.value })
-    }
+    const { rule, value } = nextMatch
+    tokens.push({
+      type: rule.type,
+      value,
+      href: rule.href?.(value),
+      download: rule.download,
+      children: rule.innerRules ? tokenizeText(value, rule.innerRules) : undefined,
+    })
 
     cursor = nextMatch.index + nextMatch.value.length
   }
@@ -136,7 +153,12 @@ function renderTokens(tokens: Token[], keyPrefix: string) {
 
     if (token.type === 'link') {
       return (
-        <a key={key} href={token.href} className="font-semibold text-brand-red hover:underline">
+        <a
+          key={key}
+          href={token.href}
+          className="font-semibold text-brand-red hover:underline"
+          download={token.download}
+        >
           {token.value}
         </a>
       )
@@ -145,7 +167,7 @@ function renderTokens(tokens: Token[], keyPrefix: string) {
     if (token.type === 'strong') {
       return (
         <strong key={key} className="font-semibold">
-          {token.value}
+          {token.children ? renderTokens(token.children, key) : token.value}
         </strong>
       )
     }
@@ -249,7 +271,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailProps) 
                   </p>
                 </div>
                 <a
-                  href="/Dotaznik_Srdce-Sportovce.pdf"
+                  href={DOTAZNIK_SPORTOVCE_HREF}
                   download
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark"
                 >

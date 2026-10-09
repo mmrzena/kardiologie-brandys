@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import nodemailer from 'nodemailer'
+import { promises as fs } from 'fs'
+import path from 'path'
 import { TOPIC_OPTIONS, TOPIC } from '@/data/topics'
-import { SPORTOVCI_SERVICES, getSportovciServiceLabel } from '@/data/sportovciServices'
+import {
+  SPORTOVCI_SERVICES,
+  getSportovciServiceLabel,
+  sportovciServiceNeedsDotaznik,
+} from '@/data/sportovciServices'
+import { DOTAZNIK_SPORTOVCE_CONTENT_TYPE, DOTAZNIK_SPORTOVCE_FILENAME } from '@/data/dotaznik'
 
 // Email routing by topic (configured via environment variables):
 // EMAIL_PORADNA - for poradna topic
@@ -85,14 +92,38 @@ const RATE_LIMIT_MAX_PER_EMAIL = 3
 const allowedAttachmentTypes = new Set(['application/pdf', 'image/png', 'image/jpeg'])
 const MAX_ATTACHMENT_SIZE = 5 * 1024 * 1024
 const MAX_ATTACHMENTS = 5
-const SPORTOVCI_SERVICE_VALUES = new Set<string>(
-  SPORTOVCI_SERVICES.map((option) => option.value),
-)
+const SPORTOVCI_SERVICE_VALUES = new Set<string>(SPORTOVCI_SERVICES.map((option) => option.value))
 
 type AttachmentPayload = {
   filename: string
   contentType: string
   content: Buffer
+}
+
+const DOTAZNIK_NOTE_TEXT =
+  'V příloze zasíláme dotazník Srdce sportovce. Vyplňte ho prosím předem a přineste s sebou na vyšetření.'
+
+function shouldAttachDotaznik(data: { topic: string; sportovciService?: string }) {
+  return data.topic === TOPIC.SPORTOVCI && sportovciServiceNeedsDotaznik(data.sportovciService)
+}
+
+// The PDF never changes at runtime, so one read is shared by all requests.
+let dotaznikContent: Promise<Buffer> | undefined
+
+async function loadDotaznikAttachment(): Promise<AttachmentPayload | null> {
+  dotaznikContent ??= fs.readFile(path.join(process.cwd(), 'public', DOTAZNIK_SPORTOVCE_FILENAME))
+  try {
+    const content = await dotaznikContent
+    return {
+      filename: DOTAZNIK_SPORTOVCE_FILENAME,
+      contentType: DOTAZNIK_SPORTOVCE_CONTENT_TYPE,
+      content,
+    }
+  } catch (error) {
+    dotaznikContent = undefined
+    console.error('Dotazník attachment could not be loaded:', error)
+    return null
+  }
 }
 
 type RateLimitState = {
@@ -175,6 +206,9 @@ function logEmail(
   console.log('Téma:', topicLabel)
   if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
   console.log('Zpráva:', validatedData.message)
+  if (shouldAttachDotaznik(validatedData)) {
+    console.log('Příloha:', DOTAZNIK_SPORTOVCE_FILENAME)
+  }
   console.log('===========================================================\n')
 }
 
@@ -379,6 +413,10 @@ ${validatedData.message}
         })
 
         // Send confirmation email to user
+        const dotaznikAttachment = shouldAttachDotaznik(validatedData)
+          ? await loadDotaznikAttachment()
+          : null
+
         await transporter.sendMail({
           from: getSenderAddress(),
           to: validatedData.email,
@@ -405,6 +443,7 @@ ${validatedData.message}
             }
             <p><strong>Zpráva:</strong></p>
             <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
+            ${dotaznikAttachment ? `<p>${DOTAZNIK_NOTE_TEXT}</p>` : ''}
 
             <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
 
@@ -429,7 +468,7 @@ ${validatedData.sportovciService ? `Vyšetření sportovců: ${sportovciServiceL
 ${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
 Zpráva:
 ${validatedData.message}
-
+${dotaznikAttachment ? `\n${DOTAZNIK_NOTE_TEXT}\n` : ''}
 ---
 
 Kardiologická ambulance MEDICUS SERVICES s.r.o.
@@ -438,6 +477,7 @@ Telefon: +420 326 396 790
 Email: kardiologie.brandys@seznam.cz
 Web: kardiologiebrandys.cz
           `,
+          attachments: dotaznikAttachment ? [dotaznikAttachment] : undefined,
         })
       } catch (emailError) {
         console.error('Email error:', emailError)

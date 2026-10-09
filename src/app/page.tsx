@@ -3,6 +3,7 @@ import InsuranceLogos from '@/components/InsuranceLogos'
 import ArrowUpRightIcon from '@/components/icons/ArrowUpRight'
 import { announcements } from '@/data/announcements'
 import { TOPIC } from '@/data/topics'
+import { DOTAZNIK_SPORTOVCE_HREF } from '@/data/dotaznik'
 
 export const revalidate = 3600
 
@@ -22,7 +23,7 @@ const services = [
   {
     title: 'Vyšetření sportovců',
     description: 'Preventivní screeningové vyšetření pro profesionální i amatérské sportovce.',
-    note: 'Dotazník ke stažení',
+    note: { label: 'Dotazník ke stažení', href: DOTAZNIK_SPORTOVCE_HREF },
     to: '/sluzby/vysetreni-sportovcu',
   },
   {
@@ -210,14 +211,18 @@ export default function Home() {
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {services.map((service) => (
-              <Link
+              <div
                 key={service.title}
-                href={service.to || '/sluzby'}
-                className="group flex flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 transition-all hover:shadow-xl hover:shadow-brand-gray/60 hover:border-brand-teal/40"
+                className="group relative flex flex-col rounded-3xl border border-brand-gray bg-white p-6 shadow-lg shadow-brand-gray/50 transition-all hover:shadow-xl hover:shadow-brand-gray/60 hover:border-brand-teal/40"
               >
                 <div className="flex items-start justify-between">
                   <h3 className="mt-4 text-xl font-semibold text-brand-navy group-hover:text-brand-teal transition-colors">
-                    {service.title}
+                    <Link
+                      href={service.to || '/sluzby'}
+                      className="after:absolute after:inset-0 after:content-['']"
+                    >
+                      {service.title}
+                    </Link>
                   </h3>
                   <ArrowUpRightIcon className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity text-brand-teal" />
                 </div>
@@ -225,9 +230,15 @@ export default function Home() {
                   {service.description}
                 </p>
                 {service.note && (
-                  <p className="mt-3 text-xs font-semibold text-brand-slate">{service.note}</p>
+                  <a
+                    href={service.note.href}
+                    download
+                    className="relative z-10 mt-3 w-fit text-xs font-semibold text-brand-red hover:underline"
+                  >
+                    {service.note.label}
+                  </a>
                 )}
-              </Link>
+              </div>
             ))}
           </div>
         </div>

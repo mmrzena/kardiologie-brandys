@@ -1,16 +1,20 @@
 'use client'
 
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Fragment, Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 import { TOPIC, TOPIC_OPTIONS } from '@/data/topics'
+import { DOTAZNIK_SPORTOVCE_HREF } from '@/data/dotaznik'
 import {
   SPORTOVCI_SERVICES,
   SPORTOVCI_SERVICE_DISCLAIMER_VALUE,
+  type SportovciServiceValue,
 } from '@/data/sportovciServices'
 
 type TopicValue = (typeof TOPIC_OPTIONS)[number]['value']
-type SportovciServiceValue = (typeof SPORTOVCI_SERVICES)[number]['value']
+
+const inputClassName =
+  'mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none disabled:cursor-not-allowed disabled:bg-brand-gray/40 disabled:text-brand-slate/60'
 
 type ContactFormState = {
   name: string
@@ -65,7 +69,8 @@ function ContactPageContent() {
   })
   const [appliedPrefill, setAppliedPrefill] = useState<TopicValue | null>(topicFromQuery ?? null)
   const [shouldHighlightForm, setShouldHighlightForm] = useState(false)
-  const shouldShowSportovciBanner =
+  // Walk-in service: no appointment is needed, so the banner shows and the form is locked.
+  const isWalkInService =
     formData.topic === TOPIC.SPORTOVCI &&
     formData.sportovciService === SPORTOVCI_SERVICE_DISCLAIMER_VALUE
 
@@ -124,6 +129,7 @@ function ContactPageContent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (isWalkInService) return
 
     mutation.mutate(formData, {
       onSuccess: () => {
@@ -155,8 +161,7 @@ function ContactPageContent() {
       return {
         ...prev,
         topic: nextTopic,
-        sportovciService:
-          nextTopic === TOPIC.SPORTOVCI ? prev.sportovciService : '',
+        sportovciService: nextTopic === TOPIC.SPORTOVCI ? prev.sportovciService : '',
       }
     })
   }
@@ -191,6 +196,12 @@ function ContactPageContent() {
   ) => {
     applyValidityMessage(e.currentTarget)
   }
+
+  const submitLabel = isWalkInService
+    ? 'Není nutné se objednávat'
+    : mutation.isPending
+      ? 'Odesílání…'
+      : 'Odeslat zprávu'
 
   return (
     <main className="py-16">
@@ -298,9 +309,9 @@ function ContactPageContent() {
               </p>
 
               <div
-                aria-hidden={!shouldShowSportovciBanner}
+                aria-hidden={!isWalkInService}
                 className={`grid overflow-hidden rounded-2xl border text-sm text-brand-navy transition-all ease-out ${
-                  shouldShowSportovciBanner
+                  isWalkInService
                     ? 'mt-6 grid-rows-[1fr] border-brand-teal/30 bg-brand-teal/10 opacity-100 shadow-sm duration-200'
                     : 'mt-0 grid-rows-[0fr] border-transparent bg-transparent opacity-0 shadow-none duration-120'
                 }`}
@@ -315,6 +326,25 @@ function ContactPageContent() {
                   <p className="mt-2 text-sm text-brand-slate">
                     Přijdete kdykoliv během ordinačních hodin, nejpozději však hodinu před jejich
                     koncem.
+                  </p>
+                  <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm text-brand-navy">
+                    {openingHours.map((item) => (
+                      <Fragment key={item.day}>
+                        <dt className="font-semibold">{item.day}</dt>
+                        <dd className="text-brand-slate">{item.hours}</dd>
+                      </Fragment>
+                    ))}
+                  </dl>
+                  <p className="mt-3 text-sm text-brand-slate">
+                    Pro urychlení vyšetření si můžete{' '}
+                    <a
+                      href={DOTAZNIK_SPORTOVCE_HREF}
+                      download
+                      className="font-semibold text-brand-red hover:underline"
+                    >
+                      stáhnout dotazník
+                    </a>{' '}
+                    a vyplnit ho předem.
                   </p>
                 </div>
               </div>
@@ -381,88 +411,90 @@ function ContactPageContent() {
                     </select>
                   </div>
                 )}
-                <div>
-                  <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
-                    Jméno a příjmení *
-                  </label>
-                  <input
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    onInvalid={handleInvalid}
-                    onInput={handleValidityInput}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
-                  />
-                </div>
-                {(formData.topic === TOPIC.OBJEDNANI || formData.topic === TOPIC.RECEPT) && (
+                <fieldset disabled={isWalkInService} className="min-w-0 space-y-4">
                   <div>
-                    <label htmlFor="birthYear" className="text-sm font-semibold text-brand-navy">
-                      Rok narození *
+                    <label htmlFor="name" className="text-sm font-semibold text-brand-navy">
+                      Jméno a příjmení *
                     </label>
                     <input
-                      id="birthYear"
-                      name="birthYear"
-                      type="number"
-                      inputMode="numeric"
-                      min="1900"
-                      max={new Date().getFullYear()}
+                      id="name"
+                      name="name"
                       required
-                      value={formData.birthYear}
+                      value={formData.name}
                       onChange={handleChange}
                       onInvalid={handleInvalid}
                       onInput={handleValidityInput}
-                      className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
+                      className={inputClassName}
                     />
                   </div>
-                )}
-                <div>
-                  <label htmlFor="email" className="text-sm font-semibold text-brand-navy">
-                    Email *
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    onInvalid={handleInvalid}
-                    onInput={handleValidityInput}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="text-sm font-semibold text-brand-navy">
-                    Telefon
-                  </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    onInput={handleValidityInput}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="text-sm font-semibold text-brand-navy">
-                    Zpráva *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={6}
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    onInvalid={handleInvalid}
-                    onInput={handleValidityInput}
-                    className="mt-2 w-full rounded-2xl border border-brand-gray/80 px-4 py-3 text-sm focus:border-brand-blue focus:outline-none"
-                  />
-                </div>
+                  {(formData.topic === TOPIC.OBJEDNANI || formData.topic === TOPIC.RECEPT) && (
+                    <div>
+                      <label htmlFor="birthYear" className="text-sm font-semibold text-brand-navy">
+                        Rok narození *
+                      </label>
+                      <input
+                        id="birthYear"
+                        name="birthYear"
+                        type="number"
+                        inputMode="numeric"
+                        min="1900"
+                        max={new Date().getFullYear()}
+                        required
+                        value={formData.birthYear}
+                        onChange={handleChange}
+                        onInvalid={handleInvalid}
+                        onInput={handleValidityInput}
+                        className={inputClassName}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <label htmlFor="email" className="text-sm font-semibold text-brand-navy">
+                      Email *
+                    </label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      onInvalid={handleInvalid}
+                      onInput={handleValidityInput}
+                      className={inputClassName}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="text-sm font-semibold text-brand-navy">
+                      Telefon
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      onInput={handleValidityInput}
+                      className={inputClassName}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="text-sm font-semibold text-brand-navy">
+                      Zpráva *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={6}
+                      required
+                      value={formData.message}
+                      onChange={handleChange}
+                      onInvalid={handleInvalid}
+                      onInput={handleValidityInput}
+                      className={inputClassName}
+                    />
+                  </div>
+                </fieldset>
                 {mutation.isSuccess && (
                   <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
                     Vaše zpráva byla úspěšně odeslána. Odpovíme co nejdříve.
@@ -478,10 +510,10 @@ function ContactPageContent() {
                 )}
                 <button
                   type="submit"
-                  disabled={mutation.isPending}
-                  className="w-full rounded-full bg-brand-red py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark disabled:opacity-50"
+                  disabled={mutation.isPending || isWalkInService}
+                  className="w-full rounded-full bg-brand-red py-3 text-sm font-semibold text-white shadow-lg shadow-brand-red/30 transition hover:bg-brand-red-dark disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {mutation.isPending ? 'Odesílání…' : 'Odeslat zprávu'}
+                  {submitLabel}
                 </button>
               </form>
             </div>

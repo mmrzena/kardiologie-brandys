@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import InsuranceLogos from '@/components/InsuranceLogos'
 import { TOPIC } from '@/data/topics'
+import { DOTAZNIK_SPORTOVCE_HREF } from '@/data/dotaznik'
 
 export const metadata: Metadata = {
   title: 'Ceník',
@@ -19,6 +20,7 @@ type PricingSection = {
   title: string
   description: string
   items: PricingItem[]
+  download?: { label: string; href: string }
 }
 
 const pricingSections: PricingSection[] = [
@@ -78,6 +80,7 @@ const pricingSections: PricingSection[] = [
   {
     title: 'Vyšetření sportovců',
     description: 'Program prevence náhlé smrti a sledování výkonu',
+    download: { label: 'Stáhnout dotazník', href: DOTAZNIK_SPORTOVCE_HREF },
     items: [
       { name: 'Dotazník + echokardiografie + EKG', price: '1 200 Kč' },
       { name: 'Komplet (dotazník + echokardiografie + EKG + ergometrie)', price: '2 000 Kč' },
@@ -136,6 +139,15 @@ export default function PricingPage() {
                     <h2 className="text-2xl font-semibold text-brand-navy">{section.title}</h2>
                     <p className="text-sm text-brand-slate">{section.description}</p>
                   </div>
+                  {section.download && (
+                    <a
+                      href={section.download.href}
+                      download
+                      className="text-sm font-semibold text-brand-red hover:underline"
+                    >
+                      {section.download.label}
+                    </a>
+                  )}
                 </div>
                 <div className="mt-4 space-y-3">
                   {section.items.map((item) => (
