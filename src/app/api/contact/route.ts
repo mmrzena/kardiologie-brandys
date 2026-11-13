@@ -161,58 +161,33 @@ function getClientIp(request: NextRequest): string {
   return 'unknown'
 }
 
-function logEmail(
-  validatedData: z.infer<typeof contactSchema>,
-  recipientEmail: string,
-  attachments: AttachmentPayload[] = [],
-) {
-  const topicLabel =
-    TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
-    validatedData.topic
-  const sportovciServiceLabel = validatedData.sportovciService
-    ? getSportovciServiceLabel(validatedData.sportovciService)
-    : ''
+function logEmailError(context: string, error: unknown) {
+  const { code, responseCode } = (error ?? {}) as { code?: unknown; responseCode?: unknown }
+  console.error(context, { code, responseCode })
+}
 
-  console.log('\n=============== EMAIL TO CLINIC (DEV MODE) ===============')
-  console.log('From:', getSenderAddress())
-  console.log('To:', recipientEmail)
-  console.log('Reply-To:', validatedData.email)
-  console.log('Subject:', `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`)
-  console.log('-----------------------------------------------------------')
-  console.log('Jméno:', validatedData.name)
-  console.log('Email:', validatedData.email)
-  console.log('Telefon:', validatedData.phone)
-  if (validatedData.birthYear) console.log('Rok narození:', validatedData.birthYear)
-  console.log('Téma:', topicLabel)
-  if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
-  console.log('\nZpráva:')
-  console.log(validatedData.message)
-  if (attachments.length > 0) {
-    console.log(
-      'Přílohy:',
-      attachments.map((file) => `${file.filename} (${file.contentType})`).join(', '),
-    )
-  }
-  console.log('===========================================================\n')
-
-  console.log('\n=========== CONFIRMATION EMAIL TO USER (DEV MODE) =========')
-  console.log('From:', getSenderAddress())
-  console.log('To:', validatedData.email)
-  console.log('Subject: Potvrzení přijetí zprávy - Kardiologie Brandýs')
-  console.log('-----------------------------------------------------------')
-  console.log(`Dobrý den ${validatedData.name},`)
-  console.log('děkujeme za odeslání zprávy.')
-  console.log('\nShrnutí:')
-  console.log('Téma:', topicLabel)
-  if (validatedData.sportovciService) console.log('Vyšetření sportovců:', sportovciServiceLabel)
-  console.log('Zpráva:', validatedData.message)
-  if (shouldAttachDotaznik(validatedData)) {
-    console.log('Příloha:', DOTAZNIK_SPORTOVCE_FILENAME)
-  }
-  console.log('===========================================================\n')
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
 }
 
 export async function POST(request: NextRequest) {
+  const smtpUnavailable =
+    process.env.NEXT_PUBLIC_USE_MOCK_DB === 'true' ||
+    !process.env.EMAIL_HOST ||
+    !process.env.EMAIL_USER ||
+    !process.env.EMAIL_PASSWORD
+  if (smtpUnavailable) {
+    return NextResponse.json(
+      { error: 'Formulář je dočasně nedostupný. Kontaktujte prosím ordinaci telefonicky.' },
+      { status: 503 },
+    )
+  }
+
   try {
     const contentType = request.headers.get('content-type') || ''
     const isMultipart = contentType.includes('multipart/form-data')
@@ -327,148 +302,131 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Get recipient email based on topic
     const recipientEmail = getRecipientEmail(validatedData.topic)
 
-    const useMockEmail =
-      process.env.NEXT_PUBLIC_USE_MOCK_DB === 'true' ||
-      !process.env.EMAIL_HOST ||
-      !process.env.EMAIL_USER ||
-      !process.env.EMAIL_PASSWORD
+    const parsedPort = Number(process.env.EMAIL_PORT)
+    const smtpPort = Number.isInteger(parsedPort) && parsedPort > 0 ? parsedPort : 587
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: smtpPort,
+      secure: smtpPort === 465,
+      requireTLS: true,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    })
 
-    if (useMockEmail) {
-      logEmail(validatedData, recipientEmail, attachments)
-    } else {
-      try {
-        const transporter = nodemailer.createTransport({
-          host: process.env.EMAIL_HOST,
-          port: Number(process.env.EMAIL_PORT),
-          secure: false,
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD,
-          },
-        })
+    const topicLabel =
+      TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
+      validatedData.topic
+    const sportovciServiceLabel = validatedData.sportovciService
+      ? getSportovciServiceLabel(validatedData.sportovciService)
+      : ''
+    const attachmentNames = attachments.map((file) => file.filename).join(', ')
 
-        const topicLabel =
-          TOPIC_OPTIONS.find((option) => option.value === validatedData.topic)?.label ||
-          validatedData.topic
-        const sportovciServiceLabel = validatedData.sportovciService
-          ? getSportovciServiceLabel(validatedData.sportovciService)
-          : ''
-
-        // Send email to clinic
-        await transporter.sendMail({
-          from: getSenderAddress(),
-          to: recipientEmail,
-          replyTo: validatedData.email,
-          subject: `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`,
-          html: `
-            <h2>Nová zpráva z kontaktního formuláře</h2>
-            <p><strong>Jméno:</strong> ${validatedData.name}</p>
-            <p><strong>Email:</strong> ${validatedData.email}</p>
-            <p><strong>Telefon:</strong> ${validatedData.phone}</p>
-            ${
-              validatedData.birthYear
-                ? `<p><strong>Rok narození:</strong> ${validatedData.birthYear}</p>`
-                : ''
-            }
-            ${
-              attachments.length > 0
-                ? `<p><strong>Přílohy:</strong> ${attachments
-                    .map((file) => file.filename)
-                    .join(', ')}</p>`
-                : ''
-            }
-            <p><strong>Téma:</strong> ${topicLabel}</p>
-            ${
-              validatedData.sportovciService
-                ? `<p><strong>Vyšetření sportovců:</strong> ${sportovciServiceLabel}</p>`
-                : ''
-            }
-            <p><strong>Zpráva:</strong></p>
-            <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
-          `,
-          text: `
+    try {
+      await transporter.sendMail({
+        from: getSenderAddress(),
+        to: recipientEmail,
+        replyTo: validatedData.email,
+        subject: `(${topicLabel}) Nová zpráva z webu - ${validatedData.name}`,
+        html: `
+          <h2>Nová zpráva z kontaktního formuláře</h2>
+          <p><strong>Jméno:</strong> ${escapeHtml(validatedData.name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(validatedData.email)}</p>
+          <p><strong>Telefon:</strong> ${escapeHtml(validatedData.phone)}</p>
+          ${
+            validatedData.birthYear
+              ? `<p><strong>Rok narození:</strong> ${escapeHtml(validatedData.birthYear)}</p>`
+              : ''
+          }
+          ${attachmentNames ? `<p><strong>Přílohy:</strong> ${escapeHtml(attachmentNames)}</p>` : ''}
+          <p><strong>Téma:</strong> ${escapeHtml(topicLabel)}</p>
+          ${
+            sportovciServiceLabel
+              ? `<p><strong>Vyšetření sportovců:</strong> ${escapeHtml(sportovciServiceLabel)}</p>`
+              : ''
+          }
+          <p><strong>Zpráva:</strong></p>
+          <p>${escapeHtml(validatedData.message).replace(/\n/g, '<br>')}</p>
+        `,
+        text: `
 Nová zpráva z kontaktního formuláře
 
 Jméno: ${validatedData.name}
 Email: ${validatedData.email}
 Telefon: ${validatedData.phone}
 ${validatedData.birthYear ? `Rok narození: ${validatedData.birthYear}` : ''}
-${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
+${attachmentNames ? `Přílohy: ${attachmentNames}` : ''}
 Téma: ${topicLabel}
-${validatedData.sportovciService ? `Vyšetření sportovců: ${sportovciServiceLabel}` : ''}
+${sportovciServiceLabel ? `Vyšetření sportovců: ${sportovciServiceLabel}` : ''}
 Zpráva:
 ${validatedData.message}
-          `,
-          attachments:
-            attachments.length > 0
-              ? attachments.map((file) => ({
-                  filename: file.filename,
-                  content: file.content,
-                  contentType: file.contentType,
-                }))
-              : undefined,
-        })
+        `,
+        attachments:
+          attachments.length > 0
+            ? attachments.map((file) => ({
+                filename: file.filename,
+                content: file.content,
+                contentType: file.contentType,
+              }))
+            : undefined,
+      })
+    } catch (emailError) {
+      logEmailError('Contact email delivery failed', emailError)
+      return NextResponse.json({ error: 'Nepodařilo se odeslat email' }, { status: 500 })
+    }
 
-        // Send confirmation email to user
-        const dotaznikAttachment = shouldAttachDotaznik(validatedData)
-          ? await loadDotaznikAttachment()
-          : null
+    // The clinic already has the message, so a failed confirmation must not tell the patient to resend.
+    try {
+      const dotaznikAttachment = shouldAttachDotaznik(validatedData)
+        ? await loadDotaznikAttachment()
+        : null
+      // Only the topic and time are echoed: the address is unverified, so the message text could reach a stranger.
+      const receivedAt = new Intl.DateTimeFormat('cs-CZ', {
+        dateStyle: 'long',
+        timeStyle: 'short',
+        timeZone: 'Europe/Prague',
+      }).format(now)
+      const confirmationTopic = escapeHtml(
+        sportovciServiceLabel ? `${topicLabel} – ${sportovciServiceLabel}` : topicLabel,
+      )
 
-        await transporter.sendMail({
-          from: getSenderAddress(),
-          to: validatedData.email,
-          replyTo: recipientEmail,
-          subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
-          html: `
-            <h2>Děkujeme za vaši zprávu</h2>
-            <p>Dobrý den,</p>
-            <p>děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.</p>
+      await transporter.sendMail({
+        from: getSenderAddress(),
+        to: validatedData.email,
+        replyTo: recipientEmail,
+        subject: 'Potvrzení přijetí zprávy - Kardiologie Brandýs',
+        html: `
+          <h2>Děkujeme za vaši zprávu</h2>
+          <p>Dobrý den,</p>
+          <p>děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.</p>
+          <p><strong>Téma:</strong> ${confirmationTopic}<br><strong>Přijato:</strong> ${receivedAt}</p>
 
-            <h3>Shrnutí vaší zprávy:</h3>
-            <p><strong>Téma:</strong> ${topicLabel}</p>
-            ${
-              validatedData.sportovciService
-                ? `<p><strong>Vyšetření sportovců:</strong> ${sportovciServiceLabel}</p>`
-                : ''
-            }
-            ${
-              attachments.length > 0
-                ? `<p><strong>Přílohy:</strong> ${attachments
-                    .map((file) => file.filename)
-                    .join(', ')}</p>`
-                : ''
-            }
-            <p><strong>Zpráva:</strong></p>
-            <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
-            ${dotaznikAttachment ? `<p>${DOTAZNIK_NOTE_TEXT}</p>` : ''}
+          ${dotaznikAttachment ? `<p>${DOTAZNIK_NOTE_TEXT}</p>` : ''}
 
-            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
+          <hr style="margin: 20px 0; border: none; border-top: 1px solid #e5e7eb;">
 
-            <p style="font-size: 14px; color: #6b7280;">
-              <strong>Kardiologická ambulance MEDICUS SERVICES s.r.o.</strong><br>
-              Nádražní 1317/5, 250 01 Brandýs nad Labem<br>
-              Telefon: <a href="tel:+420326396790">+420 326 396 790</a><br>
-              Sportovci: <a href="tel:+420326320112">+420 326 320 112</a><br>
-              Email: kardiologie.brandys@seznam.cz<br>
-              Web: <a href="https://kardiologiebrandys.cz">kardiologiebrandys.cz</a>
-            </p>
-          `,
-          text: `
+          <p style="font-size: 14px; color: #6b7280;">
+            <strong>Kardiologická ambulance MEDICUS SERVICES s.r.o.</strong><br>
+            Nádražní 1317/5, 250 01 Brandýs nad Labem<br>
+            Telefon: <a href="tel:+420326396790">+420 326 396 790</a><br>
+            Sportovci: <a href="tel:+420326320112">+420 326 320 112</a><br>
+            Email: kardiologie.brandys@seznam.cz<br>
+            Web: <a href="https://kardiologiebrandys.cz">kardiologiebrandys.cz</a>
+          </p>
+        `,
+        text: `
 Děkujeme za vaši zprávu
 
 Dobrý den,
 
 děkujeme za odeslání zprávy prostřednictvím našeho kontaktního formuláře. Vaši zprávu jsme přijali a co nejdříve se vám ozveme.
 
-Shrnutí vaší zprávy:
-Téma: ${topicLabel}
-${validatedData.sportovciService ? `Vyšetření sportovců: ${sportovciServiceLabel}` : ''}
-${attachments.length > 0 ? `Přílohy: ${attachments.map((file) => file.filename).join(', ')}` : ''}
-Zpráva:
-${validatedData.message}
+Téma: ${sportovciServiceLabel ? `${topicLabel} – ${sportovciServiceLabel}` : topicLabel}
+Přijato: ${receivedAt}
+
 ${dotaznikAttachment ? `\n${DOTAZNIK_NOTE_TEXT}\n` : ''}
 ---
 
@@ -478,13 +436,11 @@ Telefon: +420 326 396 790
 Sportovci: +420 326 320 112
 Email: kardiologie.brandys@seznam.cz
 Web: kardiologiebrandys.cz
-          `,
-          attachments: dotaznikAttachment ? [dotaznikAttachment] : undefined,
-        })
-      } catch (emailError) {
-        console.error('Email error:', emailError)
-        return NextResponse.json({ error: 'Nepodařilo se odeslat email' }, { status: 500 })
-      }
+        `,
+        attachments: dotaznikAttachment ? [dotaznikAttachment] : undefined,
+      })
+    } catch (confirmationError) {
+      logEmailError('Contact confirmation delivery failed', confirmationError)
     }
 
     return NextResponse.json({ message: 'Zpráva byla úspěšně odeslána' }, { status: 200 })
@@ -494,7 +450,9 @@ Web: kardiologiebrandys.cz
       return NextResponse.json({ error: message, details: error.issues }, { status: 400 })
     }
 
-    console.error('Unexpected error:', error)
+    console.error('Contact request processing failed', {
+      name: error instanceof Error ? error.name : typeof error,
+    })
     return NextResponse.json({ error: 'Nastala chyba při zpracování požadavku' }, { status: 500 })
   }
 }

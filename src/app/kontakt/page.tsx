@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, Suspense, useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useContactForm } from '@/hooks/useContact'
 import { TOPIC, TOPIC_OPTIONS } from '@/data/topics'
@@ -518,6 +519,14 @@ function ContactPageContent() {
                 >
                   {submitLabel}
                 </button>
+                <p className="text-center text-xs text-brand-slate">
+                  Údaje z formuláře používá MEDICUS SERVICES s.r.o. k vyřízení vašeho požadavku.
+                  Podrobnosti najdete v{' '}
+                  <Link href="/ochrana-osobnich-udaju" className="underline hover:text-brand-red">
+                    zásadách ochrany osobních údajů
+                  </Link>
+                  .
+                </p>
               </form>
             </div>
           </section>
