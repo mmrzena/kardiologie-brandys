@@ -16,8 +16,9 @@ export default function PrivacyPage() {
             <section>
               <h2>Kdo údaje spravuje</h2>
               <p>
-                MEDICUS SERVICES s.r.o., IČO 47547898, Na Vyhlídce 332, 281 63 Vyžlovka. S dotazy
-                nebo žádostmi se obraťte na{' '}
+                MEDICUS SERVICES s.r.o., IČO 47547898, se sídlem Na Vyhlídce 332, 281 63 Vyžlovka,
+                zapsaná u Městského soudu v Praze, oddíl C, vložka 20327. Ordinace sídlí na adrese
+                Nádražní 1317/5, Brandýs nad Labem. S dotazy nebo žádostmi se obraťte na{' '}
                 <a href="mailto:kardiologie.brandys@seznam.cz">kardiologie.brandys@seznam.cz</a>.
               </p>
             </section>

@@ -101,8 +101,7 @@ export default function Footer() {
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-gray-400 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Kardiologie Brandýs nad Labem</p>
           <p>
-            MEDICUS SERVICES s.r.o. • sídlo Na Vyhlídce 332, 281 63 Vyžlovka • IČO 47547898 •
-            Městský soud v Praze, oddíl C, vložka 20327
+            MEDICUS SERVICES s.r.o. • IČO 47547898 • Městský soud v Praze, oddíl C, vložka 20327
           </p>
           <nav className="flex flex-wrap gap-4 text-gray-400">
             {navigation.map((item) => (
